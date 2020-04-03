@@ -1,34 +1,48 @@
 const path = require("path");
+const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 
+const port = process.env.PORT || 6327;
+
 module.exports = {
-  entry: "./src/index.tsx",
+  mode: 'development',
+  entry: ['webpack/hot/dev-server', __dirname + "/src/index.tsx"],
   output: {
-    path: path.resolve(__dirname, "build"),
-    filename: "bundle.js"
+    path: __dirname + "/dist",
+    filename: "bundle.js",
+    publicPath: "/"
   },
-  resolve: {
-    extensions: ['.tsx', '.ts', '.js', '.json']
+  devServer: {
+    contentBase: path.join(__dirname, "/public"), // index.html的位置
+    port: port,
+    hot: true,
   },
   devtool: 'source-map',
+  resolve: {
+    extensions: ['.tsx', '.ts', '.js', '.json'],
+    alias: {
+      '@': path.resolve(__dirname, './src'),
+    },
+  },
   module: {
     rules: [
       {
         enforce: "pre",
-        test: /\.js$/,
+        test: /\.(js|jsx)$/,
         loader: "source-map-loader"
       },
       {
-        test: /\.tsx?$/,
-        loader: "awesome-typescript-loader"
+        test: /\.(ts|tsx)?$/,
+        loader: "awesome-typescript-loader",
+        exclude: /node_modules/
       },
     ]
   },
   plugins: [
     new HtmlWebpackPlugin({
-      title: 'React + Typescript Project',
-      template: 'public/index.html',
-      inject: false,
+      filename: 'index.html',
+      template: 'public/index.html'
     }),
+    new webpack.HotModuleReplacementPlugin(),
   ],
 };
