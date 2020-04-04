@@ -1,19 +1,33 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { BrowserRouter } from 'react-router-dom'
-import { StoreContext } from 'redux-react-hook'
+import { Provider } from 'react-redux'
 import { SnackbarProvider } from 'notistack'
+import { ConnectedRouter } from 'connected-react-router/immutable'
 
 import App from './App'
-import store from '@/store/index'
+import { store, history } from '@/store/index'
+
+import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
+const theme = createMuiTheme({
+  palette: {
+    primary: {
+      main: '#ED2553'
+    }
+  }
+})
 
 ReactDOM.render(
-	<SnackbarProvider maxSnack={3}>
-		<StoreContext.Provider value={store}>
-			<BrowserRouter>
-				<App />
-			</BrowserRouter>
-		</StoreContext.Provider>
-	</SnackbarProvider>,
-	document.getElementById('root')
+  <MuiThemeProvider theme={theme}>
+    <SnackbarProvider maxSnack={3}>
+      <Provider store={store}>
+        <ConnectedRouter history={history}>
+          <BrowserRouter>
+            <App />
+          </BrowserRouter>
+        </ConnectedRouter>
+      </Provider>
+    </SnackbarProvider>
+  </MuiThemeProvider>,
+  document.getElementById('root')
 )

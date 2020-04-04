@@ -1,0 +1,28 @@
+body {
+    --primary-color: #ED2553;
+    --primary-bg: #ffffff;
+    --primary-text: #1d1d1d;
+    --secondary-bg: rgba(246, 244, 241, 1);
+    --secondary-bg-hover: rgba(231, 229, 225, 1);
+    --secondary-text: rgba(136, 139, 142, 1);
+    font-size: 2rem;
+
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+    outline: none;
+}
+
+button {
+    outline: none;
+}
+
+ul {
+    list-style-type: none !important;
+}
+
+li {
+    list-style-type: none !important;
+}

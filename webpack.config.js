@@ -16,10 +16,11 @@ module.exports = {
     contentBase: path.join(__dirname, "/public"), // index.html的位置
     port: port,
     hot: true,
+    historyApiFallback: true
   },
   devtool: 'source-map',
   resolve: {
-    extensions: ['.tsx', '.ts', '.js', '.json'],
+    extensions: ['.tsx', '.ts', '.js', '.json', '.css'],
     alias: {
       '@': path.resolve(__dirname, './src'),
     },
@@ -35,6 +36,20 @@ module.exports = {
         test: /\.(ts|tsx)?$/,
         loader: "awesome-typescript-loader",
         exclude: /node_modules/
+      },
+      {
+        test: /\.(css|sass|scss)$/,
+        use: [
+          'style-loader',
+          {
+            loader: 'css-loader',
+            options: {
+              localsConvention: 'camelCaseOnly',
+              importLoaders: 1,
+            }
+          },
+          // 'sass-loader'
+        ]
       },
     ]
   },
