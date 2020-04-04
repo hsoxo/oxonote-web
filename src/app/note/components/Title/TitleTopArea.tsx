@@ -17,7 +17,7 @@ import { BaseEmoji } from "emoji-mart";
 import 'emoji-mart/css/emoji-mart.css'
 import styled from "styled-components";
 import ContentEditable from "react-contenteditable";
-
+import {TitleBlockPropsType} from "@/app/note/components/Title/types";
 
 const TitleTopAreaWrapperBox = styled(Box)`
     display: block;
@@ -34,7 +34,7 @@ const InlineButtonWrapper = styled(Box)`
       display: inline-block;
 `
 
-const TitleTopAera = () => {
+const TitleTopAera: React.FunctionComponent<TitleBlockPropsType> = (props) => {
   const state: NoteState = useSelector(state => state.get('note'))
 
   const popupState = usePopupState({
@@ -42,8 +42,8 @@ const TitleTopAera = () => {
     popupId: 'title-top-emoji-picker'
   })
 
-  const curType = state.curJournal
-  const { titleIcon, description } = curType
+  const curType = props.type === 'journal' ? state.curJournal : state.curNote
+  const { titleIcon } = curType
 
   return (
     <TitleTopAreaWrapperBox id="title-top-area">
@@ -69,7 +69,7 @@ const TitleTopAera = () => {
             }}
             transformOrigin={{
               vertical: 'top',
-              horizontal: 'left'
+              horizontal: 'center'
             }}
             {...bindPopover(popupState)}>
             <Picker
@@ -83,7 +83,7 @@ const TitleTopAera = () => {
           </Popover>
         </InlineButtonWrapper>
       )}
-      {description || <Button color="primary">添加一段描述</Button>}
+      {/*{description || <Button color="primary">添加一段描述</Button>}*/}
     </TitleTopAreaWrapperBox>
   )
 };

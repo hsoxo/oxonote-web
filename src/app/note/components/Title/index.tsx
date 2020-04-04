@@ -16,8 +16,8 @@ const TitleBlockWrapper = styled(Box)`
 const TitleBlock: React.FunctionComponent<TitleBlockPropsType> = props => {
   return (
     <TitleBlockWrapper>
-      <TitleTopAera />
-      <TitleMainArea />
+      <TitleTopAera {...props}/>
+      <TitleMainArea {...props}/>
     </TitleBlockWrapper>
   )
 }

@@ -29,3 +29,10 @@ export function setCurNote(payload: NoteType): NoteActionTypes {
         payload
     }
 }
+
+export function setCurBoth(payload: NoteType): NoteActionTypes {
+    return {
+        type: SET_CUR_NOTE,
+        payload
+    }
+}

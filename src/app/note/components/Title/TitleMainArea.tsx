@@ -8,16 +8,14 @@ import {
   bindPopover
 } from 'material-ui-popup-state/hooks'
 import { useSelector } from '@/store'
-import { TitleMainAreaPropsType } from './types'
+import {TitleBlockPropsType} from './types'
 import styled from 'styled-components'
 import { NoteState } from '@/store/note/types'
 import NOTE_ACT from '@/store/note/action-declares'
 import action from '@/store'
 
-const TitleMainAreaWrapperBox = styled(Box)`
-    display: flex;
-    align-items: center;
-`
+import { FlexCenteredBox } from "@/components/OxOUI/OxOBox";
+
 
 const TitleIconBox = styled(Box)`
       display: flex;
@@ -37,7 +35,7 @@ const StyledContentEditable = styled(ContentEditable)`
     padding-left: 1rem;
     display: flex;
     margin: 0.5rem 0;
-
+    width: 100%;
     &:empty:before {
       color: #8e8e8e;
       content:"Untitled";
@@ -47,19 +45,19 @@ const StyledContentEditable = styled(ContentEditable)`
     }
 `
 
-const TitleMainArea = (props: TitleMainAreaPropsType) => {
-  const state: NoteState = useSelector(state => state.get('note'))
-
+const TitleMainArea: React.FunctionComponent<TitleBlockPropsType> = (props) => {
   const popupState = usePopupState({
     variant: 'popover',
     popupId: 'title-main-emoji-picker'
   })
 
-  const curType = state.curJournal
+  const state: NoteState = useSelector(state => state.get('note'))
+  const curType = props.type === 'journal' ? state.curJournal : state.curNote
+  const updateAction = props.type === 'journal' ? NOTE_ACT.SAGA_UPDATE_JOURNAL : NOTE_ACT.SAGA_UPDATE_NOTE
   const { titleIcon, title } = curType
 
   return (
-    <TitleMainAreaWrapperBox>
+    <FlexCenteredBox>
       {titleIcon && (
         <TitleIconBox>
           <Box {...bindToggle(popupState)}>{titleIcon}</Box>
@@ -79,7 +77,7 @@ const TitleMainArea = (props: TitleMainAreaPropsType) => {
               showPreview={false}
               showSkinTones={false}
               onSelect={(emoji: BaseEmoji) => {
-                action(NOTE_ACT.SAGA_UPDATE_JOURNAL, {
+                action(updateAction, {
                   titleIcon: emoji.native
                 })
                 popupState.close()
@@ -92,12 +90,12 @@ const TitleMainArea = (props: TitleMainAreaPropsType) => {
         html={title}
         disabled={false}
         onChange={e =>
-          action(NOTE_ACT.SAGA_UPDATE_JOURNAL, { title: e.target.value })
+          action(updateAction, { title: e.target.value })
         }
         tagName="h1" // Use a custom HTML tag (uses a div by default)
         style={{ outline: 'none', fontSize: '2.5rem' }}
       />
-    </TitleMainAreaWrapperBox>
+    </FlexCenteredBox>
   )
 }
 

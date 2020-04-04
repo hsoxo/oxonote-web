@@ -1,6 +1,7 @@
 import { spawn, call, delay, fork } from 'redux-saga/effects'
 
 import noteSaga from './note/saga'
+import { noteSaveSagaWatcher } from './note/saga'
 
 const makeRestartable = (saga: any) => {
     return function* () {
@@ -19,9 +20,11 @@ const makeRestartable = (saga: any) => {
 };
 
 const rootSagas = [
-    noteSaga
+    noteSaga,
+    noteSaveSagaWatcher
 ].map(makeRestartable);
 
 export default function* rootSaga() {
-    yield call(noteSaga)
+    yield call(makeRestartable(noteSaga))
+    yield call(makeRestartable(noteSaveSagaWatcher))
 }

@@ -3,12 +3,14 @@ import { NoteType } from "@/types/note";
 import {
     SET_CUR_JOURNAL,
     SET_CUR_NOTE,
-    SET_ALL_JOURNALS
+    SET_ALL_JOURNALS, SET_CUR_BOTH
 } from "./action-declares";
 
 export interface NoteState {
     allJournals: Array<JournalType>
+    journalChanged: boolean
     curJournal: JournalEnhancedType
+    noteChanged: boolean
     curNote: NoteType
 }
 
@@ -25,4 +27,14 @@ interface SetCurNote {
     payload: NoteType
 }
 
-export type NoteActionTypes = SetAllJournals | SetCurJournal | SetCurNote
+export interface UpdateAllPayload {
+    journal: JournalEnhancedType
+    note: NoteType
+}
+
+interface SetCurAll {
+    type: typeof SET_CUR_BOTH
+    payload: UpdateAllPayload
+}
+
+export type NoteActionTypes = SetAllJournals | SetCurJournal | SetCurNote | SetCurAll

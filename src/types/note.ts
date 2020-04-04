@@ -4,9 +4,9 @@ interface NoteContent {
     children: Array<any>
 }
 
-interface NoteAttribute {
+export interface NoteAttribute {
     attrId: string
-    value: string | Array<string>
+    value: string | Array<string> | boolean
 }
 
 export interface NoteShortType {
@@ -33,3 +33,4 @@ export interface NoteType {
     content: Array<NoteContent>
     attributes: Array<NoteAttribute>
 }
+

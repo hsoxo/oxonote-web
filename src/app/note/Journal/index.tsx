@@ -1,30 +1,23 @@
-import React, { useRef, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Divider } from '@material-ui/core'
-import { useDispatch, useMappedState } from 'redux-react-hook'
-import { useInterval } from '@/utils/hooks'
-import action from "@/store";
+import action, {useSelector} from "@/store";
 import * as noteAct from '@/store/note/action-declares'
 
 import TitleBlock from "../components/Title";
+import JournalToolbar from "./Toolbar";
+import JournalListView from "@/app/note/Journal/List";
+import {NoteState} from "@/store/note/types";
 
-const Notebook = (props: React.ComponentProps<any>) => {
+const Journal = (props: React.ComponentProps<any>) => {
 	const jourId = props.match.params.id
-	const [changed, toggleChanged] = useState(false)
-	const [viewId, setViewId] = useState(null)
+	const [viewId, setViewId] = useState('')
 
-	const handleCreateNote = async () => {}
+	const { curJournal }: NoteState = useSelector(state => state.get('note'))
 
-	const handleSetState = () => {}
-
-	const handleViewCreate = () => {}
-
-	const handleViewDelete = () => {}
-
-	const handleViewChange = () => {}
-
-	useInterval(() => {
-		// if (changed) action(noteAct.SAGA_UPDATE_JOURNAL)
-	}, 500)
+	useEffect(() => {
+		if (curJournal.views.length)
+			setViewId(curJournal.views[0].viewId)
+	}, [curJournal, setViewId])
 
 	useEffect(() => {
 		action(noteAct.SAGA_READ_JOURNAL, jourId)
@@ -34,17 +27,17 @@ const Notebook = (props: React.ComponentProps<any>) => {
 		<div className="oxo-editor">
 			<React.Fragment>
 				<TitleBlock type="journal"/>
-				{/*<div>*/}
-				{/*	<DatabaseToolbar onCreate={handleCreateNote} />*/}
-				{/*	<Divider />*/}
-				{/*	<DatabaseTable />*/}
-				{/*</div>*/}
+				<div>
+					<JournalToolbar jourId={jourId} viewId={viewId}/>
+					<Divider />
+					<JournalListView viewId={viewId}/>
+				</div>
 			</React.Fragment>
 		</div>
 	)
 }
 
 export default React.memo(
-	Notebook,
+	Journal,
 	(prev, next) => prev.match.params.id === next.match.params.id
 )

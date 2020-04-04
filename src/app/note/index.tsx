@@ -1,83 +1,79 @@
-import React, { Suspense } from 'react'
+import React, {Suspense, useEffect} from 'react'
 import { Route } from 'react-router-dom'
-import clsx from 'clsx'
-
-import { Box } from '@material-ui/core/'
-import { makeStyles, useTheme } from '@material-ui/core/styles';
-
-import { InnerRouteProps } from "@/routes";
-import action from "@/store";
-
-import * as nt from '@/store/note/types'
+import { InnerRouteProps } from '@/routes'
 import Sidebar from './components/Layout/Sidebar'
 import Navbar from './components/Layout/Navbar'
 
-import { sidebarWidth, navbarHeight } from "./components/Layout/config";
+import { sidebarWidth, navbarHeight } from './components/Layout/config'
 import '@/styles/base.css'
-import { FlexBox } from "@/components/UI/FlexBox";
+import { FlexBox } from '@/components/OxOUI/OxOBox'
+import styled from 'styled-components'
+import NOTE_ACT from "@/store/note/action-declares";
+import action from "@/store";
 
-const useStyles = makeStyles((theme) => ({
-	root: {
-		display: 'flex',
-	},
-	content: {
-		flexGrow: 1,
-		padding: theme.spacing(3),
-		transition: theme.transitions.create('margin', {
-			easing: theme.transitions.easing.sharp,
-			duration: theme.transitions.duration.leavingScreen,
-		}),
-		marginLeft: 0,
-		marginTop: navbarHeight,
-		backgroundColor: 'var(--primary-bg)',
-		color: 'var(--primary-color)',
-		height: `calc(100vh - ${navbarHeight}px)`,
-		width: `100vw`,
-	},
-	contentShift: {
-		transition: theme.transitions.create('all', {
-			easing: theme.transitions.easing.easeOut,
-			duration: theme.transitions.duration.enteringScreen,
-		}),
-		marginLeft: sidebarWidth,
-		marginTop: navbarHeight,
-		width: `calc(100vw - ${sidebarWidth}px)`,
-	},
-}));
+
+const SidebarWrapper = styled(Sidebar)``
+
+const NavbarWrapper = styled(Navbar)``
+
+type ToggleProps = {
+	sidebar: boolean
+}
+
+
+const MainWrapper = styled.div`
+  ${(p: ToggleProps) => ``};
+  flex-grow: 1;
+  padding: 3rem;
+  transition: margin ease 200ms;
+  margin-left: 0;
+  margin-top: ${navbarHeight}px;
+  background-color: var(--primary-bg);
+  color: var(--primary-color);
+  height: calc(100vh - ${navbarHeight}px);
+  width: 100vw;
+  ${(p: ToggleProps) => {
+	if (p.sidebar) return `
+		margin-left: ${sidebarWidth}px;
+		width: calc(100vw - ${sidebarWidth}px);
+	`
+	else return `
+		margin-left: 0;
+		width: 100vw;
+	`
+}};
+`
 
 const NoteLayout = (props: InnerRouteProps) => {
-	const classes = useStyles();
+  const [state, toggleState] = React.useState(true)
+  const handleToggleState = () => toggleState(!state)
 
-    const [sidebarOpen, setSidebarOpen] = React.useState(true);
-    const toggleSidebar = () => {
-        setSidebarOpen(!sidebarOpen);
-    };
+  const { routes } = props
+  useEffect(() => {
+      action(NOTE_ACT.SAGA_READ_ALL_JOURNALS)
+  }, [])
 
-	const { routes } = props
-
-	return (
-		<FlexBox>
-			<Suspense fallback="loading...">
-				<Sidebar onToggleSidebar={toggleSidebar} active={sidebarOpen} />
-				<Navbar onToggleSidebar={toggleSidebar} shift={sidebarOpen} />
-				<main
-					className={clsx(classes.content, {
-						[classes.contentShift]: sidebarOpen,
-					})}>
-					{routes.map((r, key) => {
-						return (
-							<Route
-								component={r.component}
-								exact={true}
-								key={r.path + key}
-								path={r.path}
-							/>
-						)
-					})}
-				</main>
-			</Suspense>
-		</FlexBox>
-	)
+  console.log(routes)
+  return (
+    <FlexBox>
+      <Suspense fallback="loading...">
+        <SidebarWrapper onToggleSidebar={handleToggleState} active={state} />
+        <NavbarWrapper onToggleSidebar={handleToggleState} shift={state} />
+        <MainWrapper sidebar={state}>
+          {routes.map((r, key) => {
+            return (
+              <Route
+                component={r.component}
+                exact
+                key={r.path + key}
+                path={r.path}
+              />
+            )
+          })}
+        </MainWrapper>
+      </Suspense>
+    </FlexBox>
+  )
 }
 
 export default NoteLayout

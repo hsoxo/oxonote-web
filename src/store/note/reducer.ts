@@ -3,6 +3,8 @@ import { NoteState, NoteActionTypes } from "./types";
 
 const initialState: NoteState = {
     allJournals: [],
+    journalChanged: false,
+    noteChanged: false,
     curJournal: {
         _id: '',
         title: '',
@@ -41,9 +43,9 @@ function noteReducer(
                 allJournals: action.payload
             }
         case a.SET_CUR_JOURNAL:
-            console.log(action)
             return {
                 ...state,
+                journalChanged: true,
                 curJournal: {
                     ...state.curJournal,
                     ...action.payload
@@ -52,7 +54,25 @@ function noteReducer(
         case a.SET_CUR_NOTE:
             return {
                 ...state,
-                curNote: action.payload
+                noteChanged: true,
+                curNote: {
+                    ...state.curNote,
+                    ...action.payload
+                }
+            }
+        case a.SET_CUR_BOTH:
+            return {
+                ...state,
+                journalChanged: true,
+                noteChanged: true,
+                curNote: {
+                    ...state.curNote,
+                    ...action.payload.note
+                },
+                curJournal: {
+                    ...state.curJournal,
+                    ...action.payload.journal
+                }
             }
         default:
             return state

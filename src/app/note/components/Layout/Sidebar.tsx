@@ -12,9 +12,10 @@ import {useDispatch, useMappedState} from 'redux-react-hook';
 import { Link } from 'react-router-dom'
 import { v4 as uuid } from 'uuid';
 import { useHistory } from 'react-router-dom'
-import action from "@/store";
+import action, {useSelector} from "@/store";
 import * as noteAct from "@/store/note/action-declares"
 import clsx from "clsx";
+import {NoteState} from "@/store/note/types";
 
 const useStyles = makeStyles((theme) => ({
     listItem: {
@@ -80,11 +81,12 @@ interface SidebarProps {
 
 const Sidebar = (props: SidebarProps) => {
     const classes = useStyles();
-    const theme = useTheme();
+    const state: NoteState = useSelector(state => state.get('note'))
+    const allJournals = state.allJournals
+    console.log(state)
 
     const handleCreateJournal = async () => {
         action(noteAct.SAGA_CREATE_JOURNAL)
-        // history.push(`/note/notebook/${newNotebookId}`)
     }
 
     const { active } = props
@@ -125,18 +127,18 @@ const Sidebar = (props: SidebarProps) => {
                 </ListItem>
             </List>
             <div style={{height: 20}} />
-            {/*<List>*/}
-            {/*    {notebooks.map(item => (*/}
-            {/*        <Link to={`/note/notebook/${item._id}`} key={item._id}>*/}
-            {/*            <ListItem className={classes.listItem} button>*/}
-            {/*                <ListItemText className={classes.listItemIcon}>*/}
-            {/*                    {item.titleIcon || '📒'}*/}
-            {/*                </ListItemText>*/}
-            {/*                <ListItemText primary={item.title || '未命名笔记本'} />*/}
-            {/*            </ListItem>*/}
-            {/*        </Link>*/}
-            {/*    ))}*/}
-            {/*</List>*/}
+            <List>
+                {allJournals.map(item => (
+                    <Link to={`/o/journal/${item._id}`} key={item._id}>
+                        <ListItem className={classes.listItem} button>
+                            <ListItemText className={classes.listItemIcon}>
+                                {item.titleIcon || '📒'}
+                            </ListItemText>
+                            <ListItemText primary={item.title || '未命名笔记本'} />
+                        </ListItem>
+                    </Link>
+                ))}
+            </List>
             <div style={{height: 20}} />
             <Box className={classes.btmArea}>
                 <List>

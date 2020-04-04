@@ -39,10 +39,17 @@ interface JournalView {
     sort: Array<any>
 }
 
+export interface AttributeRangeType {
+    id: string
+    label: string
+    color: string
+}
+
 interface JournalAttribute {
     attrId: string
     type: string
     label: string
+    range?: Array<AttributeRangeType>
 }
 
 export interface JournalType {

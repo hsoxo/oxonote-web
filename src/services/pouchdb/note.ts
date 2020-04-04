@@ -8,7 +8,7 @@ export const create = async (jourId: string) => {
   let note: NoteType = await defaultNote(journal.jourAttrs)
   note.journalId = jourId
   await dbNote.put(note)
-  return true
+  return note
 }
 
 

@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { BrowserRouter } from 'react-router-dom'
+import { Router } from 'react-router-dom'
 import { Provider } from 'react-redux'
 import { SnackbarProvider } from 'notistack'
 import { ConnectedRouter } from 'connected-react-router/immutable'
@@ -21,10 +21,8 @@ ReactDOM.render(
   <MuiThemeProvider theme={theme}>
     <SnackbarProvider maxSnack={3}>
       <Provider store={store}>
-        <ConnectedRouter history={history}>
-          <BrowserRouter>
-            <App />
-          </BrowserRouter>
+        <ConnectedRouter history={history} noInitialPop>
+          <App />
         </ConnectedRouter>
       </Provider>
     </SnackbarProvider>
