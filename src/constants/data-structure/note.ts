@@ -6,6 +6,7 @@ import {v4} from "uuid";
 export function defaultNote(jAttrs: Array<JournalAttributeObject>): NoteType {
     return {
         _id: v4(),
+        _rev: '',
         journalId: '',
         title: '',
         titleIcon: '',

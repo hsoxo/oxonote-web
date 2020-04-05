@@ -4,6 +4,7 @@ import { JournalType } from "@/types/journal";
 export function defaultJournal(): JournalType {
     return {
         _id: uuid(),
+        _rev: '',
         title: '',
         titleIcon: '',
         bannerPic: '',
@@ -14,8 +15,11 @@ export function defaultJournal(): JournalType {
             viewId: uuid(),
             label: '全部文档',
             attribute: [],
-            filter: [],
-            sort: [],
+            filters: {
+                relation: 'and',
+                settings: [],
+            },
+            sorts: [],
         }],
         jourAttrs: [
             {

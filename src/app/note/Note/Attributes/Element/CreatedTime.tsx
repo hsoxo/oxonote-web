@@ -1,16 +1,17 @@
-import React from 'react';
-import {NoteState} from "@/store/note/types";
-import {useSelector} from "@/store";
-import { ElementProps } from "./types";
+import React from 'react'
+import { ElementProps } from './types'
+import BaseElement, { ContentViewProps } from './Base'
 
-const CreatedTime = (props: ElementProps) => {
-  const { curNote: { createdTime }}: NoteState = useSelector(state => state.get('note'))
+export const CreatedTimeContentView: React.FunctionComponent<ContentViewProps> = ({
+                                                                           noteInfo
+                                                                         }) => {
+  return <div>{new Date(noteInfo.createdTime).toLocaleString()}</div>
+}
 
+const CreatedTimeAttributeBody = (props: ElementProps) => {
   return (
-    <div>
-      {new Date(createdTime).toLocaleString()}
-    </div>
-  );
-};
+    <BaseElement {...props} editable={false} display={CreatedTimeContentView} />
+  )
+}
 
-export default CreatedTime;
+export default CreatedTimeAttributeBody

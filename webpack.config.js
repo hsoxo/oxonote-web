@@ -1,7 +1,9 @@
 const path = require("path");
 const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 
+const happyPackWorkers = require('./happypack.config')
 const port = process.env.PORT || 6327;
 
 module.exports = {
@@ -34,26 +36,26 @@ module.exports = {
       },
       {
         test: /\.(ts|tsx)?$/,
-        loader: "awesome-typescript-loader",
-        exclude: /node_modules/
+        exclude: /node_modules/,
+        use: [
+          { loader: 'ts-loader', options: { transpileOnly: true } }
+        ],
       },
       {
         test: /\.(css|sass|scss)$/,
-        use: [
-          'style-loader',
-          {
-            loader: 'css-loader',
-            options: {
-              localsConvention: 'camelCaseOnly',
-              importLoaders: 1,
-            }
-          },
-          // 'sass-loader'
-        ]
+        use: ['happypack/loader?id=css'],
       },
     ]
   },
   plugins: [
+    ...happyPackWorkers,
+    new ForkTsCheckerWebpackPlugin({
+      workers: 4,
+      checkSyntacticErrors: true,
+      useTypescriptIncrementalAPI: true,
+      async: false,
+      watch: ['src/']
+    }),
     new HtmlWebpackPlugin({
       filename: 'index.html',
       template: 'public/index.html'

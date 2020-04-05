@@ -4,7 +4,7 @@ import { InputBase } from "@material-ui/core";
 
 export const BootstrapInput = styled(InputBase)`
   width: 100%;
-  padding: 0.5rem;
+  padding: 0.5rem;;
   label + & {
     margin-top: 0.5rem;
   }
@@ -18,9 +18,25 @@ export const BootstrapInput = styled(InputBase)`
     padding: 3px 8px;
     transition: all ease 300ms;
     &:focus {
-      box-shadow: 0 0 0 0.2rem;
+      box-shadow: var(--primary-color-light) 0 0 0 0.2rem;
       border-color: var(--primary-color);
     };
   
+  }
+`
+
+export const NoBorderInput = styled(InputBase)`
+  width: 100%;
+  background-color: var(--secondary-bg);
+  label + & {
+    margin-top: 0.5rem;
+  }
+  input {
+    position: relative;
+    background-color: var(--secondary-bg);
+    font-size: 16px;
+    width: 100%;
+    padding: 0.5rem;
+    transition: all ease 300ms;
   }
 `

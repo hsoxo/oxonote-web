@@ -7,6 +7,7 @@ const initialState: NoteState = {
     noteChanged: false,
     curJournal: {
         _id: '',
+        _rev: '',
         title: '',
         titleIcon: '',
         bannerPic: '',
@@ -19,6 +20,7 @@ const initialState: NoteState = {
     },
     curNote: {
         _id: '',
+        _rev: '',
         journalId: '',
         title: '',
         titleIcon: '',

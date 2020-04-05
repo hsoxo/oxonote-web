@@ -1,16 +1,17 @@
-import React from 'react';
-import { ElementProps } from "./types";
-import {useSelector} from "@/store";
-import {NoteState} from "@/store/note/types";
+import React from 'react'
+import { ElementProps } from './types'
+import BaseElement, { ContentViewProps } from './Base'
 
-const ModifiedBy = (props: ElementProps) => {
-  const { curNote: { modifiedUser } }: NoteState = useSelector(state => state.get('note'))
+export const ModifiedByContentView: React.FunctionComponent<ContentViewProps> = ({
+                                                                           noteInfo
+                                                                         }) => {
+  return <div>{noteInfo.modifiedUser}</div>
+}
 
+const ModifiedByAttributeBody = (props: ElementProps) => {
   return (
-    <div>
-      {modifiedUser}
-    </div>
-  );
-};
+    <BaseElement {...props} editable={false} display={ModifiedByContentView} />
+  )
+}
 
-export default ModifiedBy;
+export default ModifiedByAttributeBody

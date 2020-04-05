@@ -16,10 +16,12 @@ export const FlexMarginBox = styled(Box)`
 
 export const RightBox = styled(Box)`
   display: flex;
-  margin-right: auto;
+  margin-left: auto;
 `
 
 export const FlexCenteredBox = styled(Box)`
     display: flex;
     align-items: center;
 `
+
+

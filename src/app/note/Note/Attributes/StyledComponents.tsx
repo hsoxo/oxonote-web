@@ -1,30 +1,32 @@
 import React from "react";
 import styled from "styled-components";
-import {Box, Popover} from "@material-ui/core";
+import {Box, Popover, Grid} from "@material-ui/core";
 
-export const AttributeRowWrapper = styled(Box)`
-  display: flex;
+export const AttributeRowWrapper = styled(Grid)`
   font-size: 0.9rem;
-  margin-bottom: 5px;
+  margin-bottom: 0.2rem;
+`
+
+export const HoverGrid = styled(Grid)`
+    transition: background 120ms ease-in 0s;
+    border-radius: 0.2rem;
+    &:hover {
+      background-color: var(--secondary-bg-hover);
+    }
 `
 
 export const AttributeNameWrapper = styled(Box)`
     user-select: none;
-    transition: background 120ms ease-in 0s;
     cursor: pointer;
     display: flex;
     align-items: center;
     width: 180px;
-    border-radius: 0.2rem;
     padding: 0 0.8rem;
     height: 34px;
     color: var(--secondary-text);
     text-overflow: ellipsis;
     text-transform: none;
     text-align: left;
-    &:hover {
-      background-color: var(--secondary-bg);
-    }
 `
 
 export const AttributeName = styled(Box)`
@@ -51,7 +53,7 @@ export const AttributeIcon = styled(Box)`
 
 export const AttributeValueWrapper = styled(Box)`
     display: flex;
-    width: calc(100% - 170px);
+    width: 100%;
     align-items: center;
     margin-left: 4px;
     flex: 1 1 auto;

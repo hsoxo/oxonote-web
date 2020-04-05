@@ -22,6 +22,7 @@ export interface NoteShortType {
 
 export interface NoteType {
     _id: string
+    _rev: string
     journalId: string
     title: string
     titleIcon: string

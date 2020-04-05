@@ -8,13 +8,20 @@ import { Box } from "@material-ui/core";
 import AttributeRow from "./AttributeRow";
 import AttributeTitle from "./AttributeTitle";
 import AttributeContent from "./AttributeContent";
+import styled from "styled-components";
+
+const AttributeBlockBox = styled(Box)`
+  margin: 0.5rem 1rem;
+`
 
 const AttributeBlock = () => {
-  const { curNote }: NoteState = useSelector(state => state.get('note'))
-  const attributes = curNote.attributes
+  const { curJournal: { jourAttrs }, curNote }: NoteState = useSelector(state => state.get('note'))
+  const attributes = curNote.attributes.filter(x =>
+    jourAttrs.some(y => x.attrId === y.attrId)
+  )
   
   return (
-    <Box>
+    <AttributeBlockBox>
       <React.Fragment>
         {attributes.map(value => 
           <AttributeRow 
@@ -26,7 +33,7 @@ const AttributeBlock = () => {
       <AttributeRow
         title={<AddNew />}
       />
-    </Box>
+    </AttributeBlockBox>
   )
 }
 

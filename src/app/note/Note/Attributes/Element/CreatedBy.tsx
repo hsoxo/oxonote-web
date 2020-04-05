@@ -1,16 +1,17 @@
-import React, {useContext} from 'react';
-import { ElementProps } from "./types";
-import {useSelector} from "@/store";
-import {NoteState} from "@/store/note/types";
+import React from 'react'
+import { ElementProps } from './types'
+import BaseElement, { ContentViewProps } from './Base'
 
-const CreatedBy = (props: ElementProps) => {
-  const { curNote: { createdUser } }: NoteState = useSelector(state => state.get('note'))
+export const CreatedByContentView: React.FunctionComponent<ContentViewProps> = ({
+  noteInfo
+}) => {
+  return <div>{noteInfo.createdUser}</div>
+}
 
+const CreatedByAttributeBody = (props: ElementProps) => {
   return (
-    <div>
-      {createdUser}
-    </div>
-  );
-};
+    <BaseElement {...props} editable={false} display={CreatedByContentView} />
+  )
+}
 
-export default CreatedBy;
+export default CreatedByAttributeBody

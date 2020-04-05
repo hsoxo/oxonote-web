@@ -1,10 +1,14 @@
 import React from 'react'
 import { Box, Button } from '@material-ui/core'
 import AddIcon from '@material-ui/icons/Add'
-import Attributes from './Attributes'
 import { FlexCenteredBox, FlexBox, RightBox } from "@/components/OxOUI/OxOBox";
-import action from "@/store";
+import action, {useSelector} from "@/store";
 import NOTE_ACT from "@/store/note/action-declares";
+import ViewsManager from "./Views";
+import AttributeSetting from "./Attributes";
+import FilterSetting from "@/app/note/Journal/Toolbar/Filters";
+import SortSetting from "@/app/note/Journal/Toolbar/Sorts";
+import {NoteState} from "@/store/note/types";
 
 type JournalToolbar = {
   jourId: string
@@ -12,20 +16,16 @@ type JournalToolbar = {
 }
 
 const JournalToolbar = (props: JournalToolbar) => {
-
+  
   return (
     <FlexCenteredBox>
       <FlexBox>
-        {/*<Button*/}
-        {/*  variant="contained"*/}
-        {/*  color="primary"*/}
-        {/*  size="small"*/}
-        {/*  startIcon={<AddIcon />}>*/}
-        {/*  New*/}
-        {/*</Button>*/}
+        <ViewsManager {...props}/>
       </FlexBox>
       <RightBox>
-        <Attributes />
+        <AttributeSetting {...props}/>
+        <FilterSetting {...props}/>
+        <SortSetting {...props}/>
         <Button
           variant="contained"
           color="primary"

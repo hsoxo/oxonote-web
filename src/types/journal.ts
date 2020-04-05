@@ -31,12 +31,22 @@ export interface JournalContextObject {
     handleViewChange: ViewChangeFunction
 }
 
-interface JournalView {
+export interface JournalViewFiltersSetting {
+    attrId: string | null
+    operator: string | null
+    target: string | null
+    date: number | null
+}
+
+export interface JournalView {
     viewId: string
     label: string
-    attribute: Array<any>
-    filter: Array<any>
-    sort: Array<any>
+    attribute: Array<{ attrId: string, status: boolean}>
+    filters: {
+        relation: 'and' | 'or'
+        settings: Array<JournalViewFiltersSetting>
+    }
+    sorts: Array<{ attrId: string, direction: '+' | '-' | '' }>
 }
 
 export interface AttributeRangeType {
@@ -45,7 +55,7 @@ export interface AttributeRangeType {
     color: string
 }
 
-interface JournalAttribute {
+export interface JournalAttribute {
     attrId: string
     type: string
     label: string
@@ -54,6 +64,7 @@ interface JournalAttribute {
 
 export interface JournalType {
     _id: string,
+    _rev: string,
     title: string,
     titleIcon: string,
     bannerPic: string,

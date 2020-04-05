@@ -1,34 +1,28 @@
-import React, {useContext} from 'react';
-import { Checkbox } from "@material-ui/core";
+import React from 'react'
+import { ElementProps } from './types'
+import BaseElement, {
+  ContentPopoverProps,
+  ContentViewProps
+} from './Base'
+import {Checkbox} from "@material-ui/core";
 
-import { ElementProps } from "./types";
-import {NoteState} from "@/store/note/types";
-import action, {useSelector} from "@/store";
-import NOTE_ACT from "@/store/note/action-declares";
-
-const CheckboxElem = (props: ElementProps) => {
-  const { curNote: { attributes } }: NoteState = useSelector(state => state.get('note'))
-  const attrIndex = attributes.findIndex(x => x.attrId === props.attrId)
-  const curAttr = attributes[attrIndex]
-
-  const handleChange = () => {
-    const newAttributes = attributes.slice()
-    newAttributes.splice(attrIndex, 1, {
-      ...curAttr,
-      value: !curAttr.value
-    })
-    action(NOTE_ACT.SAGA_UPDATE_NOTE, { attributes: newAttributes })
-  }
-  
+export const CheckboxContentView: React.FunctionComponent<ContentViewProps> = ({
+  noteAttr
+}) => {
   return (
-    <div>
-      <Checkbox
-        // @ts-ignore
-        checked={curAttr.value}
-        onChange={handleChange}
-      />
-    </div>
-  );
-};
+    <Checkbox checked={noteAttr.value as boolean}/>
+  )
+}
 
-export default CheckboxElem;
+const CheckboxAttributeBody = (props: ElementProps) => {
+  return (
+    <BaseElement
+      {...props}
+      editable={true}
+      display={CheckboxContentView}
+      isToggle={true}
+    />
+  )
+}
+
+export default CheckboxAttributeBody
