@@ -7,7 +7,8 @@ import NOTE_ACT from '@/store/note/action-declares'
 import TitleBlock from "../components/Title";
 import OxOEditor from "./Editor";
 import {NoteState} from "@/store/note/types";
-import { } from 'slate'
+import { PrismStyled } from "./PrismStyleEditor";
+
 const NoteEditor = (props: React.ComponentProps<any>) => {
   const noteId = props.match.params.id
 
@@ -27,9 +28,9 @@ const NoteEditor = (props: React.ComponentProps<any>) => {
         <TitleBlock type="note"/>
         <AttributeBlock/>
         <Divider />
-        <div>
+        <PrismStyled>
           <OxOEditor value={content} onChange={handleContentChange} />
-        </div>
+        </PrismStyled>
       </React.Fragment>
     </div>
   )

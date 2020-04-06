@@ -4,7 +4,6 @@ import { Divider, IconButton, Paper, Popper, Radio, List, ListItemIcon, ListItem
 import DragIndicatorIcon from "@material-ui/icons/DragIndicator";
 import { useSpring, animated } from "react-spring/web.cjs"; // web.cjs is required for IE 11 support
 import PropTypes from 'prop-types';
-import ColorLensIcon from '@material-ui/icons/ColorLens';
 import ElementTypePicker from "./components/ElementTypePicker";
 import ColorRadio from "./components/ColorRadio";
 
@@ -81,16 +80,11 @@ class ToolWrapper extends React.Component {
 
   render() {
     return (
-      <div className="inline-toolbox" contentEditable={false}>
-        <IconButton
-          variant="contained"
-          color="primary"
+      <div contentEditable={false}>
+        <DragIndicatorIcon
           onMouseEnter={e => this.handlePopoverOpen(e)}
           onMouseLeave={() => this.handlePopoverLeave('btn')}
-        >
-          <DragIndicatorIcon />
-        </IconButton>
-
+        />
         <Popper
           open={this.state.open}
           anchorEl={this.state.anchorEl}
@@ -116,7 +110,6 @@ class ToolWrapper extends React.Component {
               </Paper>
             </Fade>
           )}
-
         </Popper>
         {this.props.children}
       </div>

@@ -1,18 +1,15 @@
 // @ts-nocheck
-
 import React from 'react'
 
-import {
-  BlockQuoteElement,
-  BulletListElement,
-  CodeElement,
-  DefaultElement, HeadFiveElement, HeadFourElement,
-  HeadOneElement, HeadSixElement, HeadThreeElement, HeadTwoElement,
-  ListElement
-} from "./HtmlElementWrapper";
-
+import elementsTypes from "./HtmlElementWrapper";
 
 import Leaf from "./Leaf";
+
+import clsx from "clsx";
+import ToolWrapper from "../toolbar/Wrapper";
+import { useSelected, useFocused } from "slate-react";
+import styled from "styled-components";
+
 interface EditorElementProps {
   children: any
   attributes: any
@@ -33,118 +30,55 @@ export const ElementRoot: React.FunctionComponent<EditorElementProps> = (props) 
 
 export { Leaf }
 
-export const elementsTypes = [
-  {
-    type: 'default',
-    elem: DefaultElement,
-    shortcut: null,
-  },
-  {
-    type: 'paragraph',
-    elem: DefaultElement,
-    shortcut: null,
-  },
-  {
-    type: 'bulleted-list',
-    elem: BulletListElement,
-    shortcut: '-',
-  },
-  {
-    type: 'code',
-    elem: CodeElement,
-    shortcut: '```',
-  },
-  {
-    type: 'orderedList',
-    elem: ListElement,
-    shortcut: '1.',
-  },
-  {
-    type: 'block-quote',
-    elem: BlockQuoteElement,
-    shortcut: '>',
-  },
-  {
-    type: 'heading-one',
-    elem: HeadOneElement,
-    shortcut: '#',
-  },
-  {
-    type: 'heading-two',
-    elem: HeadTwoElement,
-    shortcut: '##',
-  },
-  {
-    type: 'heading-three',
-    elem: HeadThreeElement,
-    shortcut: '###',
-  },
-  {
-    type: 'heading-four',
-    elem: HeadFourElement,
-    shortcut: '####',
-  },
-  {
-    type: 'heading-five',
-    elem: HeadFiveElement,
-    shortcut: '#####',
-  },
-  {
-    type: 'heading-six',
-    elem: HeadSixElement,
-    shortcut: '######',
-  },
-]
-
-
-import clsx from "clsx";
-import ToolWrapper from "../toolbar/Wrapper";
-import { useSelected, useFocused } from "slate-react";
-
 const elementsMap = Object.fromEntries(elementsTypes.map(x => [x.type, x]))
 
+const ElementBox = styled.div`
+  display: flex;
+  align-items: center;
+  padding: 0.3rem 0.5rem;
+  border-radius: 5px;
+  &:hover > #element-toolbar {
+    transition: all ease 500ms;
+    opacity: 1;
+  }
+`
+
+const StyledToolWrapper = styled.div`
+  opacity: 0;
+  display: flex;
+`
+
+const ElmtWrapper = styled.div`
+  width: 100%;
+  padding: 0.3rem 0.5rem;
+  transition: all ease 500ms;
+  p {
+    margin-block-start: 0;
+    margin-block-end: 0;
+  }
+  &:hover {
+    box-shadow: 0px 2px 10px -1px rgba(0,0,0,0.05);
+  }
+`
+
 export const ElementWrapper: React.FunctionComponent<EditorElementProps> = (props) => {
-  const myRef = React.createRef();
-  const selected = useSelected()
-  const focused = useFocused()
-  const handleClick = (e: React.ChangeEvent) => {
-    // e.stopPropagation();
-    // const { element, onChangeData, editor } = props;
-    // const toolbar = document.querySelector('.tool-wrapper');
-    // const isInPlugin = toolbar && toolbar.contains(e.target);
-  };
-
-
   const handleDeselect = () => {
-    // const { onChangeData, element } = props;
-    // onChangeData(d => d.setIn([element.key, 'isSelected'], false));
   };
 
   const { element, editor, children, Tool, isSelected } = props;
-  // if (isIgnoreWrapper(element.type)) {
-  //   return children;
-  // }
 
   const Elmt = (elementsMap[element.type] || {}).elem || element['default'].elem
   return (
-    // <div onClick={handleClick}
-    <div
-      className={clsx(`element-wrapper element-wrapper-${element.type}`, {
-        'element-active': selected && focused
-      })}
-    >
-      <Elmt {...props}>
-        {children}
-      </Elmt>
-      <ToolWrapper onClick={handleDeselect}>
-        {/*<Tool Editor={Editor} element={element} />*/}
-      </ToolWrapper>
-      {isSelected && Tool && (
-        <ToolWrapper onClick={handleDeselect}>
-          <Tool editor={editor} element={element} />
-        </ToolWrapper>
-      )}
-    </div>
+    <ElementBox>
+      <StyledToolWrapper id="element-toolbar">
+        <ToolWrapper onClick={handleDeselect}/>
+      </StyledToolWrapper>
+      <ElmtWrapper>
+        <Elmt {...props}>
+          {children}
+        </Elmt>
+      </ElmtWrapper>
+    </ElementBox>
   );
 }
 

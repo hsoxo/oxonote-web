@@ -35,10 +35,10 @@ const AddNew = () => {
       <AttributeNameWrapper>
         <AttributeName color="primary" onClick={handleCreateAttr}>
           <AttributeIcon>
-            <AddIcon/>
+            <AddIcon fontSize="inherit"/>
           </AttributeIcon>
           <AttributeLabel>
-            Add a property
+            {"新增属性"}
           </AttributeLabel>
         </AttributeName>
       </AttributeNameWrapper>

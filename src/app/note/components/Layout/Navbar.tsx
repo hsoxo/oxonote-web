@@ -82,7 +82,7 @@ const Navbar = (props: SidebarProps) => {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap>
-            {title.map((x, index) => <span>{x}{index !== title.length-1 && ' / '}</span>)}
+            {title.map((x, index) => <span key={index}>{x}{index !== title.length-1 && ' / '}</span>)}
           </Typography>
         </Toolbar>
       </AppBar>

@@ -27,11 +27,12 @@ const Journal = (props: React.ComponentProps<any>) => {
 		<div className="oxo-editor">
 			<React.Fragment>
 				<TitleBlock type="journal"/>
+				{curJournal.views.some(x => x.viewId === viewId) &&
 				<div>
 					<JournalToolbar jourId={jourId} viewId={viewId}/>
 					<Divider />
 					<JournalListView viewId={viewId}/>
-				</div>
+				</div>}
 			</React.Fragment>
 		</div>
 	)

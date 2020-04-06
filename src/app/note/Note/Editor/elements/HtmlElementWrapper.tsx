@@ -52,3 +52,68 @@ export const HeadFiveElement: React.FunctionComponent<EditorElementProps> = prop
 export const HeadSixElement: React.FunctionComponent<EditorElementProps> = props => {
   return <h6 {...props.attributes}>{props.children}</h6>
 }
+
+const elementsTypes = [
+  {
+    type: 'default',
+    elem: DefaultElement,
+    shortcut: null,
+  },
+  {
+    type: 'paragraph',
+    elem: DefaultElement,
+    shortcut: null,
+  },
+  {
+    type: 'bulleted-list',
+    elem: BulletListElement,
+    shortcut: '-',
+  },
+  {
+    type: 'code',
+    elem: CodeElement,
+    shortcut: '```',
+  },
+  {
+    type: 'orderedList',
+    elem: ListElement,
+    shortcut: '1.',
+  },
+  {
+    type: 'block-quote',
+    elem: BlockQuoteElement,
+    shortcut: '>',
+  },
+  {
+    type: 'heading-one',
+    elem: HeadOneElement,
+    shortcut: '#',
+  },
+  {
+    type: 'heading-two',
+    elem: HeadTwoElement,
+    shortcut: '##',
+  },
+  {
+    type: 'heading-three',
+    elem: HeadThreeElement,
+    shortcut: '###',
+  },
+  {
+    type: 'heading-four',
+    elem: HeadFourElement,
+    shortcut: '####',
+  },
+  {
+    type: 'heading-five',
+    elem: HeadFiveElement,
+    shortcut: '#####',
+  },
+  {
+    type: 'heading-six',
+    elem: HeadSixElement,
+    shortcut: '######',
+  },
+]
+
+export default elementsTypes

@@ -1,10 +1,9 @@
 import {Editor, Transforms, Point, Range, Text} from "slate";
-import { elementsTypes } from '../elements'
+import { BlockSetting } from "../../blocks";
+import BlockTypes from '../../constants/block'
 
-const SHORTCUTS = Object.fromEntries(elementsTypes.map(x => [x.shortcut, x]))
-
-const withShortcuts = (editor: Editor) => {
-  const { deleteBackward, insertText } = editor
+const MarkdownPlugin = (editor: Editor) => {
+  const { deleteBackward, insertText, insertNode } = editor
 
   editor.insertText = text => {
     const { selection } = editor
@@ -18,20 +17,25 @@ const withShortcuts = (editor: Editor) => {
       const start = Editor.start(editor, path)
       const range = { anchor, focus: start }
       const beforeText = Editor.string(editor, range)
-      const type = SHORTCUTS[beforeText]
+      let matchedBlockName = null
 
-      if (type) {
-        console.log(1)
+      for (const [key, value] of Object.entries(BlockSetting)) {
+        if (value.pattern && value.pattern.test(beforeText)){
+          matchedBlockName = key
+          break
+        }
+      }
+
+      if (matchedBlockName) {
         Transforms.select(editor, range)
         Transforms.delete(editor)
-        console.log(type.elem)
         Transforms.setNodes(
           editor,
-          { type: type.type },
+          { type: matchedBlockName },
           { match: n => Editor.isBlock(editor, n) }
         )
 
-        if (type === 'list-item') {
+        if (matchedBlockName === 'list-item') {
           const list = { type: 'bulleted-list', children: [] }
           Transforms.wrapNodes(editor, list, {
             match: n => n.type === 'list-item',
@@ -76,8 +80,31 @@ const withShortcuts = (editor: Editor) => {
 
       deleteBackward(...args)
     }
+    editor.insertBreak = () => {
+      const { selection } = editor
+      if (selection && Range.isCollapsed(selection)) {
+        const {anchor} = selection
+        const block = Editor.above(editor, {
+          match: n => Editor.isBlock(editor, n),
+        })
+        const path = block ? block[1] : []
+        const end = Editor.end(editor, path)
+        const range = {anchor, focus: end}
+        const afterText = Editor.string(editor, range)
+        if (afterText) {
+          Transforms.splitNodes(editor, {
+            always: true
+          });
+        } else {
+          Transforms.insertNodes(editor, {
+            type: BlockTypes.PARAGRAPH,
+            children:[{ text : ""}]
+          })
+        }
+      }
+    }
   }
   return editor
 }
 
-export default withShortcuts
+export default MarkdownPlugin

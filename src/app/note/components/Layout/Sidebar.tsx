@@ -83,7 +83,6 @@ const Sidebar = (props: SidebarProps) => {
     const classes = useStyles();
     const state: NoteState = useSelector(state => state.get('note'))
     const allJournals = state.allJournals
-    console.log(state)
 
     const handleCreateJournal = async () => {
         action(noteAct.SAGA_CREATE_JOURNAL)

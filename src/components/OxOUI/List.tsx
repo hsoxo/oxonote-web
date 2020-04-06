@@ -28,6 +28,24 @@ export const DenseListItemBox = styled(Box)`
   }
 `
 
+export const DenseListItemBoxNoHover = styled(Box)`
+  height: 1.8rem;
+  font-size: 0.9rem;
+  color: var(--secondary-text);
+  width: 100%;
+  display: flex;
+  position: relative;
+  box-sizing: border-box;
+  text-align: left;
+  align-items: center;
+  padding: 0.5rem 0.8rem;
+  justify-content: flex-start;
+  text-decoration: none;
+  -webkit-user-select:none; 
+  user-select:none;
+  transition: background-color 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+`
+
 export const DenseListItemHeader = styled(Box)`
   height: 1.8rem;
   font-size: 0.7rem;

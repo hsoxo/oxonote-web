@@ -3,6 +3,7 @@ import {Editor, Text, Transforms} from "slate";
 
 const handleKeyDown = (editor) => {
   return (event) => {
+    // soft line break
     if (event.shiftKey) {
       switch (event.key) {
         case 'Enter': {
@@ -17,7 +18,8 @@ const handleKeyDown = (editor) => {
         }
       }
     }
-
+    
+    // keyboard handlers
     if (event.ctrlKey) {
       switch (event.key) {
         // When "`" is pressed, keep our existing code block logic.

@@ -4,7 +4,7 @@ body {
     --primary-bg: #ffffff;
     --primary-text: #1d1d1d;
     --secondary-bg: rgba(246, 244, 241, 1);
-    --secondary-bg-hover: rgba(231, 229, 225, 1);
+    --secondary-bg-hover: rgb(222, 220, 216);
     --secondary-text: rgba(136, 139, 142, 1);
     --inline-bg: rgb(248, 248, 248);
     line-height: unset;
