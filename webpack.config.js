@@ -45,6 +45,10 @@ module.exports = {
         test: /\.(css|sass|scss)$/,
         use: ['happypack/loader?id=css'],
       },
+      {
+        test: /\.(jpg|jpeg|png|woff|woff2|eot|ttf|svg)$/,
+        loader: 'url-loader?limit=100000'
+      }
     ]
   },
   plugins: [

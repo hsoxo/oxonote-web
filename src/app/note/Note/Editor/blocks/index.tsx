@@ -1,105 +1,126 @@
 import BlockQuoteElement from './BlockQuote'
-import BulletListElement from './BulletList'
-import NumberedListElement from './NumberedList'
-import OrderedList from './OrderedList'
+import * as L from './Lists'
 import CodeElement from './Code'
-import HeadOneElement from './HeaderOne'
-import HeadTwoElement from './HeaderTwo'
-import HeadThreeElement from './HeaderThree'
-import HeadFourElement from './HeaderFour'
-import HeadFiveElement from './HeaderFive'
-import HeadSixElement from './HeaderSix'
+import * as H from './Header'
 
-import * as NAMES from '../constants/block'
+
+import * as NAMES from '../constants/names'
 import * as PATTERN from '../constants/md-block-pattern'
 import ParagraphElement from '@/app/note/Note/Editor/blocks/Paragraph'
-import React from 'react'
+import React, {useEffect, useRef} from 'react'
 import { EditorElementProps } from '@/app/note/Note/Editor/types'
 import styled from 'styled-components'
-import { Editor } from 'slate'
-
+import {Editor, Node, Path, Point, Range} from 'slate'
+import {ReactEditor} from "slate-react";
+import PopupState, {bindMenu, bindHover, bindPopper} from "material-ui-popup-state";
+import {Button, IconButton, Menu, Popper} from "@material-ui/core";
+import DeleteIcon from '@material-ui/icons/Delete';
+import OpenInNewIcon from '@material-ui/icons/OpenInNew';
 export const BlockSetting = {
-  [NAMES.PARAGRAPH]: {
-    shortName: 'P',
-    element: ParagraphElement,
-    pattern: null
-  },
-  [NAMES.BLOCK_QUOTE]: {
-    shortName: 'Q',
-    element: BlockQuoteElement,
-    pattern: PATTERN.BLOCK_QUOTE
-  },
-  [NAMES.BULLET_LIST]: {
-    shortName: 'BL',
-    element: BulletListElement,
-    pattern: PATTERN.BULLET_LIST
-  },
-  [NAMES.ORDERED_LIST]: {
-    shortName: 'OL',
-    element: NumberedListElement,
-    pattern: PATTERN.ORDERED_LIST
-  },
-  [NAMES.CODE]: {
-    shortName: 'C',
-    element: CodeElement,
-    pattern: PATTERN.CODE
-  },
-  [NAMES.H1]: {
-    shortName: 'H1',
-    element: HeadOneElement,
-    pattern: PATTERN.H1
-  },
-  [NAMES.H2]: {
-    shortName: 'H2',
-    element: HeadTwoElement,
-    pattern: PATTERN.H2
-  },
-  [NAMES.H3]: {
-    shortName: 'H3',
-    element: HeadThreeElement,
-    pattern: PATTERN.H3
-  },
-  [NAMES.H4]: {
-    shortName: 'H4',
-    element: HeadFourElement,
-    pattern: PATTERN.H4
-  },
-  [NAMES.H5]: {
-    shortName: 'H5',
-    element: HeadFiveElement,
-    pattern: PATTERN.H5
-  },
-  [NAMES.H6]: {
-    shortName: 'H6',
-    element: HeadSixElement,
-    pattern: PATTERN.H6
+  [NAMES.PARAGRAPH]: ParagraphElement,
+  [NAMES.H1]: H.HeadOneElement,
+  [NAMES.H2]: H.HeadTwoElement,
+  [NAMES.H3]: H.HeadThreeElement,
+  [NAMES.H4]: H.HeadFourElement,
+  [NAMES.H5]: H.HeadFiveElement,
+  [NAMES.H6]: H.HeadSixElement,
+  [NAMES.CODE]: CodeElement,
+  [NAMES.BULLET_LIST]: L.BulletListElement,
+  [NAMES.ORDERED_LIST]: L.OrderedListElement,
+  [NAMES.LIST_ITEM]: L.ListItemElement,
+  [NAMES.BLOCKQUOTE]: BlockQuoteElement,
+}
+
+export const ShortNames = {
+  [NAMES.PARAGRAPH]: '段',
+  [NAMES.H1]: 'H1',
+  [NAMES.H2]: 'H2',
+  [NAMES.H3]: 'H3',
+  [NAMES.H4]: 'H4',
+  [NAMES.H5]: 'H5',
+  [NAMES.H6]: 'H6',
+  [NAMES.CODE]: '码',
+  [NAMES.BULLET_LIST]: 'LB',
+  [NAMES.ORDERED_LIST]: 'LO',
+  [NAMES.LIST_ITEM]: 'LI',
+  [NAMES.BLOCKQUOTE]: 'BQ',
+}
+
+const isEmpty = (element: Node) => {
+  if (element.children.length === 0 && element.children[0].text.length === 0) {
+    return true
+  } else {
+    return false
   }
 }
 
-const Element: React.FunctionComponent<EditorElementProps> = ({
-  editor,
-  attributes,
-  children,
-  element
-}) => {
+const Element: React.FunctionComponent<EditorElementProps> = (props) => {
+  const {
+    editor,
+    attributes,
+    children,
+    element,
+  } = props
+  const ref = useRef()
+  const elementType = element.type || NAMES.PARAGRAPH
   // @ts-ignore
-  const elemSetting = BlockSetting[element.type]
+  const ElementRenderer = BlockSetting[elementType]
+  // @ts-ignore
+  const elementLabel = ShortNames[elementType]
+
+
   const { selection } = editor
   let selected = false
-  if (selection !== null && selection.anchor !== null) {
-    selected = editor.children[selection.anchor.path[0]] === element
+  const { anchor } = selection || {} as Point
+  if (selection !== null && anchor) {
+    selected = editor.children[anchor.path[0]] === element
   }
 
-  if (elemSetting) {
+  useEffect(() => {
+    const el = ref.current
+    const { selection } = editor
+    if (!el) {
+      return
+    }
+  }, [ref])
+
+  if (ElementRenderer) {
     return (
-      <Wrapper active={selected} elemSetting={elemSetting}>
-        <elemSetting.element {...attributes}>{children}</elemSetting.element>
+      <Wrapper active={selected} label={elementLabel}>
+        <ElementRenderer
+          className={isEmpty(element) && 'empty'}
+          editor={editor}
+          element={element}
+          {...attributes}>
+          {children}
+        </ElementRenderer>
+      </Wrapper>
+    )
+  } else if (element.type === NAMES.INLINE_LINK) {
+    return (
+      <div {...attributes} style={{display: "inline-block"}}>
+        <button onClick={() => window.open(element.href, '_blank')}>
+          {children}
+        </button>
+      </div>
+    )
+  } else if (element.type === NAMES.IMAGE) {
+    return (
+      <Wrapper active={selected} label="图">
+        <div {...attributes}>
+          <div contentEditable="false" suppressContentEditableWarning={true}>
+            <img src={element.src} style={{display: "block", maxWidth: "90%", maxHeight: "20em", boxShadow: "0 0 0 3px #B4D5FF"}}/>
+          </div>
+          <div style={{display: 'none'}}>
+            {children}
+          </div>
+        </div>
       </Wrapper>
     )
   }
   return (
-    <Wrapper active={selected} elemSetting={BlockSetting[NAMES.PARAGRAPH]}>
-      <ParagraphElement {...attributes}>{children}</ParagraphElement>
+    <Wrapper active={selected} label={'段'}>
+      <ParagraphElement className={isEmpty(element) && 'empty'} element={element} {...attributes}>{children}</ParagraphElement>
     </Wrapper>
   )
 }
@@ -110,6 +131,9 @@ const WrapperBox = styled.div`
   margin: 1rem 0rem;
   &:hover #left-icon {
     opacity: 1;
+  }
+  #oxo-element #left-icon {
+    display: none;
   }
 `
 const SideIconBox = styled.div<ActiveDivProps>`
@@ -126,6 +150,7 @@ const SideIconBox = styled.div<ActiveDivProps>`
   opacity: ${p => p.active ? '1' : '0'};
   transition: all ease 200ms;
   transition-timing-function: cubic-bezier(0.17, 0.67, 0.67, 0.51);
+  
 `
 
 interface ActiveDivProps {
@@ -136,26 +161,39 @@ const ElementBox = styled.div<ActiveDivProps>`
   width: 100%;
   border-radius: 5px;
   padding: .6rem;
+  p span[data-slate-length="0"] {
+    &:before {
+      color: #8e8e8e;
+      content:"请点击此处输入";
+      position: relative;
+    }
+  }
   ${p =>
     p.active && `
     box-shadow: 0px 3px 14px 2px rgba(0,0,0,0.12);
+    p span[data-slate-length="0"] {
+      &:before {
+        content: none;
+      }
+    }
     `};
+  
 `
 
 interface WrapperProps {
   active: boolean
-  elemSetting: any
+  label: any
 }
 
-const Wrapper: React.FunctionComponent<WrapperProps> = ({active, elemSetting, children}) => {
+const Wrapper: React.FunctionComponent<WrapperProps> = ({active, label, children}) => {
   return (
     <WrapperBox>
       <SideIconBox suppressContentEditableWarning={true} id="left-icon" contentEditable={"false"} active={active}>
         <div style={{display:"block",width:'100%',textAlign:"center"}}>
-          {elemSetting.shortName}
+          {label}
         </div>
       </SideIconBox>
-      <ElementBox active={active}>{children}</ElementBox>
+      <ElementBox id="oxo-element" active={active}>{children}</ElementBox>
     </WrapperBox>
   )
 }

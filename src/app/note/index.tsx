@@ -29,6 +29,8 @@ const MainWrapper = styled.div`
   margin-left: 0;
   margin-top: ${navbarHeight}px;
   background-color: var(--primary-bg);
+  overflow-y: scroll;
+  font-size: 1rem;
   color: var(--primary-color);
   height: calc(100vh - ${navbarHeight}px);
   width: 100vw;
@@ -59,18 +61,21 @@ const NoteLayout = (props: InnerRouteProps) => {
       <Suspense fallback="loading...">
         <SidebarWrapper onToggleSidebar={handleToggleState} active={state} />
         <NavbarWrapper onToggleSidebar={handleToggleState} shift={state} />
-        <MainWrapper sidebar={state}>
-          {routes.map((r, key) => {
-            return (
-              <Route
-                component={r.component}
-                exact
-                key={r.path + key}
-                path={r.path}
-              />
-            )
-          })}
-        </MainWrapper>
+        <div style={{height: '100vh'}}>
+          <MainWrapper sidebar={state}>
+            {routes.map((r, key) => {
+              return (
+                <Route
+                  component={r.component}
+                  exact
+                  key={r.path + key}
+                  path={r.path}
+                />
+              )
+            })}
+          </MainWrapper>
+
+        </div>
       </Suspense>
     </FlexBox>
   )

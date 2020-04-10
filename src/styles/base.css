@@ -19,11 +19,3 @@ a {
 button {
     outline: none;
 }
-
-ul {
-    list-style-type: none !important;
-}
-
-li {
-    list-style-type: none !important;
-}

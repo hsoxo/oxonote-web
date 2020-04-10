@@ -28,7 +28,7 @@ const NoteEditor = (props: React.ComponentProps<any>) => {
         <TitleBlock type="note"/>
         <AttributeBlock/>
         <Divider />
-        <PrismStyled>
+        <PrismStyled style={{ color: '#222222' }}>
           <OxOEditor value={content} onChange={handleContentChange} />
         </PrismStyled>
       </React.Fragment>

@@ -45,6 +45,14 @@ const StyledContentEditable = styled(ContentEditable)`
     }
 `
 
+const handleContentEditableKeyPress = (e: React.KeyboardEvent<HTMLDivElement>) => {
+  const keyCode = e.which || e.keyCode;
+  if(keyCode == 13) {
+    e.preventDefault()
+    return
+  }
+}
+
 const TitleMainArea: React.FunctionComponent<TitleBlockPropsType> = (props) => {
   const popupState = usePopupState({
     variant: 'popover',
@@ -89,6 +97,7 @@ const TitleMainArea: React.FunctionComponent<TitleBlockPropsType> = (props) => {
       <StyledContentEditable
         html={title}
         disabled={false}
+        onKeyDown={handleContentEditableKeyPress}
         onChange={e =>
           action(updateAction, { title: e.target.value })
         }

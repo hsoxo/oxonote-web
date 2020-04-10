@@ -15,7 +15,7 @@ export function defaultNote(jAttrs: Array<JournalAttributeObject>): NoteType {
         createdUser: '',
         modifiedTime: new Date().getTime(),
         modifiedUser: '',
-        content: [{ type: 'paragraph', children: [{text: ''}] }],
+        content: [{ type: 'paragraph', children: [{text: ''}], root: true }],
         attributes: jAttrs.map(x => ({ 
             attrId: x.attrId, 
             value: notePropTypes[x.type].defaultValue()

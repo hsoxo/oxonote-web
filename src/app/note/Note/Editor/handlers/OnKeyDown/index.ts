@@ -1,5 +1,7 @@
 // @ts-nocheck
 import {Editor, Text, Transforms} from "slate";
+import * as NAMES from '../../constants/names'
+import { toggleFormat } from "../../utils/toggleFormat";
 
 const handleKeyDown = (editor) => {
   return (event) => {
@@ -20,39 +22,17 @@ const handleKeyDown = (editor) => {
     }
     
     // keyboard handlers
-    if (event.ctrlKey) {
+    if (event.ctrlKey || event.metaKey) {
       switch (event.key) {
-        // When "`" is pressed, keep our existing code block logic.
-        case '`': {
-          event.preventDefault()
-          const [match] = Editor.nodes(editor, {
-            match: n => n.type === 'code',
-          })
-          Transforms.setNodes(
-            editor,
-            {type: match ? 'paragraph' : 'code'},
-            {match: n => Editor.isBlock(editor, n)}
-          )
-          break
-        }
-
-        // When "B" is pressed, bold the text in the selection.
-        case 'b': {
-          event.preventDefault()
-          Transforms.setNodes(
-            editor,
-            {bold: true},
-            // Apply it to text nodes, and split the text node up if the
-            // selection is overlapping only part of it.
-            {match: n => Text.isText(n), split: true}
-          )
-          break
-        }
-
-        default: {
-          return
-        }
+        case '`': { toggleFormat(event, editor, NAMES.INLINE_CODE); break }
+        case 'b': { toggleFormat(event, editor, NAMES.INLINE_BOLD); break }
+        case 'i': { toggleFormat(event, editor, NAMES.INLINE_ITALIC); break }
+        default: { return }
       }
+    }
+
+    if (event.key === '13') {
+      console.log(1)
     }
   }
 }

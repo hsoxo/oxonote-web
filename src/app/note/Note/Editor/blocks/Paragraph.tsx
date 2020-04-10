@@ -3,7 +3,7 @@ import { EditorElementProps } from "../types/index";
 
 class ParagraphElement extends React.Component<EditorElementProps> {
   render() {
-    return <p {...this.props.attributes}>{this.props.children}</p>
+    return <div {...this.props.attributes}>{this.props.children}</div>
   }
 }
 

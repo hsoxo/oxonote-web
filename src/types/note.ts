@@ -2,6 +2,7 @@
 interface NoteContent {
     type: string
     children: Array<any>
+    root: boolean
 }
 
 export interface NoteAttribute {
