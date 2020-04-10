@@ -6,9 +6,9 @@ import * as H from './Header'
 
 import * as NAMES from '../constants/names'
 import * as PATTERN from '../constants/md-block-pattern'
-import ParagraphElement from '@/app/note/Note/Editor/blocks/Paragraph'
+import ParagraphElement from './Paragraph'
 import React, {useEffect, useRef} from 'react'
-import { EditorElementProps } from '@/app/note/Note/Editor/types'
+import { EditorElementProps } from '../types'
 import styled from 'styled-components'
 import {Editor, Node, Path, Point, Range} from 'slate'
 import {ReactEditor} from "slate-react";

@@ -9,7 +9,7 @@ import Element from "./blocks";
 import handleKeyDown from "./handlers/OnKeyDown";
 import HoveringToolbar from "./toolbar/HoverToolbar";
 import Leaf from "./blocks/Leaf";
-import * as NAMES from "@/app/note/Note/Editor/constants/names";
+import * as NAMES from "./constants/names";
 import PathSelect from "./utils/pathSelect";
 import Prism from 'prismjs'
 import './utils/prism'

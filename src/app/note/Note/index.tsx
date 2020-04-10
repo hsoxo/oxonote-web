@@ -5,7 +5,7 @@ import action, {useSelector} from "@/store";
 import NOTE_ACT from '@/store/note/action-declares'
 
 import TitleBlock from "../components/Title";
-import OxOEditor from "./Editor";
+import OxOEditor from "@/components/Editor";
 import {NoteState} from "@/store/note/types";
 import { PrismStyled } from "./PrismStyleEditor";
 

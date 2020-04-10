@@ -1,4 +1,4 @@
-import * as NAMES from "@/app/note/Note/Editor/constants/names";
+import * as NAMES from "../constants/names";
 import React from "react";
 
 const prismToken = [
