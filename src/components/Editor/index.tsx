@@ -14,7 +14,7 @@ import PathSelect from "./utils/pathSelect";
 import Prism from 'prismjs'
 import './utils/prism'
 // import 'katex/dist/katex.min.css';
-
+import {withHistory} from "slate-history";
 
 interface OxOEditorProps {
   value: any
@@ -26,7 +26,7 @@ const plugins = [
 ]
 
 const OxOEditor = ({value, onChange}: OxOEditorProps) => {
-  const editor = useMemo(() => withPlugins(withReact(createEditor()), plugins), [])
+  const editor = useMemo(() => withHistory(withPlugins(withReact(createEditor()), plugins)), [])
   const { insertBreak, insertText } = editor
   const decorate = useCallback(([node, path]) => {
     const ranges: Array<any> = []

@@ -1,6 +1,6 @@
 import React from "react";
-import {ElementProps} from "@/app/note/Note/Attributes/Element/types";
-import {ContentViewProps} from "@/app/note/Note/Attributes/Element/Base";
+import {ElementProps} from "@/app/Noxo/Note/Attributes/Element/types";
+import {ContentViewProps} from "@/app/Noxo/Note/Attributes/Element/Base";
 
 interface NoteAttributeTypeObject {
     defaultLabel: string

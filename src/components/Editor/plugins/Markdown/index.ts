@@ -3,7 +3,7 @@ import { BlockSetting } from "../../blocks";
 import * as P_BLOCK from '../../constants/md-block-pattern'
 import * as P_INLINE from '../../constants/md-inline-pattern'
 import * as NAMES from '../../constants/names'
-import Journal from "@/app/note/Journal";
+import Journal from "@/app/Noxo/Journal";
 
 import PathSelect from "../../utils/pathSelect";
 import { langList } from "../../utils/prism";

@@ -1,9 +1,9 @@
 import { dbNote, dbJournal } from './config'
 
-import { defaultJournal } from "@/constants/data-structure/journal";
-import {JournalType, JournalEnhancedType, JournalAttributeObject} from "@/types/journal";
-import {NoteAttribute, NoteShortType, NoteType} from "@/types/note";
-import notePropTypes from "@/constants/note-attributes";
+import { defaultJournal } from "@/types/defaults/journal";
+import {JournalObject, JournalEnhancedObject, JournalAttribute} from "@/types/journal";
+import {NoteAttribute, NoteSummaryObject, NoteObject} from "@/types/note";
+import notePropTypes from "@/types/constants/note-attributes";
 import FindResponse = PouchDB.Find.FindResponse;
 
 export const create = async () => {
@@ -22,7 +22,7 @@ export const readAll = async () => {
 }
 
 export const readOne = async (jourId: string) => {
-  let docs = await dbJournal.get<JournalEnhancedType>(jourId)
+  let docs = await dbJournal.get<JournalEnhancedObject>(jourId)
   const notes = await dbNote.find({
     selector: { journalId: jourId },
     fields: ['_id', 'title', 'titleIcon', 'createdTime', 'createdUser', 'modifiedTime', 'modifiedUser', 'attributes'],
@@ -47,7 +47,7 @@ export const update = async (jourId: string, value: object) => {
   if ('jourAttrs' in value) {
     // @ts-ignore
     const { jourAttrs } = value
-    const curJourAttrs: { [attrId:string]: JournalAttributeObject } = jourAttrs.reduce((acc: any, cur: JournalAttributeObject) => {
+    const curJourAttrs: { [attrId:string]: JournalAttribute } = jourAttrs.reduce((acc: any, cur: JournalAttribute) => {
       acc[cur.attrId] = cur
       return acc
     }, {})

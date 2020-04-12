@@ -1,5 +1,6 @@
-import * as a from "./action-declares";
-import { NoteState, NoteActionTypes } from "./types";
+import * as a from "./actions";
+import { NoteActionTypes } from "./actions";
+import { NoteState } from "@/types/states";
 
 const initialState: NoteState = {
     allJournals: [],

@@ -2,59 +2,53 @@ import { put, take, call, fork, throttle, select } from 'redux-saga/effects'
 import PouchConn from '@/services/pouchdb'
 import { push } from 'connected-react-router'
 
-import * as act from './action-declares'
-import { RootStateType } from '@/store'
-import {NoteState, UpdateAllPayload} from '@/store/note/types'
-import {JournalEnhancedType} from "@/types/journal";
-import {NoteType} from "@/types/note";
-
+import * as actions from './actions'
+import {NoteState} from '@/types/states'
+import {JournalEnhancedObject} from "@/types/journal";
+import {NoteObject} from "@/types/note";
+import {UpdateAllPayload} from './actions'
 export function* noteSaveSagaWatcher() {
-  yield throttle(1000, act.SAVE_TO_POUCH, saveToPouch)
+  yield throttle(1000, actions.SAVE_TO_POUCH, saveToPouch)
 }
 
 function* noteSagaWatcher() {
   while (true) {
-    const action = yield take(Object.values(act.default))
+    const action = yield take(Object.values(actions.default))
     console.log(
       `%c Note Saga: ${action.type}: ${JSON.stringify(action)}`,
       'color: #f0c002'
     )
     switch (action.type) {
-      case act.default.SAGA_READ_ALL_JOURNALS: {
-        yield fork(readAllJournals)
-        break
-      }
-      case act.default.SAGA_CREATE_JOURNAL: {
-        yield fork(createJournal)
-        break
-      }
-      case act.default.SAGA_CREATE_NOTE: {
-        yield fork(createNote, action.payload)
-        break
-      }
-      case act.default.SAGA_READ_JOURNAL: {
-        yield fork(readJournal, action.payload)
-        break
-      }
-      case act.default.SAGA_READ_NOTE: {
-        yield fork(readNote, action.payload)
-        break
-      }
-      case act.default.SAGA_UPDATE_JOURNAL: {
+      case actions.default.SAGA_READ_ALL_JOURNALS: {
+        yield fork(readAllJournals); break; }
+
+      case actions.default.SAGA_CREATE_JOURNAL: {
+        yield fork(createJournal); break; }
+
+      case actions.default.SAGA_CREATE_NOTE: {
+        yield fork(createNote, action.payload); break; }
+
+      case actions.default.SAGA_READ_JOURNAL: {
+        yield fork(readJournal, action.payload); break; }
+
+      case actions.default.SAGA_READ_NOTE: {
+        yield fork(readNote, action.payload); break; }
+
+      case actions.default.SAGA_UPDATE_JOURNAL: {
         yield fork(updateJournal, action.payload)
-        yield put({ type: act.SAVE_TO_POUCH })
-        break
-      }
-      case act.default.SAGA_UPDATE_NOTE: {
+        yield put({ type: actions.SAVE_TO_POUCH })
+        break; }
+
+      case actions.default.SAGA_UPDATE_NOTE: {
         yield fork(updateNote, action.payload)
-        yield put({ type: act.SAVE_TO_POUCH })
-        break
-      }
-      case act.default.SAGA_UPDATE_ALL: {
+        yield put({ type: actions.SAVE_TO_POUCH })
+        break; }
+
+      case actions.default.SAGA_UPDATE_ALL: {
         yield fork(updateAll, action.payload)
-        yield put({ type: act.SAVE_TO_POUCH })
-        break
-      }
+        yield put({ type: actions.SAVE_TO_POUCH })
+        break; }
+
     }
   }
 }
@@ -83,7 +77,7 @@ function* saveToPouch() {
 function* readAllJournals() {
   try {
     const value = yield call(PouchConn.journal.readAll)
-    yield put({ type: act.SET_ALL_JOURNALS, payload: value })
+    yield put(actions.setAllJournals(value))
   } catch (e) {
     console.error(e)
   }
@@ -92,12 +86,12 @@ function* createJournal() {
   try {
     const value = yield call(PouchConn.journal.create)
     value.notes = []
-    yield put({ type: act.SET_CUR_JOURNAL, payload: value })
+    yield put(actions.setCurJournal(value))
     const { allJournals }: NoteState = yield select(state => state.get('note'))
     const newValue = allJournals.slice()
     newValue.push(value)
     yield put(push(`/o/journal/${value._id}`))
-    yield put({ type: act.SET_ALL_JOURNALS, payload: newValue })
+    yield put(actions.setAllJournals(newValue))
   } catch (e) {
     console.error(e)
   }
@@ -106,7 +100,7 @@ function* createJournal() {
 function* readJournal(jourId: string) {
   try {
     const value = yield call(PouchConn.journal.readOne, jourId)
-    yield put({ type: act.SET_CUR_JOURNAL, payload: value })
+    yield put(actions.setCurJournal(value))
   } catch (e) {
     if (e.status === 404) yield put(push(`/o`))
     console.error(e)
@@ -115,20 +109,19 @@ function* readJournal(jourId: string) {
 
 function* readNote(noteId: string) {
   try {
-    const value: NoteType = yield call(PouchConn.note.readOne, noteId)
+    const value: NoteObject = yield call(PouchConn.note.readOne, noteId)
     const { curJournal }: NoteState = yield select(state => state.get('note'))
-    if (value.journalId !== curJournal._id) 
-      yield call(readJournal, value.journalId)
-    yield put({ type: act.SET_CUR_NOTE, payload: value })
+    if (value.journalId !== curJournal._id) yield call(readJournal, value.journalId)
+    yield put(actions.setCurNote(value))
   } catch (e) {
     if (e.name === 'not_found') put(push(`/o`))
     console.error(e)
   }
 }
 
-function* updateJournal(payload: JournalEnhancedType) {
+function* updateJournal(payload: JournalEnhancedObject) {
   try {
-    yield put({ type: act.SET_CUR_JOURNAL, payload })
+    yield put(actions.setCurJournal(payload))
     if ('title' in payload || 'titleIcon' in payload) {
       const { allJournals, curJournal }: NoteState = yield select(state => state.get('note'))
       const newValue = allJournals.slice()
@@ -137,16 +130,16 @@ function* updateJournal(payload: JournalEnhancedType) {
         newValue[journalIndex].title = payload.title
       if ('titleIcon' in payload)
         newValue[journalIndex].titleIcon = payload.titleIcon
-      yield put({ type: act.SET_ALL_JOURNALS, payload: newValue })
+      yield put(actions.setAllJournals(newValue))
     }
   } catch (e) {
     console.error(e)
   }
 }
 
-function* updateNote(payload: JournalEnhancedType) {
+function* updateNote(payload: NoteObject) {
   try {
-    yield put({ type: act.SET_CUR_NOTE, payload })
+    yield put(actions.setCurNote(payload))
   } catch (e) {
     console.error(e)
   }
@@ -154,7 +147,7 @@ function* updateNote(payload: JournalEnhancedType) {
 
 function* updateAll(payload: UpdateAllPayload) {
   try {
-    yield put({ type: act.SET_CUR_BOTH, payload })
+    yield put(actions.setCurAll(payload))
   } catch (e) {
     console.error(e)
   }
@@ -163,7 +156,7 @@ function* updateAll(payload: UpdateAllPayload) {
 function* createNote(payload: string) {
   try {
     const value = yield call(PouchConn.note.create, payload)
-    yield put({ type: act.SET_CUR_NOTE, payload: value })
+    yield put({ type: actions.SET_CUR_NOTE, payload: value })
     yield put(push(`/o/editor/${value._id}`))
   } catch (e) {
     console.error(e)

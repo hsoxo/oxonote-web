@@ -6,3 +6,7 @@ export function setTitle(title: string): GlobalActionTypes {
         title
     }
 }
+
+export function checkIsLogin() {
+
+}

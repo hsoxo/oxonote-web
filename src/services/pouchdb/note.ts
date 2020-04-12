@@ -1,11 +1,11 @@
 import { dbNote, dbJournal } from './config'
-import { defaultNote } from "@/constants/data-structure/note";
-import { JournalType } from "@/types/journal";
-import { NoteType } from "@/types/note";
+import { defaultNote } from "@/types/defaults/note";
+import { JournalObject } from "@/types/journal";
+import { NoteObject } from "@/types/note";
 
 export const create = async (jourId: string) => {
-  let journal: JournalType = await dbJournal.get(jourId)
-  let note: NoteType = await defaultNote(journal.jourAttrs)
+  let journal: JournalObject = await dbJournal.get(jourId)
+  let note: NoteObject = await defaultNote(journal.jourAttrs)
   note.journalId = jourId
   await dbNote.put(note)
   return note
@@ -13,7 +13,7 @@ export const create = async (jourId: string) => {
 
 
 export const readOne = async (noteId: string) => {
-  const nInfo: NoteType = await dbNote.get(noteId)
+  const nInfo: NoteObject = await dbNote.get(noteId)
   return nInfo
 }
 

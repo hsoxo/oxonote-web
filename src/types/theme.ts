@@ -1,6 +1,5 @@
 import { Theme } from "@material-ui/core";
 
-
 export interface OxOTheme extends Theme {
     backgroundColor: {
         primary: string

@@ -23,28 +23,25 @@ const config: Array<RouteObject> = [
   // 	exact: true,
   // 	component: Layout,
   // },
-  // {
-  // 	path: '/login',
-  // 	component: Loadable({
-  // 		loader: () => import('../pages/Login'),
-  // 		loading: defaultLoad,
-  // 	}),
-  // },
+  {
+    path: '/login',
+    component: loadable(() => import('@/app/Login'))
+  },
   {
     path: '/o',
-    component: loadable(() => import('@/app/note/index')),
+    component: loadable(() => import('@/app/Noxo/index')),
     routes: [
       {
         path: '/o/journal/:id',
-        component: loadable(() => import('@/app/note/Journal/index'))
+        component: loadable(() => import('@/app/Noxo/Journal/index'))
       },
       {
         path: '/o/journal/:id/:view',
-        component: loadable(() => import('@/app/note/Journal/index'))
+        component: loadable(() => import('@/app/Noxo/Journal/index'))
       },
       {
         path: '/o/editor/:id',
-        component: loadable(() => import('@/app/note/Note/index'))
+        component: loadable(() => import('@/app/Noxo/Note/index'))
       }
     ]
   }
