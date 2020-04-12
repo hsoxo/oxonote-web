@@ -12,6 +12,7 @@ export function defaultJournal(): JournalType {
         createdUser: '',
         description: '',
         views: [{
+            type: 'list',
             viewId: uuid(),
             label: '全部文档',
             attribute: [],

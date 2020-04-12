@@ -39,6 +39,10 @@ const config: Array<RouteObject> = [
         component: loadable(() => import('@/app/note/Journal/index'))
       },
       {
+        path: '/o/journal/:id/:view',
+        component: loadable(() => import('@/app/note/Journal/index'))
+      },
+      {
         path: '/o/editor/:id',
         component: loadable(() => import('@/app/note/Note/index'))
       }

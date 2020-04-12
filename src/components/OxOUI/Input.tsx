@@ -21,7 +21,6 @@ export const BootstrapInput = styled(InputBase)`
       box-shadow: var(--primary-color-light) 0 0 0 0.2rem;
       border-color: var(--primary-color);
     };
-  
   }
 `
 

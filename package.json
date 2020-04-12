@@ -16,6 +16,7 @@
     "@matejmazur/react-katex": "^3.0.2",
     "@material-ui/core": "^4.9.8",
     "@material-ui/icons": "^4.9.1",
+    "@material-ui/lab": "^4.0.0-alpha.49",
     "@types/redux-immutable": "^4.0.1",
     "@types/typography": "^0.16.3",
     "clsx": "^1.1.0",

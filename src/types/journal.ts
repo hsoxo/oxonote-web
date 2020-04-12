@@ -38,7 +38,10 @@ export interface JournalViewFiltersSetting {
     date: number | null
 }
 
+export type JournalViewTypes = 'table' | 'list' | 'gallery' | 'board'
+
 export interface JournalView {
+    type: JournalViewTypes
     viewId: string
     label: string
     attribute: Array<{ attrId: string, status: boolean}>

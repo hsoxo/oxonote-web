@@ -1,10 +1,10 @@
 import React, {Suspense, useEffect} from 'react'
 import { Route } from 'react-router-dom'
 import { InnerRouteProps } from '@/routes'
-import Sidebar from './components/Layout/Sidebar'
-import Navbar from './components/Layout/Navbar'
+import Sidebar from './Layout/Sidebar'
+import Navbar from './Layout/Navbar'
 
-import { sidebarWidth, navbarHeight } from './components/Layout/config'
+import { sidebarWidth, navbarHeight } from './Layout/config'
 import '@/styles/base.css'
 import { FlexBox } from '@/components/OxOUI/OxOBox'
 import styled from 'styled-components'
@@ -55,7 +55,6 @@ const NoteLayout = (props: InnerRouteProps) => {
       action(NOTE_ACT.SAGA_READ_ALL_JOURNALS)
   }, [])
 
-  console.log(routes)
   return (
     <FlexBox>
       <Suspense fallback="loading...">

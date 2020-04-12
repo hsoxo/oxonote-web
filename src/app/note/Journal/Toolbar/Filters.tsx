@@ -104,7 +104,6 @@ const FilterSetting: React.FunctionComponent<ViewsManagerProps> = props => {
       type: jourAttr ? jourAttr.type : ''
     })
   }
-  console.log(settings, enhancedSettings)
 
   return (
     <div>

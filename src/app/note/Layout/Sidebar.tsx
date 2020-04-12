@@ -16,6 +16,9 @@ import action, {useSelector} from "@/store";
 import * as noteAct from "@/store/note/action-declares"
 import clsx from "clsx";
 import {NoteState} from "@/store/note/types";
+import {JournalType} from "@/types/journal";
+import KeyboardArrowRightRoundedIcon from '@material-ui/icons/KeyboardArrowRightRounded'
+import JournalTreeView from "@/app/note/Layout/SidebarJournalTree";
 
 const useStyles = makeStyles((theme) => ({
     listItem: {
@@ -72,17 +75,32 @@ const btm = [
     },
 ]
 
+interface JournalItemProps {
+    item: JournalType
+}
+
+const JournalItem: React.FunctionComponent<JournalItemProps> = props => {
+    const { item } = props
+    return (
+      <Link to={`/o/journal/${item._id}`} key={item._id}>
+          <ListItem>
+              <KeyboardArrowRightRoundedIcon />
+              <ListItemText>
+                  {item.titleIcon || '📒'}
+              </ListItemText>
+              <ListItemText primary={item.title || '未命名笔记本'} />
+          </ListItem>
+      </Link>
+    )
+}
 
 interface SidebarProps {
     active: boolean
     onToggleSidebar: {(): void}
 }
 
-
 const Sidebar = (props: SidebarProps) => {
     const classes = useStyles();
-    const state: NoteState = useSelector(state => state.get('note'))
-    const allJournals = state.allJournals
 
     const handleCreateJournal = async () => {
         action(noteAct.SAGA_CREATE_JOURNAL)
@@ -127,16 +145,7 @@ const Sidebar = (props: SidebarProps) => {
             </List>
             <div style={{height: 20}} />
             <List>
-                {allJournals.map(item => (
-                    <Link to={`/o/journal/${item._id}`} key={item._id}>
-                        <ListItem className={classes.listItem} button>
-                            <ListItemText className={classes.listItemIcon}>
-                                {item.titleIcon || '📒'}
-                            </ListItemText>
-                            <ListItemText primary={item.title || '未命名笔记本'} />
-                        </ListItem>
-                    </Link>
-                ))}
+                <JournalTreeView />
             </List>
             <div style={{height: 20}} />
             <Box className={classes.btmArea}>

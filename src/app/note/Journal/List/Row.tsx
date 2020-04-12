@@ -71,7 +71,6 @@ const JournalListViewRow = ({ info: noteInfo, viewSetting , jourAttrs}: JournalL
               noteAttr: noteInfo.attributes.find(x => x.attrId === attrId) as NoteAttribute,
             })}
     }
-    console.log(activeAttrInfo)
     return (
       <JournalListViewRowBox>
         <JournalListViewRowIcon>
