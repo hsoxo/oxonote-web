@@ -7,14 +7,18 @@ import {
 import { combineReducers } from 'redux-immutable'
 import { connectRouter, routerMiddleware } from 'connected-react-router'
 import { createBrowserHistory, History } from 'history'
+import { Map } from "immutable";
 
 import rootSaga from "@/store/rootSaga";
+import globalReducer from "@/store/global/reducer";
 import noteReducer from "@/store/note/reducer";
-import { Map } from "immutable";
+import journalReducer from "@/store/journal/reducer";
 
 const createRootReducer = (history: History) => combineReducers({
     router: connectRouter(history),
-    note: noteReducer
+    global: globalReducer,
+    journal: journalReducer,
+    note: noteReducer,
 })
 export const history = createBrowserHistory()
 

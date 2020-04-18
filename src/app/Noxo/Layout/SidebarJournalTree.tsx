@@ -1,24 +1,15 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {useHistory} from 'react-router-dom'
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import TreeView from '@material-ui/lab/TreeView';
 import TreeItem, { TreeItemProps } from '@material-ui/lab/TreeItem';
 import Typography from '@material-ui/core/Typography';
-import MailIcon from '@material-ui/icons/Mail';
-import DeleteIcon from '@material-ui/icons/Delete';
-import Label from '@material-ui/icons/Label';
-import SupervisorAccountIcon from '@material-ui/icons/SupervisorAccount';
-import InfoIcon from '@material-ui/icons/Info';
-import ForumIcon from '@material-ui/icons/Forum';
-import LocalOfferIcon from '@material-ui/icons/LocalOffer';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import ArrowRightIcon from '@material-ui/icons/ArrowRight';
-import { SvgIconProps } from '@material-ui/core/SvgIcon';
 import {NoteState} from "@/types/states";
-import {useSelector} from "@/store";
-import {Link} from "react-router-dom";
-import {ListItem, ListItemText} from "@material-ui/core";
-import KeyboardArrowRightRoundedIcon from "@material-ui/icons/KeyboardArrowRightRounded";
+import action, {useSelector} from "@/store";
+import {GlobalState} from "@/store/global/type";
+import GLOBAL_ACTIONS from "@/store/global/actions";
 
 declare module 'csstype' {
   interface Properties {
@@ -26,6 +17,7 @@ declare module 'csstype' {
     '--tree-view-bg-color'?: string;
   }
 }
+
 
 type StyledTreeItemProps = TreeItemProps & {
   bgColor?: string;
@@ -55,8 +47,6 @@ const useTreeItemStyles = makeStyles((theme: Theme) =>
     },
     content: {
       color: theme.palette.text.secondary,
-      borderTopRightRadius: theme.spacing(2),
-      borderBottomRightRadius: theme.spacing(2),
       paddingRight: theme.spacing(1),
       fontWeight: theme.typography.fontWeightMedium,
       '$expanded > &': {
@@ -143,8 +133,12 @@ const useStyles = makeStyles(
 export default function JournalTreeView() {
   const classes = useStyles();
   const history = useHistory()
-  const state: NoteState = useSelector(state => state.get('note'))
-  const allJournals = state.allJournals
+  const { journals }: GlobalState = useSelector(state => state.get('global'))
+
+  useEffect(() => {
+    action(GLOBAL_ACTIONS.SAGA_LOAD_JOURNAL_LIST)
+  }, [])
+
   return (
     <TreeView
       className={classes.root}
@@ -153,7 +147,7 @@ export default function JournalTreeView() {
       defaultExpandIcon={<ArrowRightIcon />}
       defaultEndIcon={<div style={{ width: 24 }} />}
     >
-      {allJournals.map(x => (
+      {journals.map(x => (
         <StyledTreeItem
           key={x._id}
           nodeId={x._id}

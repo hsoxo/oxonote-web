@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import {Box, Popover, Grid} from "@material-ui/core";
+import {Box, Popover, Grid, Button, Chip} from "@material-ui/core";
 
 export const AttributeRowWrapper = styled(Grid)`
   font-size: 0.9rem;
@@ -71,4 +71,25 @@ export const AttributeTitlePopover = styled(Popover)`
   min-width: 200px;
   box-shadow: rgba(15, 15, 15, 0.05) 0 0 1px, rgba(15, 15, 15, 0.1) 0 3px 6px,
     rgba(15, 15, 15, 0.2) 0 9px 24px;
+`
+
+
+export const HoverBox = styled.div`
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.04);
+  }
+`
+
+export const NoHoverButton = styled(Button)`
+  display: block;
+  text-align: left;
+  &:hover {
+    background-color: unset;
+  }
+`
+
+export const ClickableChip = styled(Chip)`
+  &:hover {
+    cursor: pointer;
+  }
 `

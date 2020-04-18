@@ -1,0 +1,21 @@
+[
+  { "colorEn": "Red", "colorZh": "", "value": "#ffcdd2" },
+  { "colorEn": "Pink", "colorZh": "", "value": "#f8bbd0" },
+  { "colorEn": "Purple", "colorZh": "", "value": "#e1bee7" },
+  { "colorEn": "Deep Purple", "colorZh": "", "value": "#d1c4e9" },
+  { "colorEn": "Indigo", "colorZh": "", "value": "#c5cae9" },
+  { "colorEn": "Blue", "colorZh": "", "value": "#bbdefb" },
+  { "colorEn": "Light Blue", "colorZh": "", "value": "#b3e5fc" },
+  { "colorEn": "Cyan", "colorZh": "", "value": "#b2ebf2" },
+  { "colorEn": "Teal", "colorZh": "", "value": "#b2dfdb" },
+  { "colorEn": "Green", "colorZh": "", "value": "#c8e6c9" },
+  { "colorEn": "Light Green", "colorZh": "", "value": "#dcedc8" },
+  { "colorEn": "Lime", "colorZh": "", "value": "#f0f4c3" },
+  { "colorEn": "Yellow", "colorZh": "", "value": "#fff9c4" },
+  { "colorEn": "Amber", "colorZh": "", "value": "#ffecb3" },
+  { "colorEn": "Orange", "colorZh": "", "value": "#ffe0b2" },
+  { "colorEn": "Deep Orange", "colorZh": "", "value": "#ffccbc" },
+  { "colorEn": "Brown", "colorZh": "", "value": "#d7ccc8" },
+  { "colorEn": "Grey", "colorZh": "", "value": "#f5f5f5" },
+  { "colorEn": "Blue Grey", "colorZh": "", "value": "#cfd8dc" }
+]

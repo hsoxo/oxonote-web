@@ -1,6 +1,8 @@
-import * as colors from '@material-ui/core/colors';
+interface Color {
+  colorEn: string
+  colorZh: string
+  value: string
+}
+export const color100: Array<Color> = require('./color.json')
 
-const SHADE = 100;
-
-// @ts-ignore
-export const tagColorList: Array<string> = Object.values(colors).map(x => x[SHADE])
+export const tagColorList: Array<string> = color100.map(x => x.value)

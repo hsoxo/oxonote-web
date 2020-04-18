@@ -1,10 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { Box, Popover } from '@material-ui/core'
+import {Box, Paper, Popover} from '@material-ui/core'
 import { bindPopover, bindTrigger } from 'material-ui-popup-state'
 import { BootstrapInput } from '@/components/OxOUI/Input'
 import { usePopupState } from 'material-ui-popup-state/hooks'
 import { JournalAttribute } from '@/types/journal'
-import {NoteAttribute, NoteSummaryObject, NoteObject} from '@/types/note'
+import {NoteAttribute, NoteSummaryObject} from '@/types/note'
 import { NoteState } from '@/types/states'
 import action, { useSelector } from '@/store'
 import NOTE_ACT from '@/store/note/actions'
@@ -128,11 +128,11 @@ const BaseElement: React.FunctionComponent<BaseElementProps> = props => {
               horizontal: 'left'
             }}
             PaperProps={{
-              elevation: 2,
               style: {
                 width: popWidth,
                 marginTop: '-0.5rem',
                 marginLeft: '-0.5rem',
+                boxShadow: 'rgba(15, 15, 15, 0.05) 0px 0px 0px 1px, rgba(15, 15, 15, 0.1) 0px 3px 6px, rgba(15, 15, 15, 0.2) 0px 9px 24px',
               }
             }}>
             <props.popover

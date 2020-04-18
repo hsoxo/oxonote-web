@@ -11,7 +11,7 @@ import {
   Switch,
   IconButton
 } from "@material-ui/core";
-import {NoteState} from "@/types/states";
+import {JournalState, NoteState} from "@/types/states";
 import {useSelector} from "@/store";
 import {DenseSelect, DenseSelectItem} from "@/components/OxOUI/Select";
 import {DenseListItem, DenseListItemBoxNoHover, DenseListItemIcon} from "@/components/OxOUI/List";
@@ -33,7 +33,8 @@ const ViewsManager: React.FunctionComponent<ViewsManagerProps> = (props) => {
 
   const context = useContext(JournalContext)
 
-  const { curJournal: { views } }: NoteState = useSelector(state => state.get('note'))
+  const { views }: JournalState =
+    useSelector(state => state.get('journal'))
 
   return (
     <div>

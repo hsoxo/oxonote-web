@@ -15,12 +15,16 @@ export interface JournalObject {
 
 export interface JournalAttribute {
     attrId: string
+    _id: string
+    _rev: string
     type: string
     label: string
     range?: Array<AttributeRangeType>
 }
 
 export interface JournalView {
+    _id: string
+    _rev: string
     type: JournalViewTypes
     viewId: string
     label: string
@@ -40,7 +44,7 @@ export interface JournalViewAttribute {
     status: boolean
 }
 export interface JournalViewFiltersSetting {
-    attrId: string | null
+    attrId: string
     operator: string | null
     target: string | null
     date: number | null

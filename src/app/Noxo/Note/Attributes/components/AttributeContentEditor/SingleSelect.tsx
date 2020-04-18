@@ -4,7 +4,7 @@ import { ElementProps } from './types'
 import BaseElement, {
   ContentPopoverProps,
   ContentViewProps
-} from '@/app/Noxo/Note/Attributes/Element/Base'
+} from '@/app/Noxo/Note/Attributes/components/AttributeContentEditor/Base'
 import BaseSelectEditor from "./BaseSelectEditor";
 import {AttributeRangeType} from "@/types/journal";
 

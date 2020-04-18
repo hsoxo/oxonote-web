@@ -3,7 +3,7 @@ import notePropTypes from "@/types/constants/note-attributes";
 import {NoteState} from "@/types/states";
 import {useSelector} from "@/store";
 import {NoteAttribute} from "@/types/note";
-import { AttributeValueWrapper, AttributeValue } from "@/app/Noxo/Note/Attributes/StyledComponents";
+import { AttributeValueWrapper, AttributeValue } from "./UI";
 
 const AttributeContent: React.FunctionComponent<NoteAttribute> = props =>  {
   const { curJournal: { jourAttrs } }: NoteState = useSelector(state => state.get('note'))

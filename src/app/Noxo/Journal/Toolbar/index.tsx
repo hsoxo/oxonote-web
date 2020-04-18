@@ -8,6 +8,7 @@ import ViewsManager from "./Views";
 import AttributeSetting from "./Attributes";
 import FilterSetting from "@/app/Noxo/Journal/Toolbar/Filters";
 import SortSetting from "@/app/Noxo/Journal/Toolbar/Sorts";
+import NewNote from "./NewNote";
 import {NoteState} from "@/types/states";
 
 type JournalToolbar = {
@@ -16,7 +17,7 @@ type JournalToolbar = {
 }
 
 const JournalToolbar = (props: JournalToolbar) => {
-  
+
   return (
     <FlexCenteredBox>
       <FlexBox>
@@ -26,14 +27,7 @@ const JournalToolbar = (props: JournalToolbar) => {
         <AttributeSetting {...props}/>
         <FilterSetting {...props}/>
         <SortSetting {...props}/>
-        <Button
-          variant="contained"
-          color="primary"
-          size="small"
-          startIcon={<AddIcon />}
-          onClick={() => action(NOTE_ACT.SAGA_CREATE_NOTE, props.jourId)}>
-          新笔记
-        </Button>
+        <NewNote />
       </RightBox>
     </FlexCenteredBox>
   )

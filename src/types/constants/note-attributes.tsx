@@ -6,7 +6,7 @@ import DoneAllIcon from '@material-ui/icons/DoneAll'
 import TextFieldsIcon from '@material-ui/icons/TextFields'
 import CheckBoxIcon from '@material-ui/icons/CheckBox'
 import EventNoteIcon from '@material-ui/icons/EventNote'
-import * as Elements from '@/app/Noxo/Note/Attributes/Element'
+import * as Elements from '@/app/Noxo/Note/Attributes/components/AttributeContentEditor'
 //
 import { NoteAttributeTypesObject } from "@/types/note-attribute";
 //
@@ -17,23 +17,24 @@ const notePropTypes: NoteAttributeTypesObject = {
 		icon: <RadioButtonCheckedIcon fontSize={"inherit"}/>,
 		defaultValue: () => '',
 		elem: Elements.SingleSelect,
+		content: Elements.SingleSelectContent,
 		contentView: Elements.SingleSelectContentView,
 		operators: [
 			{
 				label: '等于',
-				needTarget: true,
+				target: 'selection',
 			},
 			{
 				label: '不等于',
-				needTarget: true,
+				target: 'selection',
 			},
 			{
 				label: '是空',
-				needTarget: false,
+				target: '',
 			},
 			{
 				label: '不是空',
-				needTarget: false,
+				target: '',
 			},
 		]
 	},
@@ -43,23 +44,24 @@ const notePropTypes: NoteAttributeTypesObject = {
 		icon: <DoneAllIcon fontSize={"inherit"}/>,
 		defaultValue: () => [],
 		elem: Elements.MultiSelect,
+		content: Elements.MultiSelectContent,
 		contentView: Elements.MultiSelectContentView,
 		operators: [
 			{
 				label: '包含',
-				needTarget: true,
+				target: 'selection',
 			},
 			{
 				label: '不包含',
-				needTarget: true,
+				target: 'selection',
 			},
 			{
 				label: '是空',
-				needTarget: false,
+				target: '',
 			},
 			{
 				label: '不是空',
-				needTarget: false,
+				target: '',
 			},
 		]
 	},
@@ -69,39 +71,40 @@ const notePropTypes: NoteAttributeTypesObject = {
 		icon: <TextFieldsIcon fontSize={"inherit"}/>,
 		defaultValue: () => '',
 		elem: Elements.Text,
+		content: Elements.TextContent,
 		contentView: Elements.TextContentView,
 		operators: [
 			{
 				label: '包含',
-				needTarget: true,
+				target: 'input',
 			},
 			{
 				label: '不包含',
-				needTarget: true,
+				target: 'input',
 			},
 			{
 				label: '等于',
-				needTarget: true,
+				target: 'input',
 			},
 			{
 				label: '不等于',
-				needTarget: true,
+				target: 'input',
 			},
 			{
 				label: '以...开始',
-				needTarget: true,
+				target: 'input',
 			},
 			{
 				label: '以...结束',
-				needTarget: true,
+				target: 'input',
 			},
 			{
 				label: '是空',
-				needTarget: false,
+				target: '',
 			},
 			{
 				label: '不是空',
-				needTarget: false,
+				target: '',
 			},
 		]
 	},
@@ -111,15 +114,16 @@ const notePropTypes: NoteAttributeTypesObject = {
 		icon: <CheckBoxIcon fontSize={"inherit"}/>,
 		defaultValue: () => false,
 		elem: Elements.Checkbox,
+		content: Elements.CheckboxContent,
 		contentView: Elements.CheckboxContentView,
 		operators: [
 			{
 				label: '是',
-				needTarget: true,
+				target: '',
 			},
 			{
 				label: '不是',
-				needTarget: true,
+				target: '',
 			},
 		]
 	},
@@ -142,19 +146,20 @@ const notePropTypes: NoteAttributeTypesObject = {
 		icon: <AccessTimeIcon fontSize={"inherit"}/>,
 		defaultValue: () => null,
 		elem: Elements.CreatedTime,
+		content: Elements.CreatedTimeContent,
 		contentView: Elements.CreatedTimeContentView,
 		operators: [
 			{
 				label: '是',
-				needTarget: true,
+				target: 'date',
 			},
 			{
 				label: '在...之前',
-				needTarget: true,
+				target: 'date',
 			},
 			{
 				label: '在...之后',
-				needTarget: true,
+				target: 'date',
 			},
 		]
 	},
@@ -164,19 +169,20 @@ const notePropTypes: NoteAttributeTypesObject = {
 		icon: <AccessTimeIcon fontSize={"inherit"}/>,
 		defaultValue: () => null,
 		elem: Elements.ModifiedTime,
+		content: Elements.ModifiedTimeContent,
 		contentView: Elements.ModifiedTimeContentView,
 		operators: [
 			{
 				label: '是',
-				needTarget: true,
+				target: 'date',
 			},
 			{
 				label: '在...之前',
-				needTarget: true,
+				target: 'date',
 			},
 			{
 				label: '在...之后',
-				needTarget: true,
+				target: 'date',
 			},
 		]
 	},
@@ -186,15 +192,16 @@ const notePropTypes: NoteAttributeTypesObject = {
 		icon: <PersonIcon fontSize={"inherit"}/>,
 		defaultValue: () => null,
 		elem: Elements.CreatedBy,
+		content: Elements.CreatedByContent,
 		contentView: Elements.CreatedByContentView,
 		operators: [
 			{
 				label: '是',
-				needTarget: true,
+				target: 'user',
 			},
 			{
 				label: '不是',
-				needTarget: true,
+				target: 'user',
 			},
 		]
 	},
@@ -204,15 +211,16 @@ const notePropTypes: NoteAttributeTypesObject = {
 		icon: <PersonIcon fontSize={"inherit"}/>,
 		defaultValue: () => null,
 		elem: Elements.ModifiedBy,
+		content: Elements.ModifiedByContent,
 		contentView: Elements.ModifiedByContentView,
 		operators: [
 			{
 				label: '是',
-				needTarget: true,
+				target: 'user',
 			},
 			{
 				label: '不是',
-				needTarget: true,
+				target: 'user',
 			},
 		]
 	},

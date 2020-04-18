@@ -1,57 +1,28 @@
 import React, { useState } from 'react'
-import { ContentPopoverProps } from '@/app/Noxo/Note/Attributes/Element/Base'
-import {
-  DragDropContext,
-  Draggable,
-  Droppable,
-  DropResult
-} from 'react-beautiful-dnd'
-import {
-  getItemStyle,
-  getListStyle,
-  reorder
-} from '@/app/Noxo/Note/Attributes/Element/dnd-helper'
+import { ContentPopoverProps } from '@/app/Noxo/Note/Attributes/components/AttributeContentEditor/Base'
+import { DropResult } from 'react-beautiful-dnd'
+import { reorder } from '../../../utils/dnd-helper'
 import { AttributeRangeType } from '@/types/journal'
 import { tagColorList } from '@/types/constants/colors'
 import { v4 as uuid } from 'uuid'
-import { Box, Button, Chip, Divider, TextField } from '@material-ui/core'
-import DragIndicatorIcon from '@material-ui/icons/DragIndicator'
-import {NoBorderInput} from "@/components/OxOUI/Input";
-import { FlexCenteredBox } from "@/components/OxOUI/OxOBox";
-import styled from "styled-components";
-import { MarginRightChip } from "@/components/OxOUI/Chip";
+import { Box } from '@material-ui/core'
+import { NoBorderInput } from '@/components/OxOUI/Input'
+import { FlexCenteredBox } from '@/components/OxOUI/OxOBox'
+import styled from 'styled-components'
+import { MarginRightChip } from '@/components/OxOUI/Chip'
+import { HoverBox, NoHoverButton, ClickableChip } from '../../UI'
+import SelectionList from '@/app/Noxo/Note/Attributes/components/AttributeContentEditor/BaseSelectEditor/SelectionList'
 
 interface SelectTypeContentPopoverProps extends ContentPopoverProps {
   isMulti: boolean
 }
 
 const InfileFlexCenteredBox = styled(FlexCenteredBox)`
-  background-color: var(--secondary-bg);
+  background-color: var(--mu-bg);
   padding: 0 0.3rem;
 `
 
-const HoverBox = styled.div`
-  &:hover {
-    background-color: rgba(0, 0, 0, 0.04);
-  }
-`
-
-const NoHoverButton = styled(Button)`
-  display: block;
-  text-align: left;
-  &:hover {
-    background-color: unset;
-  }
-`
-
-const ClickableChip = styled(Chip)`
-  &:hover {
-    cursor: pointer;
-  }
-`
-
-
-const BaseSelectEditor: React.FunctionComponent<SelectTypeContentPopoverProps> = ({
+const Index: React.FunctionComponent<SelectTypeContentPopoverProps> = ({
   isMulti,
   noteAttr,
   jourAttr,
@@ -64,7 +35,7 @@ const BaseSelectEditor: React.FunctionComponent<SelectTypeContentPopoverProps> =
 
   let range = jourAttr.range || []
 
-  const curSelections = isMulti
+  const curSelections: Array<AttributeRangeType> = isMulti
     // @ts-ignore
     ? range.filter(x => noteAttr.value.includes(x.id))
     : range.filter(x => x.id === noteAttr.value)
@@ -92,6 +63,19 @@ const BaseSelectEditor: React.FunctionComponent<SelectTypeContentPopoverProps> =
       onNoteAttrChange({ value: selectionId })
     }
     popupState.toggle()
+  }
+
+  const handleSelectionColorChange = (selectionId: string, color: string) => {
+    let newRange = range.slice()
+    let labelIndex = range.findIndex(x => x.id === selectionId)
+    newRange[labelIndex].color = color
+    onJourAttrChange({ range: newRange })
+  }
+  const handleSelectionDelete = (selectionId: string) => {
+    let newRange = range.slice()
+    let labelIndex = range.findIndex(x => x.id === selectionId)
+    newRange.splice(labelIndex, 1)
+    onJourAttrChange({ range: newRange })
   }
 
   const handleSubmit = (label: string) => {
@@ -149,14 +133,14 @@ const BaseSelectEditor: React.FunctionComponent<SelectTypeContentPopoverProps> =
   return (
     <React.Fragment>
       <InfileFlexCenteredBox>
-        {curSelections.map(x =>
+        {curSelections.map(x => (
           <MarginRightChip
             key={x.id}
             style={{ backgroundColor: x.color }}
             size="small"
             label={x.label}
           />
-        )}
+        ))}
         <NoBorderInput
           value={value}
           autoFocus={true}
@@ -168,7 +152,9 @@ const BaseSelectEditor: React.FunctionComponent<SelectTypeContentPopoverProps> =
       <Box>
         {value && (!range || !range.some(x => x.label === value)) && (
           <HoverBox>
-            <NoHoverButton style={{ width: '100%' }} onClick={() => handleSubmit(value)}>
+            <NoHoverButton
+              style={{ width: '100%' }}
+              onClick={() => handleSubmit(value)}>
               <ClickableChip size="small" label={`新建选项: ${value}`} />
             </NoHoverButton>
           </HoverBox>
@@ -178,54 +164,17 @@ const BaseSelectEditor: React.FunctionComponent<SelectTypeContentPopoverProps> =
             <ClickableChip size="small" label={`开始输入并新建选项`} />
           </NoHoverButton>
         ) : (
-          <DragDropContext onDragEnd={onDragEnd}>
-            <Droppable droppableId="droppable">
-              {(provided, snapshot) => (
-                <div
-                  {...provided.droppableProps}
-                  ref={provided.innerRef}
-                  style={getListStyle(snapshot.isDraggingOver)}>
-                  {listedItems.map((item, index) => (
-                    <Draggable
-                      key={item.id}
-                      draggableId={item.id}
-                      index={index}>
-                      {(provided, snapshot) => (
-                        <HoverBox>
-                          <div
-                            ref={provided.innerRef}
-                            {...provided.draggableProps}
-                            {...provided.dragHandleProps}
-                            style={getItemStyle(
-                              snapshot.isDragging,
-                              provided.draggableProps.style
-                            )}>
-                            <DragIndicatorIcon
-                              style={{ fontSize: '1rem', maxWidth: '1rem' }}
-                            />
-                            <NoHoverButton
-                              style={{ width: 'calc(100% - 1rem)' }}
-                              onClick={() => onChange(item.id)}>
-                              <ClickableChip
-                                style={{ backgroundColor: item.color }}
-                                size="small"
-                                label={item.label}
-                              />
-                            </NoHoverButton>
-                          </div>
-                        </HoverBox>
-                      )}
-                    </Draggable>
-                  ))}
-                  {provided.placeholder}
-                </div>
-              )}
-            </Droppable>
-          </DragDropContext>
+          <SelectionList
+            listedItems={listedItems}
+            handleReorder={onDragEnd}
+            handleSelectionClick={onChange}
+            handleSelectionColorChange={handleSelectionColorChange}
+            handleDelete={handleSelectionDelete}
+          />
         )}
       </Box>
     </React.Fragment>
   )
 }
 
-export default BaseSelectEditor
+export default Index

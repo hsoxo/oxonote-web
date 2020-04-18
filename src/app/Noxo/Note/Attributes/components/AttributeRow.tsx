@@ -1,8 +1,8 @@
 import React from 'react'
 import AttributeTitle from './AttributeTitle'
 import PropertyBody from "./AttributeContent";
-import { AttributeRowWrapper } from "./StyledComponents";
-import { HoverGrid } from "./StyledComponents";
+import { AttributeRowWrapper } from "./UI";
+import { HoverGrid } from "./UI";
 
 type PropertyRowProps = {
   title: React.ReactNode

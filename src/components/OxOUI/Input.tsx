@@ -26,13 +26,13 @@ export const BootstrapInput = styled(InputBase)`
 
 export const NoBorderInput = styled(InputBase)`
   width: 100%;
-  background-color: var(--secondary-bg);
+  background-color: var(--mu-bg);
   label + & {
     margin-top: 0.5rem;
   }
   input {
     position: relative;
-    background-color: var(--secondary-bg);
+    background-color: var(--mu-bg);
     font-size: 16px;
     width: 100%;
     padding: 0.5rem;

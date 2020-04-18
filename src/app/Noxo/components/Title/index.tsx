@@ -1,9 +1,9 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Box } from '@material-ui/core'
-import TitleTopAera from './TitleTopArea'
+import TitleTopArea from './TitleTopArea'
 import TitleMainArea from './TitleMainArea'
-import { TitleBlockPropsType } from '@/app/Noxo/components/Title/types'
+import { TitleBlockPropsType } from '@/app/Noxo/components/Title/type'
 
 const TitleBlockWrapper = styled(Box)`
   flex-wrap: wrap;
@@ -16,7 +16,7 @@ const TitleBlockWrapper = styled(Box)`
 const TitleBlock: React.FunctionComponent<TitleBlockPropsType> = props => {
   return (
     <TitleBlockWrapper>
-      <TitleTopAera {...props}/>
+      <TitleTopArea {...props}/>
       <TitleMainArea {...props}/>
     </TitleBlockWrapper>
   )

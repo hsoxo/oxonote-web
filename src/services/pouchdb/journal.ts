@@ -1,38 +1,78 @@
-import { dbNote, dbJournal } from './config'
+import PDB, { dbNote, dbJournal } from './config'
 
-import { defaultJournal } from "@/types/defaults/journal";
-import {JournalObject, JournalEnhancedObject, JournalAttribute} from "@/types/journal";
-import {NoteAttribute, NoteSummaryObject, NoteObject} from "@/types/note";
+import { JournalObject, JournalEnhancedObject, JournalAttribute, JournalView } from "@/types/journal";
+import {NoteAttribute, NoteObject, NoteSummaryObject} from "@/types/note";
+import { newJournal, newJournalAttribute, newJournalView } from "@/services/pouchdb/Journal/default";
 import notePropTypes from "@/types/constants/note-attributes";
-import FindResponse = PouchDB.Find.FindResponse;
 
 export const create = async () => {
-  const nb = await defaultJournal()
-  console.log(nb)
+  const journalDoc = await newJournal()
+  const viewDoc = await newJournalView(journalDoc._id)
+  const attrsDocs = [
+    await newJournalAttribute(journalDoc._id, '1', '创建时间'),
+    await newJournalAttribute(journalDoc._id, '2', '最后修改时间'),
+    await newJournalAttribute(journalDoc._id, '3', '创建人'),
+    await newJournalAttribute(journalDoc._id, '4', '最后修改人'),
+  ]
   // @ts-ignore
-  await dbJournal.put(nb)
-  return nb
+  await PDB.bulkDocs([journalDoc, viewDoc, ...attrsDocs])
+  return journalDoc
 }
 
 export const readAll = async () => {
-  const docs = await dbJournal.find({
-    selector: {},
+  const docs = await PDB.allDocs({
+    include_docs: true,
+    startkey: 'D-',
+    endkey: 'D-\ufff0'
   })
-  return docs.docs
+  const journals = docs.rows.filter(x => x.id.match(/^D-.{10}$/)).map(x => x.doc) as unknown as Array<JournalObject>
+  for (const journal of journals) {
+    const curJournalRelations = docs.rows.filter(x => x.id.startsWith(journal._id))
+
+    journal.jourAttrs = curJournalRelations
+      .filter(x => x.id.startsWith(`${journal._id}-A-`))
+      .map(x => x.doc) as unknown as Array<JournalAttribute>
+
+    journal.views = curJournalRelations
+      .filter(x => x.id.startsWith(`${journal._id}-V-`))
+      .map(x => x.doc) as unknown as Array<JournalView>
+  }
+  return journals
 }
 
+interface ReadOneResult {
+  journal: JournalObject
+  attrs: Array<JournalAttribute>
+  views: Array<JournalView>
+  notes: Array<NoteObject>
+}
 export const readOne = async (jourId: string) => {
-  let docs = await dbJournal.get<JournalEnhancedObject>(jourId)
-  const notes = await dbNote.find({
-    selector: { journalId: jourId },
-    fields: ['_id', 'title', 'titleIcon', 'createdTime', 'createdUser', 'modifiedTime', 'modifiedUser', 'attributes'],
+  const docs = await PDB.allDocs({
+    include_docs: true,
+    startkey: jourId,
+    endkey: `${jourId}\ufff0`,
   })
-  // @ts-ignore
-  docs.notes = notes.docs
-  return docs
+  let journalDoc = docs.rows.find(x => x.id === jourId)
+  if (journalDoc) {
+    const journal = journalDoc.doc as unknown as JournalObject
+    const result: ReadOneResult = {
+      journal,
+      attrs: docs.rows
+        .filter(x => x.id.startsWith(`${journal._id}-A-`))
+        .map(x => x.doc) as unknown as Array<JournalAttribute>,
+      views: docs.rows
+        .filter(x => x.id.startsWith(`${journal._id}-V-`))
+        .map(x => x.doc) as unknown as Array<JournalView>,
+      notes: docs.rows
+        .filter(x => x.id.startsWith(`${journal._id}-N-`))
+        .map(x => x.doc) as unknown as Array<NoteObject>,
+    }
+    return result
+  }
+  return
 }
 
-export const find = dbJournal.find
+export const find = PDB.find
 
 
 export const update = async (jourId: string, value: object) => {
@@ -85,4 +125,31 @@ export const update = async (jourId: string, value: object) => {
     }
   }
   return newDoc
+}
+
+export const journalAttr = {
+  create: async () => {
+
+  },
+  update: async () => {
+
+  },
+  delete: async () => {
+
+  }
+}
+
+export const journalView = {
+  create: async (journalId: string) => {
+    const viewDoc = await newJournalView(journalId)
+    // @ts-ignore
+    await PDB.put(viewDoc)
+    return viewDoc
+  },
+  update: async () => {
+
+  },
+  delete: async () => {
+
+  }
 }

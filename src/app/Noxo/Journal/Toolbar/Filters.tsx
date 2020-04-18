@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {Fragment} from 'react'
 import {
   bindPopover,
   bindTrigger,
@@ -16,9 +16,9 @@ import {
   ListItemText,
   FormControl
 } from '@material-ui/core'
-import { NoteState } from '@/types/states'
+import {JournalState, NoteState} from '@/types/states'
 import action, { useSelector } from '@/store'
-import { JournalView, JournalViewFiltersSetting } from '@/types/journal'
+import {AttributeRangeType, JournalAttribute, JournalView, JournalViewFiltersSetting} from '@/types/journal'
 import DeleteIcon from '@material-ui/icons/Delete'
 import NOTE_ACT from '@/store/note/actions'
 import notePropTypes from '@/types/constants/note-attributes'
@@ -32,6 +32,7 @@ import HighlightOffIcon from '@material-ui/icons/HighlightOff'
 import AddIcon from '@material-ui/icons/Add'
 import styled from 'styled-components'
 import { DenseSelect, DenseSelectItem } from "@/components/OxOUI/Select";
+import {BootstrapInput} from "@/components/OxOUI/Input";
 
 
 type ViewsManagerProps = {
@@ -49,8 +50,8 @@ const FilterSetting: React.FunctionComponent<ViewsManagerProps> = props => {
     popupId: 'demoPopover'
   })
   const {
-    curJournal: { views, jourAttrs }
-  }: NoteState = useSelector(state => state.get('note'))
+    views, attrs: jourAttrs
+  }: JournalState = useSelector(state => state.get('journal'))
   const curViewIndex = views.findIndex(x => x.viewId === props.viewId)
   const curViewInfo = views[curViewIndex] as JournalView
 
@@ -167,21 +168,43 @@ const FilterSetting: React.FunctionComponent<ViewsManagerProps> = props => {
                   ))}
                 </DenseSelect>
               )}
-              {setting.attrId && setting.operator && (
-                <DenseSelect
-                  variant="outlined"
-                  value={setting.operator}
-                  onChange={e =>
-                    handleChange(index, { operator: e.target.value })
+              {setting.attrId && setting.operator && notePropTypes[setting.type].operators.map(x => {
+                if (x.label === setting.operator) {
+                  if (x.target === 'input') {
+                    return (
+                      <BootstrapInput
+                        key={x.label}
+                        value={setting.target}
+                        onChange={e =>
+                          handleChange(index, { target: e.target.value })
+                        }
+                      />
+                    )
+                  } else if (x.target === 'selection') {
+                    const range: Array<AttributeRangeType> = jourAttrs[jourAttrs.findIndex(x => x.attrId === setting.attrId)].range || []
+                    return (
+                      <DenseSelect
+                        key={x.label}
+                        variant="outlined"
+                        value={setting.target}
+                        onChange={e =>
+                          handleChange(index, { target: e.target.value })
+                        }
+                        displayEmpty>
+                        {range.map(r => (
+                          <DenseSelectItem key={r.id} value={r.id}>
+                            {r.label}
+                          </DenseSelectItem>
+                        ))}
+                      </DenseSelect>
+                    )
+                  } else {
+                    return <Fragment key={x.label}/>
                   }
-                  displayEmpty>
-                  {notePropTypes[setting.type].operators.map(op => (
-                    <DenseSelectItem key={op.label} value={op.label}>
-                      {op.label}
-                    </DenseSelectItem>
-                  ))}
-                </DenseSelect>
-              )}
+                } else {
+                  return <Fragment key={x.label}/>
+                }
+              })}
               <DenseListItemIcon style={{marginLeft: 'auto'}}>
                 <IconButton
                   aria-label="delete"

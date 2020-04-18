@@ -1,24 +1,18 @@
-import React, { useCallback, useState, useRef } from 'react'
+import React from 'react'
 import { Box, Drawer, IconButton, List, ListItem, ListItemText, ListItemIcon } from '@material-ui/core';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import SearchIcon from '@material-ui/icons/Search';
 import SettingsIcon from '@material-ui/icons/Settings';
 import HelpIcon from '@material-ui/icons/Help';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
-import { sidebarWidth } from './config'
 import NavigateBeforeIcon from '@material-ui/icons/NavigateBefore';
 import AddIcon from '@material-ui/icons/Add';
-import {useDispatch, useMappedState} from 'redux-react-hook';
-import { Link } from 'react-router-dom'
-import { v4 as uuid } from 'uuid';
-import { useHistory } from 'react-router-dom'
-import action, {useSelector} from "@/store";
-import noteAct from "@/store/note/actions"
 import clsx from "clsx";
-import {NoteState} from "@/types/states";
-import {JournalObject} from "@/types/journal";
-import KeyboardArrowRightRoundedIcon from '@material-ui/icons/KeyboardArrowRightRounded'
-import JournalTreeView from "@/app/Noxo/Layout/SidebarJournalTree";
+
+import { sidebarWidth } from './config'
+import action from "@/store";
+import ACT_JOURNAL from "@/store/journal/actions"
+import JournalTreeView from "./SidebarJournalTree";
 
 const useStyles = makeStyles((theme) => ({
     listItem: {
@@ -76,7 +70,6 @@ const btm = [
 ]
 
 
-
 interface SidebarProps {
     active: boolean
     onToggleSidebar: {(): void}
@@ -86,7 +79,7 @@ const Sidebar = (props: SidebarProps) => {
     const classes = useStyles();
 
     const handleCreateJournal = async () => {
-        action(noteAct.SAGA_CREATE_JOURNAL)
+        action(ACT_JOURNAL.SAGA_JOURNAL_CREATE)
     }
 
     const { active } = props

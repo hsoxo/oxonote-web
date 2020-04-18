@@ -7,12 +7,8 @@ import {
   bindToggle,
   bindPopover
 } from 'material-ui-popup-state/hooks'
-import { useSelector } from '@/store'
-import {TitleBlockPropsType} from './types'
+import {TitleBlockPropsType} from './type'
 import styled from 'styled-components'
-import { NoteState } from '@/types/states'
-import NOTE_ACT from '@/store/note/actions'
-import action from '@/store'
 
 import { FlexCenteredBox } from "@/components/OxOUI/OxOBox";
 
@@ -53,16 +49,11 @@ const handleContentEditableKeyPress = (e: React.KeyboardEvent<HTMLDivElement>) =
   }
 }
 
-const TitleMainArea: React.FunctionComponent<TitleBlockPropsType> = (props) => {
+const TitleMainArea: React.FunctionComponent<TitleBlockPropsType> = ({title, titleIcon, onChange}) => {
   const popupState = usePopupState({
     variant: 'popover',
     popupId: 'title-main-emoji-picker'
   })
-
-  const state: NoteState = useSelector(state => state.get('note'))
-  const curType = props.type === 'journal' ? state.curJournal : state.curNote
-  const updateAction = props.type === 'journal' ? NOTE_ACT.SAGA_UPDATE_JOURNAL : NOTE_ACT.SAGA_UPDATE_NOTE
-  const { titleIcon, title } = curType
 
   return (
     <FlexCenteredBox>
@@ -85,9 +76,7 @@ const TitleMainArea: React.FunctionComponent<TitleBlockPropsType> = (props) => {
               showPreview={false}
               showSkinTones={false}
               onSelect={(emoji: BaseEmoji) => {
-                action(updateAction, {
-                  titleIcon: emoji.native
-                })
+                onChange('titleIcon', emoji.native)
                 popupState.close()
               }}
             />
@@ -98,9 +87,7 @@ const TitleMainArea: React.FunctionComponent<TitleBlockPropsType> = (props) => {
         html={title}
         disabled={false}
         onKeyDown={handleContentEditableKeyPress}
-        onChange={e =>
-          action(updateAction, { title: e.target.value })
-        }
+        onChange={e => onChange('title', e.target.value)}
         tagName="h1" // Use a custom HTML tag (uses a div by default)
         style={{ outline: 'none', fontSize: '2.5rem' }}
       />

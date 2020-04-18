@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {FocusEvent, KeyboardEvent, FunctionComponent, useState, ChangeEvent} from 'react'
 import { ElementProps } from './types'
 import { NoBorderInput } from '@/components/OxOUI/Input'
 import BaseElement from './Base'
@@ -9,7 +9,7 @@ export const TextContent = ({ noteAttr }: ContentViewProps) => {
   return noteAttr.value
 }
 
-export const TextContentView: React.FunctionComponent<ContentViewProps> = ({
+export const TextContentView: FunctionComponent<ContentViewProps> = ({
   noteAttr
 }) => {
   return (
@@ -19,19 +19,28 @@ export const TextContentView: React.FunctionComponent<ContentViewProps> = ({
   )
 }
 
-const TextEditor: React.FunctionComponent<ContentPopoverProps> = ({
+const TextEditor: FunctionComponent<ContentPopoverProps> = ({
   noteAttr,
-  onNoteAttrChange
+  onNoteAttrChange,
+  popupState
 }) => {
-  const handleChange = (e: React.FocusEvent<HTMLInputElement>) => {
-    const newValue = e.target.value
-    onNoteAttrChange({ value: newValue })
+  const [value, setValue] = useState(noteAttr.value)
+  const handleCommit = () => {
+    onNoteAttrChange({ value })
+    popupState.toggle()
+  }
+  const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      handleCommit()
+    }
   }
   return (
     <NoBorderInput
-      defaultValue={noteAttr.value}
+      value={value}
+      onChange={(e: ChangeEvent<HTMLInputElement>) => setValue(e.target.value)}
       autoFocus={true}
-      onBlur={handleChange}
+      onKeyDown={handleKeyDown}
+      onBlur={handleCommit}
     />
   )
 }

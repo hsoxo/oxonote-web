@@ -6,48 +6,56 @@ import noteAct from '@/store/note/actions'
 import TitleBlock from "../components/Title";
 import JournalToolbar from "./Toolbar";
 import JournalListView from "@/app/Noxo/Journal/List";
-import {NoteState} from "@/types/states";
+import {JournalState, NoteState} from "@/types/states";
 import JournalGalleryView from "@/app/Noxo/Journal/Gallery";
+import JOURNAL_ACTIONS from "@/store/journal/actions";
 
 export const JournalContext = createContext({
 	handleChangeView: (viewId: string) => {},
 })
+
+const handleJournalInfoChange = (key: string, value: any) => {
+
+}
 
 const Journal = (props: React.ComponentProps<any>) => {
 	const jourId = props.match.params.id
 	const view = props.match.params.view
 	const [viewId, setViewId] = useState(view)
 
-	const { curJournal }: NoteState = useSelector(state => state.get('note'))
+	const { journal, views, attrs }: JournalState =
+		useSelector(state => state.get('journal'))
 
 	const handleChangeView = (viewId: string) => {
 		setViewId(viewId)
 	}
 
 	useEffect(() => {
-		if (curJournal.views.length)
-			setViewId(view || curJournal.views[0].viewId)
-	}, [view, curJournal, setViewId])
-
-	useEffect(() => {
-		action(noteAct.SAGA_READ_JOURNAL, jourId)
+		action(JOURNAL_ACTIONS.SAGA_JOURNAL_READ, jourId)
 	}, [jourId])
 
+	useEffect(() => {
+		if (views.length)
+			setViewId(view || views[0].viewId)
+	}, [view, views, setViewId])
 
-	let viewInfo = curJournal.views.filter(x => x.viewId === viewId)
-	console.log(viewInfo)
+	let viewInfo = views.filter(x => x.viewId === viewId)
 	return (
 		<div className="oxo-editor">
 			<JournalContext.Provider value={{
 				handleChangeView
 			}}>
-				<Slide direction="up" in={jourId === curJournal._id && viewInfo.length > 0} timeout={500} mountOnEnter unmountOnExit>
+				<Slide direction="up" in={jourId === journal._id && viewInfo.length > 0} timeout={500} mountOnEnter unmountOnExit>
 					<Box>
-						<Fade in={jourId === curJournal._id && viewInfo.length > 0} timeout={2000}>
+						<Fade in={jourId === journal._id && viewInfo.length > 0} timeout={2000}>
 							<Box>
 								{viewInfo.length > 0 &&
 									<Fragment>
-										<TitleBlock type="journal"/>
+										<TitleBlock 
+											title={journal.title}
+											titleIcon={journal.titleIcon}
+											onChange={handleJournalInfoChange}
+										/>
 										<JournalToolbar jourId={jourId} viewId={viewId}/>
 										<Divider />
 										{viewInfo[0].type === 'list' && <JournalListView viewId={viewId}/>}

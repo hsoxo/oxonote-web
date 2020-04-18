@@ -1,13 +1,14 @@
 import React, {useContext} from 'react'
 import { v4 as uuid } from "uuid";
-import AddNew from "./AddNew"
 import {NoteState} from "@/types/states";
 import {useSelector} from "@/store";
 import { Box } from "@material-ui/core";
 
-import AttributeRow from "./AttributeRow";
-import AttributeTitle from "./AttributeTitle";
-import AttributeContent from "./AttributeContent";
+import AttributeRow from "./components/AttributeRow";
+import AttributeTitle from "./components/AttributeTitle";
+import AttributeContent from "./components/AttributeContent";
+import AddNew from "./components/AddNew"
+
 import styled from "styled-components";
 
 const AttributeBlockBox = styled(Box)`

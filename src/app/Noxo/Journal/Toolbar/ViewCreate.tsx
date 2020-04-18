@@ -17,6 +17,7 @@ import {NoteState} from "@/types/states";
 import {v4 as uuid} from "uuid";
 import {JournalViewTypes} from "@/types/journal";
 import NOTE_ACT from "@/store/note/actions";
+import {nanoid} from "nanoid";
 
 interface ViewTypeSetting {
   id: JournalViewTypes
@@ -68,6 +69,8 @@ const ViewCreate = () => {
     const newViews = curViews.slice()
     if (view)
       newViews.push({
+        _id: nanoid(),
+        _rev: '',
         type: view,
         viewId: uuid(),
         label: name,

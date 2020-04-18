@@ -9,7 +9,7 @@ import {
   bindPopover,
 } from 'material-ui-popup-state/hooks'
 import styled from "styled-components";
-import {NoteState} from "@/types/states";
+import {JournalState, NoteState} from "@/types/states";
 import action, {useSelector} from "@/store";
 import notePropTypes from "@/types/constants/note-attributes";
 import NOTE_ACT from "@/store/note/actions";
@@ -31,8 +31,7 @@ const AttributeSetting: React.FunctionComponent<ViewsManagerProps> = (props) => 
     variant: 'popover',
     popupId: 'demoPopover',
   })
-  const { curJournal }: NoteState = useSelector(state => state.get('note'))
-  const { views, jourAttrs } = curJournal
+  const { views, attrs: jourAttrs }: JournalState = useSelector(state => state.get('journal'))
 
   let attributes = jourAttrs.map(x => ({...notePropTypes[x.type], ...x}))
   const curJourView = views.find(x => x.viewId === props.viewId) as JournalView

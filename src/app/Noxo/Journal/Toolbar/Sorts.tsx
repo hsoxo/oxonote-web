@@ -10,7 +10,7 @@ import {
   IconButton,
   ListItemText
 } from "@material-ui/core";
-import {NoteState} from "@/types/states";
+import {JournalState, NoteState} from "@/types/states";
 import action, {useSelector} from "@/store";
 import {JournalView} from "@/types/journal";
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -33,7 +33,7 @@ const SortSetting: React.FunctionComponent<ViewsManagerProps> = (props) => {
     variant: 'popover',
     popupId: 'demoPopover',
   })
-  const { curJournal: { views, jourAttrs } }: NoteState = useSelector(state => state.get('note'))
+  const { views, attrs: jourAttrs }: JournalState = useSelector(state => state.get('journal'))
   const curViewIndex = views.findIndex(x => x.viewId === props.viewId)
   const curViewInfo = views[curViewIndex] as JournalView
 

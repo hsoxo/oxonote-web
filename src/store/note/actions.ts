@@ -1,59 +1,44 @@
-import {JournalEnhancedObject, JournalObject} from "@/types/journal";
-import {NoteObject} from "@/types/note";
+import {NoteContent, NoteObject} from "@/types/note";
 
-export const SET_ALL_JOURNALS = 'NOTES/SET_ALL_JOURNALS'
-export const SET_CUR_JOURNAL = 'NOTES/SET_CUR_JOURNAL'
-export const SET_CUR_NOTE = 'NOTES/SET_CUR_NOTE'
-export const SET_CUR_BOTH = 'NOTES/SET_CUR_BOTH'
-export const SAVE_TO_POUCH = 'NOTES/SAVE_CHANGING_TO_POUCH'
+export const SAVE_TO_POUCH = 'NOTE/SAVE_CHANGING_TO_POUCH'
+export const SET_NOTE_ALL = 'JOURNAL/SET_ALL'
+export const SET_NOTE_INFO = 'JOURNAL/SET_JOURNAL'
+export const SET_NOTE_CONTENT = 'JOURNAL/SET_ATTRS'
 
-interface SetAllJournals {
-    type: typeof SET_ALL_JOURNALS
-    payload: Array<JournalObject>
+interface PartialNoteState {
+  note?: NoteObject
+  content?: NoteContent
 }
-export const setAllJournals = (payload: Array<JournalObject>): NoteActionTypes =>
-  ({ type: SET_ALL_JOURNALS, payload })
+type SetNoteAll = { type: typeof SET_NOTE_ALL, payload: PartialNoteState }
+export const setNoteAll = (payload: PartialNoteState): NoteActionTypes =>
+  ({ type: SET_NOTE_ALL, payload })
 
-interface SetCurJournal {
-    type: typeof SET_CUR_JOURNAL
-    payload: JournalEnhancedObject
-}
-export const setCurJournal = (payload: JournalEnhancedObject): NoteActionTypes =>
-  ({ type: SET_CUR_JOURNAL, payload })
+type SetNoteInfo = { type: typeof SET_NOTE_INFO, payload: NoteObject }
+export const setNoteInfo = (payload: NoteObject): NoteActionTypes =>
+  ({ type: SET_NOTE_INFO, payload })
 
-interface SetCurNote {
-    type: typeof SET_CUR_NOTE
-    payload: NoteObject
-}
-export const setCurNote = (payload: NoteObject): NoteActionTypes =>
-  ({ type: SET_CUR_NOTE, payload })
+type SetNoteContent = { type: typeof SET_NOTE_CONTENT, payload: NoteContent }
+export const setNoteContent = (payload: NoteContent): NoteActionTypes =>
+  ({ type: SET_NOTE_CONTENT, payload })
 
-export interface UpdateAllPayload {
-    journal: JournalEnhancedObject
-    note: NoteObject
-}
-interface SetCurAll {
-    type: typeof SET_CUR_BOTH
-    payload: UpdateAllPayload
-}
-export const setCurAll = (payload: UpdateAllPayload): NoteActionTypes =>
-  ({ type: SET_CUR_BOTH, payload })
-
-
-export type NoteActionTypes = SetAllJournals | SetCurJournal | SetCurNote | SetCurAll
+export type NoteActionTypes = SetNoteAll | SetNoteInfo | SetNoteContent
 
 
 const NOTE_ACT = {
-  SAGA_READ_ALL_JOURNALS: 'SAGA/NOTES/READ_ALL_JOURNALS',
-  SAGA_CREATE_JOURNAL: 'SAGA/NOTES/CREATE_JOURNAL',
-  SAGA_READ_JOURNAL: 'SAGA/NOTES/READ_JOURNAL',
-  SAGA_UPDATE_JOURNAL: 'SAGA/NOTES/UPDATE_JOURNAL',
-  SAGA_DELETE_JOURNAL: 'SAGA/NOTES/DELETE_JOURNAL',
-  SAGA_CREATE_NOTE: 'SAGA/NOTES/CREATE_NOTE',
-  SAGA_READ_NOTE: 'SAGA/NOTES/READ_NOTE',
-  SAGA_UPDATE_NOTE: 'SAGA/NOTES/UPDATE_NOTE',
-  SAGA_DELETE_NOTE: 'SAGA/NOTES/DELETE_NOTE',
-  SAGA_UPDATE_ALL: 'SAGA/NOTES/UPDATE_ALL',
+  SAGA_READ_NOTE: 'SAGA/NOTE/READ_NOTE',
+  SAGA_UPDATE_CONTENT: 'SAGA/NOTE/UPDATE_CONTENT',
+  SAGA_UPDATE_NOTE_INFO: 'SAGA/NOTE/UPDATE_NOTE_INFO',
+  SAGA_UPDATE_NOTE_ATTRIBUTE: 'SAGA/NOTE/UPDATE_NOTE_ATTRIBUTE',
+
+  SAGA_READ_ALL_JOURNALS: 'SAGA/NOTE/READ_ALL_JOURNALS',
+  SAGA_CREATE_JOURNAL: 'SAGA/NOTE/CREATE_JOURNAL',
+  SAGA_READ_JOURNAL: 'SAGA/NOTE/READ_JOURNAL',
+  SAGA_UPDATE_JOURNAL: 'SAGA/NOTE/UPDATE_JOURNAL',
+  SAGA_DELETE_JOURNAL: 'SAGA/NOTE/DELETE_JOURNAL',
+  SAGA_CREATE_NOTE: 'SAGA/NOTE/CREATE_NOTE',
+  SAGA_UPDATE_NOTE: 'SAGA/NOTE/UPDATE_NOTE',
+  SAGA_DELETE_NOTE: 'SAGA/NOTE/DELETE_NOTE',
+  SAGA_UPDATE_ALL: 'SAGA/NOTE/UPDATE_ALL',
 }
 
 export default NOTE_ACT

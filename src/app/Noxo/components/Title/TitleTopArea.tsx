@@ -8,7 +8,7 @@ import { Picker } from "emoji-mart";
 import {
   usePopupState,
   bindToggle,
-  bindPopper, bindPopover,
+  bindPopover,
 } from "material-ui-popup-state/hooks";
 import {NoteState} from "@/types/states";
 import action, {useSelector} from "@/store";
@@ -16,8 +16,8 @@ import NOTE_ACT from "@/store/note/actions";
 import { BaseEmoji } from "emoji-mart";
 import 'emoji-mart/css/emoji-mart.css'
 import styled from "styled-components";
-import ContentEditable from "react-contenteditable";
-import {TitleBlockPropsType} from "@/app/Noxo/components/Title/types";
+import {TitleBlockPropsType} from "@/app/Noxo/components/Title/type";
+
 
 const TitleTopAreaWrapperBox = styled(Box)`
     display: block;
@@ -34,16 +34,11 @@ const InlineButtonWrapper = styled(Box)`
       display: inline-block;
 `
 
-const TitleTopAera: React.FunctionComponent<TitleBlockPropsType> = (props) => {
-  const state: NoteState = useSelector(state => state.get('note'))
-
+const TitleTopArea: React.FunctionComponent<TitleBlockPropsType> = ({ titleIcon, onChange}) => {
   const popupState = usePopupState({
     variant: 'popover',
-    popupId: 'title-top-emoji-picker'
+    popupId: 'title-emoji-picker'
   })
-
-  const curType = props.type === 'journal' ? state.curJournal : state.curNote
-  const { titleIcon } = curType
 
   return (
     <TitleTopAreaWrapperBox id="title-top-area">
@@ -52,7 +47,7 @@ const TitleTopAera: React.FunctionComponent<TitleBlockPropsType> = (props) => {
           <Button
               color="primary"
               {...bindToggle(popupState)}
-              onClick={() => action(NOTE_ACT.SAGA_UPDATE_JOURNAL, { titleIcon: '' })}
+              onClick={() => onChange('titleIcon', '')}
           >
             删除 Emoji
           </Button>
@@ -76,7 +71,7 @@ const TitleTopAera: React.FunctionComponent<TitleBlockPropsType> = (props) => {
               native={true}
               title="Pick your emoji..."
               onSelect={(emoji: BaseEmoji) => {
-                action(NOTE_ACT.SAGA_UPDATE_JOURNAL, { titleIcon: emoji.native })
+                onChange('titleIcon', emoji.native)
                 popupState.close()
               }}
             />
@@ -88,4 +83,4 @@ const TitleTopAera: React.FunctionComponent<TitleBlockPropsType> = (props) => {
   )
 };
 
-export default TitleTopAera;
+export default TitleTopArea;

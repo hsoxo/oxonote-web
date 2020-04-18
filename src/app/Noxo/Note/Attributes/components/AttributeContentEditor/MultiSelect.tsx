@@ -1,13 +1,11 @@
 import React from 'react'
-import { Chip } from '@material-ui/core'
 import { ElementProps } from './types'
 import BaseElement, {
   ContentPopoverProps,
   ContentViewProps
-} from '@/app/Noxo/Note/Attributes/Element/Base'
+} from '@/app/Noxo/Note/Attributes/components/AttributeContentEditor/Base'
 import BaseSelectEditor from './BaseSelectEditor'
-import {AttributeRangeType, JournalAttribute} from '@/types/journal'
-import styled from "styled-components";
+import {AttributeRangeType} from '@/types/journal'
 import { MarginRightChip } from "@/components/OxOUI/Chip";
 
 export const MultiSelectContent = ({ noteAttr, jourAttr }: ContentViewProps) => {

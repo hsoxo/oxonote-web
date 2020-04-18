@@ -4,25 +4,29 @@ import {Link} from "react-router-dom";
 import JournalListViewRow from './Row'
 
 import { MarginBox } from "@/components/OxOUI/OxOBox";
-import {NoteState} from "@/types/states";
+import {JournalState, NoteState} from "@/types/states";
 import {useSelector} from "@/store";
 import {JournalView} from "@/types/journal";
+import listHelper from "./list-helper";
 
 type JournalListViewProps = {
   viewId: string
 }
 
 const JournalListView = (props: JournalListViewProps) => {
-  const { curJournal }: NoteState = useSelector(state => state.get('note'))
-  const { views, notes } = curJournal
+  const { journal, views, notes, attrs }: JournalState = useSelector(state => state.get('journal'))
   const curViewSetting = views.find(x => x.viewId === props.viewId)
 
+  if (!curViewSetting)
+    return <Box>Error</Box>
+
+  const showedNotes = listHelper(journal, notes, curViewSetting)
   return (
     <MarginBox>
       { curViewSetting &&
-        notes.map(x => (
+        showedNotes.map(x => (
         <Link to={`/o/editor/${x._id}`} key={x._id}>
-          <JournalListViewRow key={x._id} info={x} viewSetting={curViewSetting} jourAttrs={curJournal.jourAttrs}/>
+          <JournalListViewRow key={x._id} info={x} viewSetting={curViewSetting} jourAttrs={attrs}/>
         </Link>
         ))}
     </MarginBox>
