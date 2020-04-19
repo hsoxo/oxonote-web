@@ -8,7 +8,6 @@ import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import { navbarHeight, sidebarWidth } from './config'
 import clsx from "clsx";
-import {useMappedState} from "redux-react-hook";
 import {NoteState} from "@/types/states";
 import {useSelector} from "@/store";
 

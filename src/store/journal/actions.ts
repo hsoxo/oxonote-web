@@ -1,4 +1,4 @@
-import {JournalAttribute, JournalEnhancedObject, JournalObject, JournalView} from "@/types/journal";
+import {AttributeRangeType, JournalAttribute, JournalEnhancedObject, JournalObject, JournalView} from "@/types/journal";
 import {JournalState} from "@/types/states";
 import {NoteObject} from "@/types/note";
 
@@ -39,11 +39,20 @@ export type JournalActions = SetAllJournalInfo | SetJournalInfo | SetJournalAttr
   SetJournalViews | SetJournalNotes
 
 
+export const SAGA_JOURNAL_CREATE = 'SAGA/JOURNAL/CREATE_JOURNAL'
+export const SAGA_JOURNAL_READ = 'SAGA/JOURNAL/READ_JOURNAL'
+export const SAGA_UPDATE_INFO = 'SAGA/JOURNAL/UPDATE_JOURNAL'
+export const SAGA_JOURNAL_DELETE = 'SAGA/JOURNAL/DELETE_JOURNAL'
+export const SAGA_UPDATE_ATTR_RANGE = 'SAGA/JOURNAL/UPDATE_ATTR_RANGE'
+
+
+
 const JOURNAL_ACTIONS = {
-  SAGA_JOURNAL_CREATE: 'SAGA/JOURNAL/CREATE_JOURNAL',
-  SAGA_JOURNAL_READ: 'SAGA/JOURNAL/READ_JOURNAL',
-  SAGA_JOURNAL_UPDATE: 'SAGA/JOURNAL/UPDATE_JOURNAL',
-  SAGA_JOURNAL_DELETE: 'SAGA/JOURNAL/DELETE_JOURNAL',
+  SAGA_JOURNAL_CREATE,
+  SAGA_JOURNAL_READ,
+  SAGA_UPDATE_INFO,
+  SAGA_JOURNAL_DELETE,
+  SAGA_UPDATE_ATTR_RANGE,
 }
 
 export default JOURNAL_ACTIONS

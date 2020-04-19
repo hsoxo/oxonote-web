@@ -1,10 +1,9 @@
 import React, {ChangeEvent, ReactNode, useState} from 'react';
 import {MarginDivider5} from "@/components/OxOUI/Divider";
-import {DenseListItem, DenseListItemBoxNoHover, DenseListItemIcon} from "@/components/OxOUI/List";
+import {DenseListItem, DenseListItemIcon} from "@/components/OxOUI/List";
 import AddIcon from "@material-ui/icons/Add";
-import {Box, Button, Grid, IconButton, ListItem, ListItemAvatar, ListItemText, Popover} from "@material-ui/core";
+import {Box, Button, Grid, ListItem, Popover} from "@material-ui/core";
 import {bindPopover, bindTrigger, usePopupState} from "material-ui-popup-state/hooks";
-import DeleteIcon from "@material-ui/icons/Delete";
 import { useSelector } from "@/store";
 import CheckIcon from '@material-ui/icons/Check';
 import ViewListRoundedIcon from '@material-ui/icons/ViewListRounded';
@@ -12,11 +11,9 @@ import ViewModuleRoundedIcon from '@material-ui/icons/ViewModuleRounded';
 import TableChartRoundedIcon from '@material-ui/icons/TableChartRounded';
 import DashboardRoundedIcon from '@material-ui/icons/DashboardRounded';
 import {BootstrapInput} from "@/components/OxOUI/Input";
-import action from "@/store";
 import {NoteState} from "@/types/states";
 import {v4 as uuid} from "uuid";
 import {JournalViewTypes} from "@/types/journal";
-import NOTE_ACT from "@/store/note/actions";
 import {nanoid} from "nanoid";
 
 interface ViewTypeSetting {
@@ -78,7 +75,7 @@ const ViewCreate = () => {
         filters: {relation: 'and', settings: []},
         sorts: [],
       })
-    action(NOTE_ACT.SAGA_UPDATE_JOURNAL, {views: newViews})
+    // action(NOTE_ACT.SAGA_UPDATE_JOURNAL, {views: newViews})
   }
 
   return (

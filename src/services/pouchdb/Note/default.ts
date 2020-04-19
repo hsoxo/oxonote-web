@@ -7,9 +7,9 @@ import { NoteObject } from "@/types/note";
 import {Node} from "slate";
 
 
-type NewNote = (jAttrs: JournalObject) => Promise<NoteObject>
+type NewNote = (journal: JournalObject, jAttrs: Array<JournalAttribute>) => Promise<NoteObject>
 
-export const newNote: NewNote = async (journal) => {
+export const newNote: NewNote = async (journal, jAttrs) => {
   const newId = await nanoid()
   return {
     _id: `${journal._id}-N-${newId}`,
@@ -23,8 +23,8 @@ export const newNote: NewNote = async (journal) => {
     modifiedTime: new Date().getTime(),
     modifiedUser: '',
     content: [],
-    attributes: journal.jourAttrs.map(x => ({
-      attrId: x.attrId,
+    attributes: jAttrs.map(x => ({
+      attrId: x._id,
       value: notePropTypes[x.type].defaultValue()
     })),
   }

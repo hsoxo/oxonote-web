@@ -11,8 +11,13 @@ import { Map } from "immutable";
 
 import rootSaga from "@/store/rootSaga";
 import globalReducer from "@/store/global/reducer";
+import { globalSagaAction } from './global/actions'
 import noteReducer from "@/store/note/reducer";
+import { NoteSagaAction } from './note/saga'
 import journalReducer from "@/store/journal/reducer";
+import { JournalSagaActions } from './journal/saga'
+import {util} from "prismjs";
+import type = util.type;
 
 const createRootReducer = (history: History) => combineReducers({
     router: connectRouter(history),
@@ -44,6 +49,7 @@ export const store = createStore(rootReducer, Map(), enhancer)
 
 saga.run(rootSaga)
 
-const action = (type: string, payload?: any) => store.dispatch({type, payload})
+
+const action = (x: globalSagaAction | JournalSagaActions | NoteSagaAction) => store.dispatch(x)
 
 export default action

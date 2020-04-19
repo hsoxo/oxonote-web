@@ -2,10 +2,6 @@ import React from "react";
 import styled from "styled-components";
 import {Box, Popover, Grid, Button, Chip} from "@material-ui/core";
 
-export const AttributeRowWrapper = styled(Grid)`
-  font-size: 0.9rem;
-  margin-bottom: 0.2rem;
-`
 
 export const HoverGrid = styled(Grid)`
     transition: background 120ms ease-in 0s;
@@ -27,6 +23,11 @@ export const AttributeNameWrapper = styled(Box)`
     text-overflow: ellipsis;
     text-transform: none;
     text-align: left;
+    transition: background 120ms ease-in 0s;
+    border-radius: 0.2rem;
+    &:hover {
+      background-color: var(--secondary-bg-hover);
+    }
 `
 
 export const AttributeName = styled(Box)`

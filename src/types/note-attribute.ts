@@ -1,6 +1,6 @@
 import React from "react";
-import {ElementProps} from "@/app/Noxo/Note/Attributes/components/AttributeContentEditor/types";
-import {ContentViewProps} from "@/app/Noxo/Note/Attributes/components/AttributeContentEditor/Base";
+import {ElementProps} from "@/app/Noxo/Note/Attributes/AttributeRow/Content/AttributeContentEditor/types";
+import {ContentViewProps} from "@/app/Noxo/Note/Attributes/AttributeRow/Content/AttributeContentEditor/Base";
 
 interface Operators {
     label: '等于' | '不等于' | '是空' | '不是空' | '是' | '不是' | '包含' | '不包含' | '以...开始' | '以...结束' | '在...之前' | '在...之后'

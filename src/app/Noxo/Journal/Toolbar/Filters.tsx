@@ -7,20 +7,15 @@ import {
 import {
   Box,
   Button,
-  Select,
-  ListItem,
   MenuItem,
-  ListItemSecondaryAction,
   Popover,
   IconButton,
-  ListItemText,
   FormControl
 } from '@material-ui/core'
-import {JournalState, NoteState} from '@/types/states'
-import action, { useSelector } from '@/store'
-import {AttributeRangeType, JournalAttribute, JournalView, JournalViewFiltersSetting} from '@/types/journal'
+import {JournalState} from '@/types/states'
+import { useSelector } from '@/store'
+import {AttributeRangeType, JournalView, JournalViewFiltersSetting} from '@/types/journal'
 import DeleteIcon from '@material-ui/icons/Delete'
-import NOTE_ACT from '@/store/note/actions'
 import notePropTypes from '@/types/constants/note-attributes'
 import {
   DenseListItem,
@@ -28,9 +23,7 @@ import {
   DenseListItemIcon
 } from '@/components/OxOUI/List'
 import { MarginDivider5 } from '@/components/OxOUI/Divider'
-import HighlightOffIcon from '@material-ui/icons/HighlightOff'
 import AddIcon from '@material-ui/icons/Add'
-import styled from 'styled-components'
 import { DenseSelect, DenseSelectItem } from "@/components/OxOUI/Select";
 import {BootstrapInput} from "@/components/OxOUI/Input";
 
@@ -63,14 +56,14 @@ const FilterSetting: React.FunctionComponent<ViewsManagerProps> = props => {
       ...newSetting[index],
       ...payload
     }
-    action(NOTE_ACT.SAGA_UPDATE_JOURNAL, { views: newViews })
+    // action(NOTE_ACT.SAGA_UPDATE_JOURNAL, { views: newViews })
   }
 
   const handleChangeRelation = (relation: any) => {
     let newViews = JSON.parse(JSON.stringify(views)) as Array<JournalView>
     let viewIndex = newViews.findIndex(x => x.viewId === props.viewId)
     newViews[viewIndex].filters.relation = relation
-    action(NOTE_ACT.SAGA_UPDATE_JOURNAL, { views: newViews })
+    // action(NOTE_ACT.SAGA_UPDATE_JOURNAL, { views: newViews })
   }
 
   const handleDelete = (index: number) => {
@@ -78,7 +71,7 @@ const FilterSetting: React.FunctionComponent<ViewsManagerProps> = props => {
     let viewIndex = newViews.findIndex(x => x.viewId === props.viewId)
     let newSetting = newViews[viewIndex].filters.settings
     newSetting.splice(index, 1)
-    action(NOTE_ACT.SAGA_UPDATE_JOURNAL, { views: newViews })
+    // action(NOTE_ACT.SAGA_UPDATE_JOURNAL, { views: newViews })
   }
 
   const handleNewFilter = () => {
@@ -90,7 +83,7 @@ const FilterSetting: React.FunctionComponent<ViewsManagerProps> = props => {
       target: '',
       date: 0
     })
-    action(NOTE_ACT.SAGA_UPDATE_JOURNAL, { views: newViews })
+    // action(NOTE_ACT.SAGA_UPDATE_JOURNAL, { views: newViews })
   }
 
   if (!props.viewId) return <Button>筛选</Button>

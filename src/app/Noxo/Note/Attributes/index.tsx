@@ -4,10 +4,7 @@ import {NoteState} from "@/types/states";
 import {useSelector} from "@/store";
 import { Box } from "@material-ui/core";
 
-import AttributeRow from "./components/AttributeRow";
-import AttributeTitle from "./components/AttributeTitle";
-import AttributeContent from "./components/AttributeContent";
-import AddNew from "./components/AddNew"
+import AttributeRow, { AttributeNewRow } from "./AttributeRow/index";
 
 import styled from "styled-components";
 
@@ -16,24 +13,21 @@ const AttributeBlockBox = styled(Box)`
 `
 
 const AttributeBlock = () => {
-  const { curJournal: { jourAttrs }, curNote }: NoteState = useSelector(state => state.get('note'))
-  const attributes = curNote.attributes.filter(x =>
-    jourAttrs.some(y => x.attrId === y.attrId)
+  const { note: { attributes }, journalAttrs }: NoteState = useSelector(state => state.get('note'))
+  const activeAttrs = attributes.filter(x =>
+    journalAttrs.some(y => x.attrId === y._id)
   )
-  
+
   return (
     <AttributeBlockBox>
       <React.Fragment>
-        {attributes.map(value => 
+        {activeAttrs.map(value =>
           <AttributeRow 
             key={value.attrId}
-            title={<AttributeTitle {...value}/>}
-            content={<AttributeContent {...value}/>}
+            {...value}
           />)}
       </React.Fragment>
-      <AttributeRow
-        title={<AddNew />}
-      />
+      <AttributeNewRow />
     </AttributeBlockBox>
   )
 }

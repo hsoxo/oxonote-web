@@ -4,7 +4,7 @@ body {
     --primary-bg: #ffffff;
     --primary-text: rgba(0, 0, 0, 0.87);
     --secondary-bg: rgba(246, 244, 241, 1);
-    --secondary-bg-hover: rgb(222, 220, 216);
+    --secondary-bg-hover: rgba(0, 0, 0, 0.1);
     --secondary-text: rgba(0, 0, 0, 0.54);
     --mu-bg: #fafafa;
     --inline-bg: rgb(248, 248, 248);

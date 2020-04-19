@@ -9,7 +9,7 @@ import ArrowRightIcon from '@material-ui/icons/ArrowRight';
 import {NoteState} from "@/types/states";
 import action, {useSelector} from "@/store";
 import {GlobalState} from "@/store/global/type";
-import GLOBAL_ACTIONS from "@/store/global/actions";
+import * as GLOBAL_ACT from "@/store/global/actions";
 
 declare module 'csstype' {
   interface Properties {
@@ -136,7 +136,7 @@ export default function JournalTreeView() {
   const { journals }: GlobalState = useSelector(state => state.get('global'))
 
   useEffect(() => {
-    action(GLOBAL_ACTIONS.SAGA_LOAD_JOURNAL_LIST)
+    action({ type: GLOBAL_ACT.SAGA_LOAD_JOURNAL_LIST })
   }, [])
 
   return (

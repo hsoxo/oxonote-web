@@ -3,18 +3,13 @@ import {bindPopover, bindTrigger, usePopupState} from "material-ui-popup-state/h
 import {
   Box,
   Button,
-  Select,
-  ListItem,
-  ListItemSecondaryAction,
   Popover,
   IconButton,
-  ListItemText
 } from "@material-ui/core";
-import {JournalState, NoteState} from "@/types/states";
-import action, {useSelector} from "@/store";
+import {JournalState} from "@/types/states";
+import {useSelector} from "@/store";
 import {JournalView} from "@/types/journal";
 import DeleteIcon from '@material-ui/icons/Delete';
-import NOTE_ACT from "@/store/note/actions";
 import { DenseSelect, DenseSelectItem } from "@/components/OxOUI/Select";
 import {
   DenseListItem,
@@ -45,14 +40,14 @@ const SortSetting: React.FunctionComponent<ViewsManagerProps> = (props) => {
       ...newViews[viewIndex].sorts[attrIndex],
       ...payload
     }
-    action(NOTE_ACT.SAGA_UPDATE_JOURNAL, { views: newViews })
+    // action(NOTE_ACT.SAGA_UPDATE_JOURNAL, { views: newViews })
   }
 
   const handleDelete = (index: number) => {
     let newViews = JSON.parse(JSON.stringify(views)) as Array<JournalView>
     let viewIndex = newViews.findIndex(x => x.viewId === props.viewId)
     newViews[viewIndex].sorts.splice(index, 1)
-    action(NOTE_ACT.SAGA_UPDATE_JOURNAL, { views: newViews })
+    // action(NOTE_ACT.SAGA_UPDATE_JOURNAL, { views: newViews })
   }
 
   const handleNewSort = () => {
@@ -65,7 +60,7 @@ const SortSetting: React.FunctionComponent<ViewsManagerProps> = (props) => {
       attrId: '',
       direction: ''
     })
-    action(NOTE_ACT.SAGA_UPDATE_JOURNAL, { views: newViews })
+    // action(NOTE_ACT.SAGA_UPDATE_JOURNAL, { views: newViews })
   }
 
   if (!props.viewId) return (

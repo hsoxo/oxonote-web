@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {
-  Button, Popover, ListItem, ListItemIcon, ListItemText,
-  ListItemSecondaryAction, Switch, Box
+  Button, Popover,
+  ListItemSecondaryAction, Box
 } from "@material-ui/core";
 import {
   usePopupState,
@@ -9,10 +9,9 @@ import {
   bindPopover,
 } from 'material-ui-popup-state/hooks'
 import styled from "styled-components";
-import {JournalState, NoteState} from "@/types/states";
-import action, {useSelector} from "@/store";
+import { JournalState } from "@/types/states";
+import {useSelector} from "@/store";
 import notePropTypes from "@/types/constants/note-attributes";
-import NOTE_ACT from "@/store/note/actions";
 import {JournalView} from "@/types/journal";
 import { DenseListItemBox, DenseListItemIcon } from "@/components/OxOUI/List";
 import { AntSwitch } from "@/components/OxOUI/Switch";
@@ -34,6 +33,7 @@ const AttributeSetting: React.FunctionComponent<ViewsManagerProps> = (props) => 
   const { views, attrs: jourAttrs }: JournalState = useSelector(state => state.get('journal'))
 
   let attributes = jourAttrs.map(x => ({...notePropTypes[x.type], ...x}))
+
   const curJourView = views.find(x => x.viewId === props.viewId) as JournalView
   let attrSetting: Array<{ attrId: string, status: boolean}> = []
   if (curJourView) {
@@ -58,7 +58,7 @@ const AttributeSetting: React.FunctionComponent<ViewsManagerProps> = (props) => 
       ...curJourView,
       attribute: newAttrSetting,
     })
-    action(NOTE_ACT.SAGA_UPDATE_JOURNAL, { views: newViews})
+    // action({ type: NOTE_ACT.SAGA_UPDATE_JOURNAL, payload: { views: newViews} })
   }
 
   return (

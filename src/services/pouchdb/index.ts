@@ -1,5 +1,5 @@
-const journal = require('./journal')
-const note = require('./note')
+const journal = require('./Journal/index')
+const note = require('./Note/index')
 
 const PouchConn = {
   note,

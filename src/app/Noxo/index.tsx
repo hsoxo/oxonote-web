@@ -1,4 +1,4 @@
-import React, {Suspense, useEffect} from 'react'
+import React, {Suspense} from 'react'
 import { Route } from 'react-router-dom'
 import { InnerRouteProps } from '@/routes'
 import Sidebar from './Layout/Sidebar'
@@ -8,9 +8,6 @@ import { sidebarWidth, navbarHeight } from './Layout/config'
 import '@/styles/base.css'
 import { FlexBox } from '@/components/OxOUI/OxOBox'
 import styled from 'styled-components'
-import NOTE_ACT from "@/store/note/actions";
-import action from "@/store";
-
 
 const SidebarWrapper = styled(Sidebar)``
 
@@ -51,9 +48,6 @@ const NoteLayout = (props: InnerRouteProps) => {
   const handleToggleState = () => toggleState(!state)
 
   const { routes } = props
-  useEffect(() => {
-      action(NOTE_ACT.SAGA_READ_ALL_JOURNALS)
-  }, [])
 
   return (
     <FlexBox>

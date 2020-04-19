@@ -2,33 +2,53 @@ import { put, take, call, fork, throttle, select } from 'redux-saga/effects'
 import PouchConn from '@/services/pouchdb'
 import { push } from 'connected-react-router'
 
-import * as actions from './actions'
+import * as ACT from './actions'
 import {NoteState} from '@/types/states'
-import {NoteObject} from "@/types/note";
-import * as ACT from "./actions";
+import {NoteContent} from "@/types/note";
+
+const SAGA_ACTIONS = Object.entries(ACT).filter(x => x[0].startsWith('SAGA')).map(x => x[1])
 
 export function* noteSaveSW() {
-  yield throttle(1000, actions.SAVE_TO_POUCH, saveToPouch)
+  yield throttle(1000, ACT.SAVE_TO_POUCH, saveToPouch)
 }
 
 function* noteSW() {
   while (true) {
-    const action = yield take(Object.values(actions.default))
+    const action: NoteSagaAction = yield take(SAGA_ACTIONS)
     console.log(
       `%c Note Saga: ${action.type}: ${JSON.stringify(action)}`,
       'color: #f0c002'
     )
     switch (action.type) {
-      case actions.default.SAGA_CREATE_NOTE: {
-        yield fork(createNote, action.payload); break; }
-
-      case actions.default.SAGA_READ_NOTE: {
-        yield fork(readNote, action.payload); break; }
-
-      case actions.default.SAGA_UPDATE_NOTE_INFO: {
-        yield fork(updateNote, action.payload)
-        yield put({ type: actions.SAVE_TO_POUCH })
-        break;
+      case ACT.SAGA_CREATE_NOTE: {
+        yield fork(createNote, action.journalId); break;
+      }
+      case ACT.SAGA_READ_NOTE: {
+        yield fork(readNote, action.noteId); break;
+      }
+      case ACT.SAGA_UPDATE_INFO: {
+        yield fork(updateNoteInfo, action.payload); break;
+      }
+      case ACT.SAGA_UPDATE_CONTENT: {
+        yield fork(updateNoteContent, action.content); break;
+      }
+      case ACT.SAGA_CREATE_ATTRIBUTE: {
+        yield fork(createNoteAttribute, action.noteId, action.attrType, action.label); break;
+      }
+      case ACT.SAGA_UPDATE_ATTRIBUTE_TYPE: {
+        yield fork(updateNoteAttributeType, action.attrId, action.newType); break;
+      }
+      case ACT.SAGA_UPDATE_ATTRIBUTE_TITLE: {
+        yield fork(updateNoteAttributeTitle, action.attrId, action.newTitle); break;
+      }
+      case ACT.SAGA_UPDATE_ATTRIBUTE_VALUE: {
+        yield fork(updateNoteAttributeValue, action.noteId, action.attrId, action.newValue); break;
+      }
+      case ACT.SAGA_UPDATE_ATTRIBUTE_SELECT_RANGE: {
+        yield fork(updateNoteAttributeSelectRange, action.attrId, action.newRange); break;
+      }
+      case ACT.SAGA_REMOVE_ATTRIBUTE: {
+        yield fork(removeNoteAttribute, action.attrId); break;
       }
 
     }
@@ -46,6 +66,7 @@ function* saveToPouch() {
   }
 }
 
+type CreateNote = { type: typeof ACT.SAGA_CREATE_NOTE, journalId: string }
 function* createNote(journalId: string) {
   try {
     const value = yield call(PouchConn.note.create, journalId)
@@ -55,6 +76,7 @@ function* createNote(journalId: string) {
   }
 }
 
+type ReadNote = { type: typeof ACT.SAGA_READ_NOTE, noteId: string }
 function* readNote(noteId: string) {
   try {
     const value = yield call(PouchConn.note.readOne, noteId)
@@ -65,10 +87,107 @@ function* readNote(noteId: string) {
   }
 }
 
-function* updateNote(payload: NoteObject) {
+interface PartialNoteObject {
+  journalId?: string
+  title?: string
+  titleIcon?: string
+  bannerImg?: string
+  createdTime?: number
+  createdUser?: string
+  modifiedTime?: number
+  modifiedUser?: string
+}
+type UpdateNoteInfo = { type: typeof ACT.SAGA_UPDATE_INFO, payload: PartialNoteObject }
+function* updateNoteInfo(payload: PartialNoteObject) {
   try {
-    yield put(actions.setNoteInfo(payload))
+    const { note: { _id } } = yield select(state => state.get('note'))
+    yield call(PouchConn.note.update, _id, payload)
+    yield put(ACT.setNoteInfo(payload))
   } catch (e) {
+    console.error(e)
+  }
+}
+
+type UpdateNoteContent = { type: typeof ACT.SAGA_UPDATE_CONTENT, content: NoteContent }
+function* updateNoteContent(content: any) {
+  try {
+    const { note: { _id } } = yield select(state => state.get('note'))
+    yield call(PouchConn.note.content.update, _id, content)
+  } catch (e) {
+    console.error(e)
+  }
+}
+
+type CreateNoteAttribute = { type: typeof ACT.SAGA_CREATE_ATTRIBUTE, noteId: string, attrType: string, label: string }
+function* createNoteAttribute(noteId: string, attrType: string, label: string) {
+  try {
+    yield call(PouchConn.note.attribute.create, noteId, attrType, label)
+    yield call(refreshNote)
+  } catch (e) {
+    console.error(e)
+  }
+}
+
+type UpdateNoteAttributeType = { type: typeof ACT.SAGA_UPDATE_ATTRIBUTE_TYPE, attrId: string, newType: string }
+function* updateNoteAttributeType(attrId: string, newType: string) {
+  try {
+    yield call(PouchConn.journal.attr.update, attrId, 'type', newType)
+    yield call(refreshNote)
+  } catch (e) {
+    console.error(e)
+  }
+}
+
+type UpdateNoteAttributeTitle = { type: typeof ACT.SAGA_UPDATE_ATTRIBUTE_TITLE, attrId: string, newTitle: string }
+function* updateNoteAttributeTitle(attrId: string, newTitle: string) {
+  try {
+    yield call(PouchConn.journal.attr.update, attrId, 'title', newTitle)
+    yield call(refreshNote)
+  } catch (e) {
+    console.error(e)
+  }
+}
+
+type UpdateNoteAttributeValue = { type: typeof ACT.SAGA_UPDATE_ATTRIBUTE_VALUE, noteId: string, attrId: string, newValue: any }
+function* updateNoteAttributeValue(noteId: string, attrId: string, newValue: any) {
+  try {
+    yield call(PouchConn.note.attribute.updateValue, noteId, attrId, newValue)
+    yield call(refreshNote)
+  } catch (e) {
+    console.error(e)
+  }
+}
+
+type UpdateNoteAttributeSelectRange = { type: typeof ACT.SAGA_UPDATE_ATTRIBUTE_SELECT_RANGE, attrId: string, newRange: any }
+function* updateNoteAttributeSelectRange(attrId: string, newRange: any) {
+  try {
+    yield call(PouchConn.journal.attr.update, attrId, 'range', newRange)
+    yield call(refreshNote)
+  } catch (e) {
+    console.error(e)
+  }
+}
+
+type RemoveNoteAttribute = { type: typeof ACT.SAGA_REMOVE_ATTRIBUTE, attrId: string }
+function* removeNoteAttribute(attrId: string) {
+  try {
+    yield call(PouchConn.journal.attr.remove, attrId)
+    yield call(refreshNote)
+  } catch (e) {
+    console.error(e)
+  }
+}
+
+export type NoteSagaAction = CreateNote | ReadNote | UpdateNoteInfo | UpdateNoteContent | CreateNoteAttribute | UpdateNoteAttributeType |
+  UpdateNoteAttributeTitle | UpdateNoteAttributeValue | UpdateNoteAttributeSelectRange | RemoveNoteAttribute
+
+function* refreshNote() {
+  try {
+    const { note: { _id } } = yield select(state => state.get('note'))
+    const value = yield call(PouchConn.note.readOne, _id)
+    yield put(ACT.setNoteAll(value))
+  } catch (e) {
+    if (e.name === 'not_found') put(push(`/o`))
     console.error(e)
   }
 }

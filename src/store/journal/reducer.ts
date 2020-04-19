@@ -28,7 +28,14 @@ function journalReducer(
     case ACT.SET_JOURNAL_ALL:
       return { ...state, ...action.payload }
     case ACT.SET_JOURNAL_INFO:
-      return { ...state, journal: action.payload }
+      return {
+        ...state,
+        journalChanged: true,
+        journal: {
+          ...state.journal,
+          ...action.payload,
+        }
+      }
     case ACT.SET_JOURNAL_ATTRS:
       return { ...state, attrs: action.payload }
     case ACT.SET_JOURNAL_VIEWS:

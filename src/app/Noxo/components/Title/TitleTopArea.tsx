@@ -10,9 +10,6 @@ import {
   bindToggle,
   bindPopover,
 } from "material-ui-popup-state/hooks";
-import {NoteState} from "@/types/states";
-import action, {useSelector} from "@/store";
-import NOTE_ACT from "@/store/note/actions";
 import { BaseEmoji } from "emoji-mart";
 import 'emoji-mart/css/emoji-mart.css'
 import styled from "styled-components";

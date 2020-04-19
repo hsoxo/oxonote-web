@@ -13,8 +13,8 @@ type SetNoteAll = { type: typeof SET_NOTE_ALL, payload: PartialNoteState }
 export const setNoteAll = (payload: PartialNoteState): NoteActionTypes =>
   ({ type: SET_NOTE_ALL, payload })
 
-type SetNoteInfo = { type: typeof SET_NOTE_INFO, payload: NoteObject }
-export const setNoteInfo = (payload: NoteObject): NoteActionTypes =>
+type SetNoteInfo = { type: typeof SET_NOTE_INFO, payload: any }
+export const setNoteInfo = (payload: any): NoteActionTypes =>
   ({ type: SET_NOTE_INFO, payload })
 
 type SetNoteContent = { type: typeof SET_NOTE_CONTENT, payload: NoteContent }
@@ -23,22 +23,16 @@ export const setNoteContent = (payload: NoteContent): NoteActionTypes =>
 
 export type NoteActionTypes = SetNoteAll | SetNoteInfo | SetNoteContent
 
+export const SAGA_CREATE_NOTE = 'SAGA/NOTE/CREATE_NOTE'
+export const SAGA_READ_NOTE = 'SAGA/NOTE/READ_NOTE'
+export const SAGA_UPDATE_CONTENT = 'SAGA/NOTE/UPDATE_CONTENT'
+export const SAGA_UPDATE_INFO = 'SAGA/NOTE/UPDATE_INFO'
+export const SAGA_CREATE_ATTRIBUTE = 'SAGA/NOTE/CREATE_ATTRIBUTE'
+export const SAGA_UPDATE_ATTRIBUTE_VALUE = 'SAGA/NOTE/UPDATE_ATTRIBUTE_VALUE'
+export const SAGA_UPDATE_ATTRIBUTE_TITLE = 'SAGA/NOTE/UPDATE_ATTRIBUTE_TITLE'
+export const SAGA_UPDATE_ATTRIBUTE_TYPE = 'SAGA/NOTE/UPDATE_ATTRIBUTE_TYPE'
+export const SAGA_UPDATE_ATTRIBUTE_SELECT_RANGE = 'SAGA/NOTE/SAGA_UPDATE_ATTRIBUTE_SELECT_RANGE'
+export const SAGA_REMOVE_ATTRIBUTE = 'SAGA/NOTE/export const SAGA_REMOVE_ATTRIBUTE'
 
-const NOTE_ACT = {
-  SAGA_READ_NOTE: 'SAGA/NOTE/READ_NOTE',
-  SAGA_UPDATE_CONTENT: 'SAGA/NOTE/UPDATE_CONTENT',
-  SAGA_UPDATE_NOTE_INFO: 'SAGA/NOTE/UPDATE_NOTE_INFO',
-  SAGA_UPDATE_NOTE_ATTRIBUTE: 'SAGA/NOTE/UPDATE_NOTE_ATTRIBUTE',
 
-  SAGA_READ_ALL_JOURNALS: 'SAGA/NOTE/READ_ALL_JOURNALS',
-  SAGA_CREATE_JOURNAL: 'SAGA/NOTE/CREATE_JOURNAL',
-  SAGA_READ_JOURNAL: 'SAGA/NOTE/READ_JOURNAL',
-  SAGA_UPDATE_JOURNAL: 'SAGA/NOTE/UPDATE_JOURNAL',
-  SAGA_DELETE_JOURNAL: 'SAGA/NOTE/DELETE_JOURNAL',
-  SAGA_CREATE_NOTE: 'SAGA/NOTE/CREATE_NOTE',
-  SAGA_UPDATE_NOTE: 'SAGA/NOTE/UPDATE_NOTE',
-  SAGA_DELETE_NOTE: 'SAGA/NOTE/DELETE_NOTE',
-  SAGA_UPDATE_ALL: 'SAGA/NOTE/UPDATE_ALL',
-}
 
-export default NOTE_ACT

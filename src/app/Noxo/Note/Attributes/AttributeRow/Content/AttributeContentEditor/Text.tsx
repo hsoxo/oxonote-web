@@ -26,7 +26,7 @@ const TextEditor: FunctionComponent<ContentPopoverProps> = ({
 }) => {
   const [value, setValue] = useState(noteAttr.value)
   const handleCommit = () => {
-    onNoteAttrChange({ value })
+    onNoteAttrChange(value)
     popupState.toggle()
   }
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {

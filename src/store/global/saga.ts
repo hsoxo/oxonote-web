@@ -2,7 +2,7 @@ import {call, fork, put, take} from "redux-saga/effects";
 import * as ACT from "./actions";
 import PouchConn from "@/services/pouchdb";
 
-export function* sagaWatcherGlobal() {
+function* globalSW() {
   while (true) {
     const action = yield take(Object.values(ACT.default))
     console.log(
@@ -11,12 +11,12 @@ export function* sagaWatcherGlobal() {
     )
     switch (action.type) {
       case ACT.default.SAGA_LOAD_JOURNAL_LIST: {
-        yield fork(readAllJournals); break; }
+        yield fork(loadJournalList); break; }
     }
   }
 }
 
-function* readAllJournals() {
+function* loadJournalList() {
   try {
     const value = yield call(PouchConn.journal.readAll)
     yield put(ACT.setJournals(value))
@@ -24,3 +24,4 @@ function* readAllJournals() {
     console.error(e)
   }}
 
+export default globalSW

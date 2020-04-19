@@ -5,22 +5,18 @@ import {
   AttributeLabel,
   AttributeIcon,
   AttributeName,
-  AttributeTitlePopover
-} from './UI'
+} from '../../StyledComponents'
 import notePropTypes from '@/types/constants/note-attributes'
 import action, { useSelector } from '@/store'
-import NOTE_ACT from '@/store/note/actions'
+import * as NOTE_ACT from '@/store/note/actions'
 import { NoteState } from '@/types/states'
 import { v4 as uuid } from 'uuid'
 import {bindMenu, bindToggle, usePopupState} from 'material-ui-popup-state/hooks'
 import { Popover } from '@material-ui/core'
-import AttributeTypeEditor from '@/app/Noxo/Note/Attributes/components/AttributeTypeEditor'
+import AttributeTypeEditor from './AttributeTypeEditor'
 
-const AddNew = () => {
-  const {
-    curJournal: { jourAttrs },
-    curNote: { attributes }
-  }: NoteState = useSelector(state => state.get('note'))
+const CreateNew = () => {
+  const { note }: NoteState = useSelector(state => state.get('note'))
   const [title, setTitle] = useState('新属性')
   const popupState = usePopupState({
     variant: "popover",
@@ -28,36 +24,13 @@ const AddNew = () => {
   });
 
   const handleCreateAttr = (newType: string) => {
-    const newAttrInfo = notePropTypes[newType]
-    const newJourAttrs = jourAttrs.slice()
-    const newAttrId = uuid()
-    newJourAttrs.push({
-      _id: newAttrId,
-      _rev: '',
-      attrId: newAttrId,
-      type: newType,
-      label: title
-    })
-
-    const newAttributes = attributes.slice()
-    newAttributes.push({
-      attrId: newAttrId,
-      value: newAttrInfo.defaultValue()
-    })
-
-    action(NOTE_ACT.SAGA_UPDATE_ALL, {
-      journal: { jourAttrs: newJourAttrs },
-      note: { attributes: newAttributes }
-    })
-    popupState.toggle()
-    setTitle('新属性')
+    action({ type: NOTE_ACT.SAGA_CREATE_ATTRIBUTE, noteId: note._id, attrType: newType, label: title })
   }
 
   return (
     <AttributeNameWrapper>
       <AttributeName
         color="primary"
-        onClick={handleCreateAttr}
         {...bindToggle(popupState)}>
         <AttributeIcon>
           <AddIcon fontSize="inherit" />
@@ -84,4 +57,4 @@ const AddNew = () => {
   )
 }
 
-export default AddNew
+export default CreateNew

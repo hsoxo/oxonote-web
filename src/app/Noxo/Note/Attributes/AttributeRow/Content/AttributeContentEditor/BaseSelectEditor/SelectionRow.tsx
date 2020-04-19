@@ -1,17 +1,12 @@
 import React, {Fragment, FunctionComponent} from 'react';
 import DragIndicatorIcon from "@material-ui/icons/DragIndicator";
 import {
-  AttributeIcon, AttributeLabel,
-  AttributeName,
-  AttributeNameWrapper,
   ClickableChip,
   NoHoverButton
-} from "@/app/Noxo/Note/Attributes/components/UI";
+} from "../../../../StyledComponents";
 import {AttributeRangeType} from "@/types/journal";
 import {bindMenu, bindToggle, usePopupState} from "material-ui-popup-state/hooks";
-import AddIcon from "@material-ui/icons/Add";
 import {Box, Popover} from "@material-ui/core";
-import AttributeTypeEditor from "@/app/Noxo/Note/Attributes/components/AttributeTypeEditor";
 import ColorPicker from "@/app/Noxo/components/ColorPicker";
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import {MarginDivider5} from "@/components/OxOUI/Divider";

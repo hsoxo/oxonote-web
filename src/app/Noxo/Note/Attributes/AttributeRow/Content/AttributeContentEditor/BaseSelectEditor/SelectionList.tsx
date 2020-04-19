@@ -9,10 +9,9 @@ import {
   getItemStyle,
   getListStyle
 } from '@/app/Noxo/Note/Attributes/utils/dnd-helper'
-import DragIndicatorIcon from '@material-ui/icons/DragIndicator'
 import { AttributeRangeType } from '@/types/journal'
-import { HoverBox, NoHoverButton, ClickableChip } from '../../UI'
-import SelectionRow from "@/app/Noxo/Note/Attributes/components/AttributeContentEditor/BaseSelectEditor/SelectionRow";
+import { HoverBox } from '../../../../StyledComponents'
+import SelectionRow from "./SelectionRow";
 
 interface SelectionListProps {
   listedItems: Array<AttributeRangeType>

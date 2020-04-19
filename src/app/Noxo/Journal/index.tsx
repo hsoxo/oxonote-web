@@ -1,29 +1,30 @@
 import React, {createContext, Fragment, useEffect, useState} from 'react'
 import {Box, Divider, Fade, LinearProgress, Slide} from '@material-ui/core'
 import action, {useSelector} from "@/store";
-import noteAct from '@/store/note/actions'
 
 import TitleBlock from "../components/Title";
 import JournalToolbar from "./Toolbar";
 import JournalListView from "@/app/Noxo/Journal/List";
 import {JournalState, NoteState} from "@/types/states";
 import JournalGalleryView from "@/app/Noxo/Journal/Gallery";
-import JOURNAL_ACTIONS from "@/store/journal/actions";
+import * as JOURNAL_ACT from "@/store/journal/actions";
+import debounce from "lodash/debounce";
 
 export const JournalContext = createContext({
+	viewId: '',
 	handleChangeView: (viewId: string) => {},
 })
 
-const handleJournalInfoChange = (key: string, value: any) => {
-
-}
+const handleSaveInfo = debounce((key: string, value: string) => {
+	action({ type: JOURNAL_ACT.SAGA_UPDATE_INFO, payload: { [key]: value } })
+}, 500, {maxWait: 5000})
 
 const Journal = (props: React.ComponentProps<any>) => {
 	const jourId = props.match.params.id
 	const view = props.match.params.view
 	const [viewId, setViewId] = useState(view)
 
-	const { journal, views, attrs }: JournalState =
+	const { journal, views }: JournalState =
 		useSelector(state => state.get('journal'))
 
 	const handleChangeView = (viewId: string) => {
@@ -31,7 +32,7 @@ const Journal = (props: React.ComponentProps<any>) => {
 	}
 
 	useEffect(() => {
-		action(JOURNAL_ACTIONS.SAGA_JOURNAL_READ, jourId)
+		action({ type: JOURNAL_ACT.SAGA_JOURNAL_READ, journalId: jourId })
 	}, [jourId])
 
 	useEffect(() => {
@@ -40,9 +41,11 @@ const Journal = (props: React.ComponentProps<any>) => {
 	}, [view, views, setViewId])
 
 	let viewInfo = views.filter(x => x.viewId === viewId)
+	console.log(jourId, journal)
 	return (
 		<div className="oxo-editor">
 			<JournalContext.Provider value={{
+				viewId,
 				handleChangeView
 			}}>
 				<Slide direction="up" in={jourId === journal._id && viewInfo.length > 0} timeout={500} mountOnEnter unmountOnExit>
@@ -54,7 +57,7 @@ const Journal = (props: React.ComponentProps<any>) => {
 										<TitleBlock 
 											title={journal.title}
 											titleIcon={journal.titleIcon}
-											onChange={handleJournalInfoChange}
+											onChange={handleSaveInfo}
 										/>
 										<JournalToolbar jourId={jourId} viewId={viewId}/>
 										<Divider />

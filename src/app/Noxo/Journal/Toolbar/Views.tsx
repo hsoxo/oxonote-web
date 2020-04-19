@@ -3,17 +3,11 @@ import {bindPopover, bindTrigger, usePopupState} from "material-ui-popup-state/h
 import {
   Box,
   Button,
-  ListItemIcon,
-  ListItem,
-  ListItemText,
-  ListItemSecondaryAction,
   Popover,
-  Switch,
   IconButton
 } from "@material-ui/core";
 import {JournalState, NoteState} from "@/types/states";
 import {useSelector} from "@/store";
-import {DenseSelect, DenseSelectItem} from "@/components/OxOUI/Select";
 import {DenseListItem, DenseListItemBoxNoHover, DenseListItemIcon} from "@/components/OxOUI/List";
 import DeleteIcon from "@material-ui/icons/Delete";
 import {MarginDivider5} from "@/components/OxOUI/Divider";

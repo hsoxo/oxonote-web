@@ -1,17 +1,27 @@
 import React from 'react'
+
 import AccessTimeIcon from '@material-ui/icons/AccessTime'
 import PersonIcon from '@material-ui/icons/Person'
 import RadioButtonCheckedIcon from '@material-ui/icons/RadioButtonChecked'
 import DoneAllIcon from '@material-ui/icons/DoneAll'
 import TextFieldsIcon from '@material-ui/icons/TextFields'
 import CheckBoxIcon from '@material-ui/icons/CheckBox'
-import EventNoteIcon from '@material-ui/icons/EventNote'
-import * as Elements from '@/app/Noxo/Note/Attributes/components/AttributeContentEditor'
-//
+
+import * as Elements from '@/app/Noxo/Note/Attributes/AttributeRow/Content/AttributeContentEditor'
+
 import { NoteAttributeTypesObject } from "@/types/note-attribute";
-//
+
+export const SINGLE_SELECT = 'SINGLE_SELECT'
+export const MULTI_SELECT = 'MULTI_SELECT'
+export const TEXT = 'TEXT'
+export const CHECKBOX = 'CHECKBOX'
+export const CREATED_TIME = 'CREATED_TIME'
+export const CREATED_USER = 'CREATED_USER'
+export const UPDATED_TIME = 'UPDATED_TIME'
+export const UPDATED_USER = 'UPDATED_USER'
+
 const notePropTypes: NoteAttributeTypesObject = {
-	'5': {
+	[SINGLE_SELECT]: {
 		defaultLabel: '单选',
 		special: false,
 		icon: <RadioButtonCheckedIcon fontSize={"inherit"}/>,
@@ -38,7 +48,7 @@ const notePropTypes: NoteAttributeTypesObject = {
 			},
 		]
 	},
-	'6': {
+	[MULTI_SELECT]: {
 		defaultLabel: '多选',
 		special: false,
 		icon: <DoneAllIcon fontSize={"inherit"}/>,
@@ -65,7 +75,7 @@ const notePropTypes: NoteAttributeTypesObject = {
 			},
 		]
 	},
-	'7': {
+	[TEXT]: {
 		defaultLabel: '文本',
 		special: false,
 		icon: <TextFieldsIcon fontSize={"inherit"}/>,
@@ -108,7 +118,7 @@ const notePropTypes: NoteAttributeTypesObject = {
 			},
 		]
 	},
-	'8': {
+	[CHECKBOX]: {
 		defaultLabel: '复选框',
 		special: false,
 		icon: <CheckBoxIcon fontSize={"inherit"}/>,
@@ -140,7 +150,7 @@ const notePropTypes: NoteAttributeTypesObject = {
 	//   defaultValue: () => '',
 	//   elem: () => <div></div>,
 	// },
-	'1': {
+	[CREATED_TIME]: {
 		defaultLabel: '创建时间',
 		special: true,
 		icon: <AccessTimeIcon fontSize={"inherit"}/>,
@@ -163,7 +173,7 @@ const notePropTypes: NoteAttributeTypesObject = {
 			},
 		]
 	},
-	'2': {
+	[UPDATED_TIME]: {
 		defaultLabel: '最后编辑时间',
 		special: true,
 		icon: <AccessTimeIcon fontSize={"inherit"}/>,
@@ -186,7 +196,7 @@ const notePropTypes: NoteAttributeTypesObject = {
 			},
 		]
 	},
-	'3': {
+	[CREATED_USER]: {
 		defaultLabel: '创建人',
 		special: true,
 		icon: <PersonIcon fontSize={"inherit"}/>,
@@ -205,7 +215,7 @@ const notePropTypes: NoteAttributeTypesObject = {
 			},
 		]
 	},
-	'4': {
+	[UPDATED_USER]: {
 		defaultLabel: '最后编辑人',
 		special: true,
 		icon: <PersonIcon fontSize={"inherit"}/>,

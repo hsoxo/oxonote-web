@@ -1,17 +1,19 @@
 import React, { useState } from 'react'
-import { ContentPopoverProps } from '@/app/Noxo/Note/Attributes/components/AttributeContentEditor/Base'
+import { ContentPopoverProps } from '../Base'
 import { DropResult } from 'react-beautiful-dnd'
-import { reorder } from '../../../utils/dnd-helper'
+import { reorder } from '../../../../utils/dnd-helper'
 import { AttributeRangeType } from '@/types/journal'
-import { tagColorList } from '@/types/constants/colors'
-import { v4 as uuid } from 'uuid'
 import { Box } from '@material-ui/core'
 import { NoBorderInput } from '@/components/OxOUI/Input'
 import { FlexCenteredBox } from '@/components/OxOUI/OxOBox'
 import styled from 'styled-components'
 import { MarginRightChip } from '@/components/OxOUI/Chip'
-import { HoverBox, NoHoverButton, ClickableChip } from '../../UI'
-import SelectionList from '@/app/Noxo/Note/Attributes/components/AttributeContentEditor/BaseSelectEditor/SelectionList'
+import { HoverBox, NoHoverButton, ClickableChip } from '../../../../StyledComponents'
+import SelectionList from './SelectionList'
+import action, {useSelector} from "@/store";
+import * as NOTE_ACT from "@/store/note/actions";
+import {NoteState} from "@/types/states";
+import {NoteAttribute} from "@/types/note";
 
 interface SelectTypeContentPopoverProps extends ContentPopoverProps {
   isMulti: boolean
@@ -22,15 +24,22 @@ const InfileFlexCenteredBox = styled(FlexCenteredBox)`
   padding: 0 0.3rem;
 `
 
+const handleRangeChange = (attrId: string, newRange: Array<AttributeRangeType>) => {
+  action({ type: NOTE_ACT.SAGA_UPDATE_ATTRIBUTE_SELECT_RANGE, attrId, newRange })
+}
+
+const handleValueChange = (noteId: string, attrId: string, value: string | Array<string>) => {
+  action({ type: NOTE_ACT.SAGA_UPDATE_ATTRIBUTE_VALUE, noteId, attrId, newValue: value })
+}
+
 const Index: React.FunctionComponent<SelectTypeContentPopoverProps> = ({
   isMulti,
   noteAttr,
   jourAttr,
-  onNoteAttrChange,
-  onJourAttrChange,
-  onBothAttrChange,
   popupState
 }) => {
+  const { note, journalAttrs }: NoteState = useSelector(state => state.get('note'))
+  const { attrId } = noteAttr
   const [value, setValue] = useState('')
 
   let range = jourAttr.range || []
@@ -40,7 +49,7 @@ const Index: React.FunctionComponent<SelectTypeContentPopoverProps> = ({
     ? range.filter(x => noteAttr.value.includes(x.id))
     : range.filter(x => x.id === noteAttr.value)
 
-  const onDragEnd = (result: DropResult) => {
+  const handleDragEnd = (result: DropResult) => {
     // dropped outside the list
     if (!result.destination) {
       return
@@ -50,17 +59,30 @@ const Index: React.FunctionComponent<SelectTypeContentPopoverProps> = ({
       result.source.index,
       result.destination.index
     )
-    onJourAttrChange({ range: newRange })
+    handleRangeChange(attrId, newRange)
   }
 
-  const onChange = (selectionId: string) => {
-    if (isMulti) {
-      // @ts-ignore
+  const handleChange = (selectionId: string) => {
+    if (isMulti && Array.isArray(noteAttr.value)) {
       const newValue = noteAttr.value.slice()
-      newValue.push(selectionId)
-      onNoteAttrChange({ value: newValue })
+      if (!newValue.includes(selectionId)) {
+        newValue.push(selectionId)
+        handleValueChange(note._id, attrId, newValue)
+      }
     } else {
-      onNoteAttrChange({ value: selectionId })
+      handleValueChange(note._id, attrId, selectionId)
+    }
+    popupState.toggle()
+  }
+
+  const handleRemove = (selectionId: string) => {
+    if (isMulti && Array.isArray(noteAttr.value)) {
+      const newValue: Array<string> = noteAttr.value.slice()
+      const index = newValue.findIndex(x => x === selectionId)
+      if (index > -1) {
+        newValue.splice(index, 1)
+        handleValueChange(note._id, attrId, newValue)
+      }
     }
     popupState.toggle()
   }
@@ -69,58 +91,36 @@ const Index: React.FunctionComponent<SelectTypeContentPopoverProps> = ({
     let newRange = range.slice()
     let labelIndex = range.findIndex(x => x.id === selectionId)
     newRange[labelIndex].color = color
-    onJourAttrChange({ range: newRange })
+    handleRangeChange(attrId, newRange)
   }
+
   const handleSelectionDelete = (selectionId: string) => {
     let newRange = range.slice()
-    let labelIndex = range.findIndex(x => x.id === selectionId)
-    newRange.splice(labelIndex, 1)
-    onJourAttrChange({ range: newRange })
+    newRange.splice(range.findIndex(x => x.id === selectionId), 1)
+    handleRangeChange(attrId, newRange)
   }
 
   const handleSubmit = (label: string) => {
     if (!label) {
       return
     }
-    let newRange = range.slice()
-    let labelIndex = range.findIndex(x => x.label === label)
-    let usedColors = range.map(x => x.color)
-
-    if (labelIndex >= 0) {
-      onNoteAttrChange({
-        ...noteAttr,
-        value: range[labelIndex].id
-      })
-    } else {
-      let availColor = tagColorList.filter(x => !usedColors.includes(x))
-      if (availColor.length === 0) {
-        availColor = tagColorList
-      }
-      const newId = uuid()
-      newRange.push({
-        id: newId,
-        label,
-        color: availColor[Math.floor(Math.random() * availColor.length)]
-      })
-      let newValue: string | Array<string>
-      if (isMulti) {
-        // @ts-ignore
+    let newValue: string | Array<string>
+    if (isMulti) {
+      if (Array.isArray(noteAttr.value)) {
         newValue = noteAttr.value.slice()
-        // @ts-ignore
-        newValue.push(newId)
+        newValue.push(label)
       } else {
-        newValue = newId
+        newValue = [label]
       }
-      onBothAttrChange({
-        note: { value: newValue },
-        journal: { range: newRange }
-      })
-      setValue('')
+      handleValueChange(note._id, attrId, newValue)
+    } else {
+      handleValueChange(note._id, attrId, label)
     }
+    setValue('')
     popupState.toggle()
   }
 
-  const handleKeyDown = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     // @ts-ignore
     if (e.key === 'Enter') handleSubmit(e.target.value)
   }
@@ -135,17 +135,17 @@ const Index: React.FunctionComponent<SelectTypeContentPopoverProps> = ({
       <InfileFlexCenteredBox>
         {curSelections.map(x => (
           <MarginRightChip
-            key={x.id}
+            key={x.label}
             style={{ backgroundColor: x.color }}
             size="small"
             label={x.label}
+            onDelete={isMulti ? () => {handleRemove(x.label)} : undefined}
           />
         ))}
         <NoBorderInput
           value={value}
           autoFocus={true}
           onChange={e => setValue(e.target.value)}
-          // @ts-ignore
           onKeyDown={handleKeyDown}
         />
       </InfileFlexCenteredBox>
@@ -166,8 +166,8 @@ const Index: React.FunctionComponent<SelectTypeContentPopoverProps> = ({
         ) : (
           <SelectionList
             listedItems={listedItems}
-            handleReorder={onDragEnd}
-            handleSelectionClick={onChange}
+            handleReorder={handleDragEnd}
+            handleSelectionClick={handleChange}
             handleSelectionColorChange={handleSelectionColorChange}
             handleDelete={handleSelectionDelete}
           />

@@ -12,8 +12,16 @@ export const setJournals = (payload: Array<JournalObject>) => ({ type: SET_JOURN
 
 export type GlobalActionType = SetTitle | SetJournals
 
+export const SAGA_LOAD_JOURNAL_LIST = 'SAGA/LOAD_JOURNAL_LIST'
+interface LoadJournalList {
+  type: typeof SAGA_LOAD_JOURNAL_LIST
+}
+
+export type globalSagaAction = LoadJournalList
+
+
 const GLOBAL_ACTIONS = {
-  SAGA_LOAD_JOURNAL_LIST: 'SAGA/LOAD_JOURNAL_LIST'
+  SAGA_LOAD_JOURNAL_LIST
 }
 
 export default GLOBAL_ACTIONS

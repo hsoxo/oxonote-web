@@ -1,8 +1,6 @@
 import React, {FunctionComponent} from 'react';
-import {MarginDivider5} from "@/components/OxOUI/Divider";
 import {DenseListItem, DenseListItemHeader, DenseListItemIcon} from "@/components/OxOUI/List";
 import notePropTypes from "@/types/constants/note-attributes";
-import {Popover} from "@material-ui/core";
 
 interface AttributeTypePickerProps {
   onTypeChange: (typeKey: string) => void

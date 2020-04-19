@@ -1,33 +1,41 @@
-import React, { useEffect, Fragment } from 'react'
+import React, {useEffect, Fragment, useState} from 'react'
 import {Box, CircularProgress, Divider, FormControlLabel, Fade, Paper, Switch} from '@material-ui/core'
 import AttributeBlock from './Attributes'
 import action, {useSelector} from "@/store";
-import NOTE_ACT from '@/store/note/actions'
+import * as NOTE_ACT from '@/store/note/actions'
 
 import TitleBlock from "../components/Title";
 import OxOEditor from "@/components/Editor";
 import {NoteState} from "@/types/states";
 import { PrismStyled } from "./PrismStyleEditor";
+import debounce from 'lodash/debounce'
 
-const handleContentChange = (value: any) => {
-  action(NOTE_ACT.SAGA_UPDATE_CONTENT, { content: value })
-}
+const handleSaveContent = debounce((value: any) => {
+  action({ type: NOTE_ACT.SAGA_UPDATE_CONTENT, content: value })
+}, 1000, {maxWait: 5000})
 
-const handleAttributeChange = (payload: any) => {
-  action(NOTE_ACT.SAGA_UPDATE_NOTE_ATTRIBUTE, payload)
-}
-
-const handleInfoChange = (key: string, value: string) => {
-  action(NOTE_ACT.SAGA_UPDATE_NOTE_INFO, { [key]: value })
-}
+const handleSaveInfo = debounce((key: string, value: string) => {
+  action({ type: NOTE_ACT.SAGA_UPDATE_INFO, payload: { [key]: value } })
+}, 500, {maxWait: 5000})
 
 const NoteEditor = (props: React.ComponentProps<any>) => {
-  const noteId = props.match.params.id
+  const noteId: string = props.match.params.id
   const { note, content: { content } }: NoteState = useSelector(state => state.get('note'))
 
+  const [value, setValue] = useState(content)
+
+  const handleContentChange = (value: any) => {
+    setValue(value)
+    handleSaveContent(value)
+  }
+
   useEffect(() => {
-    action(NOTE_ACT.SAGA_READ_NOTE, noteId)
+    action({ type: NOTE_ACT.SAGA_READ_NOTE, noteId })
   }, [noteId])
+
+  useEffect(() => {
+    setValue(content)
+  }, [setValue, content])
 
   return (
     <div className="oxo-editor">
@@ -38,12 +46,12 @@ const NoteEditor = (props: React.ComponentProps<any>) => {
           <TitleBlock
             title={note.title}
             titleIcon={note.titleIcon}
-            onChange={handleInfoChange}
+            onChange={handleSaveInfo}
           />
           <AttributeBlock/>
           <Divider/>
           <PrismStyled style={{color: '#222222'}}>
-            <OxOEditor value={content} onChange={handleContentChange}/>
+            <OxOEditor value={value} onChange={handleContentChange}/>
           </PrismStyled>
         </Box>
       </Fade>

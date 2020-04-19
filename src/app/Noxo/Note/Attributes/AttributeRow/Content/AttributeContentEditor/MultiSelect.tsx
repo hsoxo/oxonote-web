@@ -3,7 +3,7 @@ import { ElementProps } from './types'
 import BaseElement, {
   ContentPopoverProps,
   ContentViewProps
-} from '@/app/Noxo/Note/Attributes/components/AttributeContentEditor/Base'
+} from './Base'
 import BaseSelectEditor from './BaseSelectEditor'
 import {AttributeRangeType} from '@/types/journal'
 import { MarginRightChip } from "@/components/OxOUI/Chip";

@@ -1,7 +1,8 @@
-import {JournalAttribute, JournalObject, JournalView} from "@/types/journal";
+import {AttributeRangeType, JournalAttribute, JournalObject, JournalView} from "@/types/journal";
 import { customAlphabet } from 'nanoid/async'
 const nanoid = customAlphabet('1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', 10)
 import notePropTypes from "@/types/constants/note-attributes";
+import {tagColorList} from "@/types/constants/colors";
 
 type NewJournal = () => Promise<JournalObject>
 
@@ -50,5 +51,14 @@ export const newJournalAttribute: NewJournalAttribute = async (journalId, attrTy
     attrId: newId,
     type: attrType,
     label: label || '',
+  }
+}
+
+type NewJournalAttributeRangeItem = (label: string) => Promise<AttributeRangeType>
+export const newRangeItem: NewJournalAttributeRangeItem = async (label) => {
+  return {
+    id: label,
+    label,
+    color: tagColorList[Math.floor(Math.random() * tagColorList.length)]
   }
 }
