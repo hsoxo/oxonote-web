@@ -1,9 +1,9 @@
 import {NoteContent, NoteObject} from "@/types/note";
 
 export const SAVE_TO_POUCH = 'NOTE/SAVE_CHANGING_TO_POUCH'
-export const SET_NOTE_ALL = 'JOURNAL/SET_ALL'
-export const SET_NOTE_INFO = 'JOURNAL/SET_JOURNAL'
-export const SET_NOTE_CONTENT = 'JOURNAL/SET_ATTRS'
+export const SET_NOTE_ALL = 'NOTE/SET_ALL'
+export const SET_NOTE_INFO = 'NOTE/SET_JOURNAL'
+export const SET_NOTE_CONTENT = 'NOTE/SET_ATTRS'
 
 interface PartialNoteState {
   note?: NoteObject

@@ -10,37 +10,43 @@ import {
 } from 'material-ui-popup-state/hooks'
 import styled from "styled-components";
 import { JournalState } from "@/types/states";
-import {useSelector} from "@/store";
+import sagaAction, {useSelector} from "@/store";
 import notePropTypes from "@/types/constants/note-attributes";
-import {JournalView} from "@/types/journal";
+import {JournalView, JournalViewAttribute} from "@/types/journal";
 import { DenseListItemBox, DenseListItemIcon } from "@/components/OxOUI/List";
 import { AntSwitch } from "@/components/OxOUI/Switch";
+import * as JOURNAL_ACT from "@/store/journal/actions";
+import {useContext} from "react";
+import {JournalContext} from "@/app/Noxo/Journal";
+import {DragDropContext, Draggable, Droppable, DropResult} from "react-beautiful-dnd";
+import DragIndicatorIcon from "@material-ui/icons/DragIndicator";
 
-type ViewsManagerProps = {
-  jourId: string
-  viewId: string
-}
 
 const InfileBox = styled(Box)`
   margin: 0.3rem 0;
 `
 
-const AttributeSetting: React.FunctionComponent<ViewsManagerProps> = (props) => {
+const AttributeSetting: React.FunctionComponent = () => {
+  const context = useContext(JournalContext)
+  const { viewId } = context
+
   const popupState = usePopupState({
     variant: 'popover',
     popupId: 'demoPopover',
   })
-  const { views, attrs: jourAttrs }: JournalState = useSelector(state => state.get('journal'))
+  const { views, attrs: jourAttrs, journal }: JournalState = useSelector(state => state.get('journal'))
 
-  let attributes = jourAttrs.map(x => ({...notePropTypes[x.type], ...x}))
+  const curView = views.find(x => x._id === viewId) as JournalView
 
-  const curJourView = views.find(x => x.viewId === props.viewId) as JournalView
-  let attrSetting: Array<{ attrId: string, status: boolean}> = []
-  if (curJourView) {
-    attrSetting = curJourView.attribute
-  }
-  const onToggle = (attrId: string) => {
-    let newAttrSetting = attrSetting.slice()
+  let attributes = jourAttrs
+    .map(x => ({...notePropTypes[x.type], ...x}))
+    .filter(x => journal.attrs.indexOf(x._id) > -1)
+    .sort((a, b) => journal.attrs.indexOf(a._id) - journal.attrs.indexOf(b._id))
+
+  const attrSetting = curView.attribute || []
+
+  const handleToggle = (attrId: string) => {
+    let newAttrSetting: Array<JournalViewAttribute> = JSON.parse(JSON.stringify(curView.attribute))
     const toggledAttrIndex = newAttrSetting.findIndex(x => x.attrId === attrId)
     if (toggledAttrIndex >= 0) {
       newAttrSetting.splice(toggledAttrIndex, 1, {
@@ -53,12 +59,17 @@ const AttributeSetting: React.FunctionComponent<ViewsManagerProps> = (props) => 
         status: true
       })
     }
-    const newViews = views.slice()
-    newViews.splice(newViews.findIndex(x => x.viewId === props.viewId), 1, {
-      ...curJourView,
-      attribute: newAttrSetting,
-    })
-    // action({ type: NOTE_ACT.SAGA_UPDATE_JOURNAL, payload: { views: newViews} })
+    sagaAction({ type: JOURNAL_ACT.SAGA_UPDATE_VIEW_ATTR_SETTING, viewId, attribute: newAttrSetting})
+  }
+
+  const handleDragEnd = (result: DropResult) => {
+    // dropped outside the list
+    if (!result.destination) return;
+
+    const newAttrSetting: Array<string> = JSON.parse(JSON.stringify(journal.attrs))
+    const [removed] = newAttrSetting.splice(result.source.index, 1);
+    newAttrSetting.splice(result.destination.index, 0, removed)
+    sagaAction({ type: JOURNAL_ACT.SAGA_UPDATE_INFO, payload: { attrs: newAttrSetting} })
   }
 
   return (
@@ -82,19 +93,44 @@ const AttributeSetting: React.FunctionComponent<ViewsManagerProps> = (props) => 
         }}}
       >
         <InfileBox>
-          {attributes.map(x =>
-            <DenseListItemBox key={x.attrId}>
-              <DenseListItemIcon>
-                {x.icon}
-              </DenseListItemIcon>
-              {x.label}
-              <ListItemSecondaryAction>
-                <AntSwitch
-                  checked={(attrSetting.find(y => y.attrId === x.attrId) || {}).status || false}
-                  onChange={() => onToggle(x.attrId)}
-                />
-              </ListItemSecondaryAction>
-            </DenseListItemBox>)}
+          <DragDropContext onDragEnd={handleDragEnd}>
+            <Droppable droppableId="droppable">
+              {(provided, snapshot) => (
+                <div
+                  {...provided.droppableProps}
+                  ref={provided.innerRef}
+                >
+                  {attributes.map((x, index) =>
+                    <Draggable key={x._id} draggableId={x._id} index={index}>
+                      {(provided, snapshot) => (
+                        <div
+                          ref={provided.innerRef}
+                          {...provided.draggableProps}>
+                          <DenseListItemBox key={x.attrId}>
+                            <DenseListItemIcon {...provided.dragHandleProps}>
+                              <DragIndicatorIcon style={{fontSize: '1rem'}}/>
+                            </DenseListItemIcon>
+                            <DenseListItemIcon>
+                              {x.icon}
+                            </DenseListItemIcon>
+                            {x.label}
+                            <ListItemSecondaryAction>
+                              <AntSwitch
+                                checked={(attrSetting.find(y => y.attrId === x._id) || {}).status || false}
+                                onChange={() => handleToggle(x._id)}
+                              />
+                            </ListItemSecondaryAction>
+                          </DenseListItemBox>
+                        </div>
+                      )}
+                    </Draggable>
+                  )}
+                  {provided.placeholder}
+                </div>
+              )}
+            </Droppable>
+          </DragDropContext>
+
         </InfileBox>
       </Popover>
     </div>

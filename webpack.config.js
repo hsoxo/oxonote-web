@@ -18,7 +18,18 @@ module.exports = {
     contentBase: path.join(__dirname, "/public"), // index.html的位置
     port: port,
     hot: true,
-    historyApiFallback: true
+    historyApiFallback: true,
+    proxy: {
+      '/remote-db': {
+        target: 'http://localhost:5984',
+        pathRewrite: {'^/remote-db' : ''},
+        logLevel: 'debug',
+      },
+      '/backend': {
+        target: 'http://localhost:6389',
+        pathRewrite: {'^/backend' : ''},
+      },
+    }
   },
   devtool: 'source-map',
   resolve: {

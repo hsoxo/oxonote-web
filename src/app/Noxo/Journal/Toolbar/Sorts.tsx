@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useContext} from "react";
 import {bindPopover, bindTrigger, usePopupState} from "material-ui-popup-state/hooks";
 import {
   Box,
@@ -18,23 +18,25 @@ import {
 } from '@/components/OxOUI/List'
 import {MarginDivider5} from "@/components/OxOUI/Divider";
 import AddIcon from "@material-ui/icons/Add";
-type ViewsManagerProps = {
-  jourId: string
-  viewId: string
-}
+import {JournalContext} from "@/app/Noxo/Journal";
 
-const SortSetting: React.FunctionComponent<ViewsManagerProps> = (props) => {
+
+
+const SortSetting: React.FunctionComponent = () => {
+  const context = useContext(JournalContext)
+  const { viewId } = context
+
   const popupState = usePopupState({
     variant: 'popover',
     popupId: 'demoPopover',
   })
   const { views, attrs: jourAttrs }: JournalState = useSelector(state => state.get('journal'))
-  const curViewIndex = views.findIndex(x => x.viewId === props.viewId)
+  const curViewIndex = views.findIndex(x => x.viewId === viewId)
   const curViewInfo = views[curViewIndex] as JournalView
 
   const handleChange = (attrId: string, payload: any) => {
     let newViews = JSON.parse(JSON.stringify(views)) as Array<JournalView>
-    let viewIndex = newViews.findIndex(x => x.viewId === props.viewId)
+    let viewIndex = newViews.findIndex(x => x.viewId === viewId)
     let attrIndex = newViews[viewIndex].sorts.findIndex(x => x.attrId === attrId)
     newViews[viewIndex].sorts[attrIndex] = {
       ...newViews[viewIndex].sorts[attrIndex],
@@ -45,7 +47,7 @@ const SortSetting: React.FunctionComponent<ViewsManagerProps> = (props) => {
 
   const handleDelete = (index: number) => {
     let newViews = JSON.parse(JSON.stringify(views)) as Array<JournalView>
-    let viewIndex = newViews.findIndex(x => x.viewId === props.viewId)
+    let viewIndex = newViews.findIndex(x => x.viewId === viewId)
     newViews[viewIndex].sorts.splice(index, 1)
     // action(NOTE_ACT.SAGA_UPDATE_JOURNAL, { views: newViews })
   }
@@ -55,7 +57,7 @@ const SortSetting: React.FunctionComponent<ViewsManagerProps> = (props) => {
       return
     }
     let newViews = JSON.parse(JSON.stringify(views)) as Array<JournalView>
-    let viewIndex = newViews.findIndex(x => x.viewId === props.viewId)
+    let viewIndex = newViews.findIndex(x => x.viewId === viewId)
     newViews[viewIndex].sorts.push({
       attrId: '',
       direction: ''
@@ -63,7 +65,7 @@ const SortSetting: React.FunctionComponent<ViewsManagerProps> = (props) => {
     // action(NOTE_ACT.SAGA_UPDATE_JOURNAL, { views: newViews })
   }
 
-  if (!props.viewId) return (
+  if (!viewId) return (
     <Button>
       排序
     </Button>

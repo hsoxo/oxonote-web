@@ -50,7 +50,6 @@ function* noteSW() {
       case ACT.SAGA_REMOVE_ATTRIBUTE: {
         yield fork(removeNoteAttribute, action.attrId); break;
       }
-
     }
   }
 }

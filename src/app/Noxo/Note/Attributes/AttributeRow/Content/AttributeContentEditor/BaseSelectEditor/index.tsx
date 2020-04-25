@@ -10,7 +10,7 @@ import styled from 'styled-components'
 import { MarginRightChip } from '@/components/OxOUI/Chip'
 import { HoverBox, NoHoverButton, ClickableChip } from '../../../../StyledComponents'
 import SelectionList from './SelectionList'
-import action, {useSelector} from "@/store";
+import sagaAction, {useSelector} from "@/store";
 import * as NOTE_ACT from "@/store/note/actions";
 import {NoteState} from "@/types/states";
 import {NoteAttribute} from "@/types/note";
@@ -25,11 +25,11 @@ const InfileFlexCenteredBox = styled(FlexCenteredBox)`
 `
 
 const handleRangeChange = (attrId: string, newRange: Array<AttributeRangeType>) => {
-  action({ type: NOTE_ACT.SAGA_UPDATE_ATTRIBUTE_SELECT_RANGE, attrId, newRange })
+  sagaAction({ type: NOTE_ACT.SAGA_UPDATE_ATTRIBUTE_SELECT_RANGE, attrId, newRange })
 }
 
 const handleValueChange = (noteId: string, attrId: string, value: string | Array<string>) => {
-  action({ type: NOTE_ACT.SAGA_UPDATE_ATTRIBUTE_VALUE, noteId, attrId, newValue: value })
+  sagaAction({ type: NOTE_ACT.SAGA_UPDATE_ATTRIBUTE_VALUE, noteId, attrId, newValue: value })
 }
 
 const Index: React.FunctionComponent<SelectTypeContentPopoverProps> = ({

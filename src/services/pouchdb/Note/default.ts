@@ -12,9 +12,9 @@ type NewNote = (journal: JournalObject, jAttrs: Array<JournalAttribute>) => Prom
 export const newNote: NewNote = async (journal, jAttrs) => {
   const newId = await nanoid()
   return {
-    _id: `${journal._id}-N-${newId}`,
+    _id: `N-${newId}`,
     _rev: '',
-    journalId: '',
+    journalId: journal._id,
     title: '',
     titleIcon: '',
     bannerImg: '',

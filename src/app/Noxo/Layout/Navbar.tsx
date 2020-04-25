@@ -52,15 +52,15 @@ interface SidebarProps {
 const Navbar = (props: SidebarProps) => {
   const classes = useStyles();
 
-  const { curJournal, curNote }: NoteState = useSelector(state => state.get('note'))
+  // const { curJournal, curNote }: NoteState = useSelector(state => state.get('note'))
   let title: Array<string> = []
-  const url = window.location.href
-  if (/\/o\/journal/.test(url)) {
-    title.push(curJournal.title)
-  } else if (/\/o\/editor\//.test(url)) {
-    title.push(curJournal.title || '未命名笔记本')
-    title.push(curNote.title || '未命名笔记')
-  }
+  // const url = window.location.href
+  // if (/\/o\/journal/.test(url)) {
+  //   title.push(curJournal.title)
+  // } else if (/\/o\/editor\//.test(url)) {
+  //   title.push(curJournal.title || '未命名笔记本')
+  //   title.push(curNote.title || '未命名笔记')
+  // }
 
   return (
     <div className={classes.root}>

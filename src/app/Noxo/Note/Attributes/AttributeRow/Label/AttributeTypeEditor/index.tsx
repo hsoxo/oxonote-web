@@ -5,11 +5,11 @@ import HighlightOffIcon from '@material-ui/icons/HighlightOff'
 import AttributeTypePicker from './AttributeTypePicker'
 import styled from 'styled-components'
 import { BootstrapInput } from '@/components/OxOUI/Input'
-import action from "@/store";
+import sagaAction from "@/store";
 import * as NOTE_ACT from "@/store/note/actions";
 
 const handleLabelChange = (attrId: string, newTitle: string) => {
-  action({ type: NOTE_ACT.SAGA_UPDATE_ATTRIBUTE_TITLE, attrId, newTitle })
+  sagaAction({ type: NOTE_ACT.SAGA_UPDATE_ATTRIBUTE_TITLE, attrId, newTitle })
 }
 
 interface AttributeTypeEditorProps {

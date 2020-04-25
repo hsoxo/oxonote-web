@@ -60,7 +60,7 @@ const isAfter = (source: any, target: any) => {
 }
 
 const listHelper = (journal: JournalObject, notes: Array<NoteObject>, viewSetting: JournalView) => {
-  let newNotes: Array<NoteSummaryObject> = JSON.parse(JSON.stringify(notes))
+  let newNotes: Array<NoteObject> = JSON.parse(JSON.stringify(notes))
   const { filters, sorts } = viewSetting
   const requiredAttrIds: Array<string> = filters.settings.map(x => x.attrId)
   const requiredJourAttrs: {[key: string]: JournalAttribute} = requiredAttrIds.reduce((acc, cur) => {

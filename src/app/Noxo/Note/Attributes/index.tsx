@@ -13,10 +13,13 @@ const AttributeBlockBox = styled(Box)`
 `
 
 const AttributeBlock = () => {
-  const { note: { attributes }, journalAttrs }: NoteState = useSelector(state => state.get('note'))
-  const activeAttrs = attributes.filter(x =>
-    journalAttrs.some(y => x.attrId === y._id)
-  )
+  const { note: { attributes }, journal: { attrs: journalAttrOrder }, journalAttrs }: NoteState = useSelector(state => state.get('note'))
+
+  const activeAttrs = []
+  for (const attrId of journalAttrOrder) {
+    const existAttr = attributes.find(y => y.attrId === attrId)
+    if (existAttr) activeAttrs.push(existAttr)
+  }
 
   return (
     <AttributeBlockBox>

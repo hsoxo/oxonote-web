@@ -10,7 +10,7 @@ import AddIcon from '@material-ui/icons/Add';
 import clsx from "clsx";
 
 import { sidebarWidth } from './config'
-import action from "@/store";
+import sagaAction from "@/store";
 import * as JOURNAL_ACT from "@/store/journal/actions"
 import JournalTreeView from "./SidebarJournalTree";
 
@@ -79,7 +79,7 @@ const Sidebar = (props: SidebarProps) => {
     const classes = useStyles();
 
     const handleCreateJournal = async () => {
-        action({ type: JOURNAL_ACT.SAGA_JOURNAL_CREATE })
+        sagaAction({ type: JOURNAL_ACT.SAGA_JOURNAL_CREATE })
     }
 
     const { active } = props

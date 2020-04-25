@@ -1,7 +1,8 @@
 import React, {createContext, Fragment, useEffect, useState} from 'react'
-import {Box, Divider, Fade, LinearProgress, Slide} from '@material-ui/core'
-import action, {useSelector} from "@/store";
+import {useHistory} from 'react-router-dom'
 
+import {Box, Divider, Fade, LinearProgress, Slide} from '@material-ui/core'
+import sagaAction, {useSelector} from "@/store";
 import TitleBlock from "../components/Title";
 import JournalToolbar from "./Toolbar";
 import JournalListView from "@/app/Noxo/Journal/List";
@@ -16,13 +17,13 @@ export const JournalContext = createContext({
 })
 
 const handleSaveInfo = debounce((key: string, value: string) => {
-	action({ type: JOURNAL_ACT.SAGA_UPDATE_INFO, payload: { [key]: value } })
+	sagaAction({ type: JOURNAL_ACT.SAGA_UPDATE_INFO, payload: { [key]: value } })
 }, 500, {maxWait: 5000})
 
 const Journal = (props: React.ComponentProps<any>) => {
-	const jourId = props.match.params.id
-	const view = props.match.params.view
-	const [viewId, setViewId] = useState(view)
+	const history = useHistory()
+	const journalId = props.match.params.id
+	const [viewId, setViewId] = useState(props.match.params.view)
 
 	const { journal, views }: JournalState =
 		useSelector(state => state.get('journal'))
@@ -32,45 +33,47 @@ const Journal = (props: React.ComponentProps<any>) => {
 	}
 
 	useEffect(() => {
-		action({ type: JOURNAL_ACT.SAGA_JOURNAL_READ, journalId: jourId })
-	}, [jourId])
+		sagaAction({ type: JOURNAL_ACT.SAGA_JOURNAL_READ, journalId: journalId })
+	}, [journalId])
 
 	useEffect(() => {
-		if (views.length)
-			setViewId(view || views[0].viewId)
-	}, [view, views, setViewId])
+		if (!viewId && Array.isArray(views) && views[0])
+			history.push(`/o/journal/${journalId}/${views[0]._id}`)
+	}, [viewId, views, setViewId])
 
-	let viewInfo = views.filter(x => x.viewId === viewId)
-	console.log(jourId, journal)
+	let viewInfo = views.filter(x => x._id === viewId)
 	return (
-		<div className="oxo-editor">
-			<JournalContext.Provider value={{
-				viewId,
-				handleChangeView
-			}}>
-				<Slide direction="up" in={jourId === journal._id && viewInfo.length > 0} timeout={500} mountOnEnter unmountOnExit>
-					<Box>
-						<Fade in={jourId === journal._id && viewInfo.length > 0} timeout={2000}>
-							<Box>
-								{viewInfo.length > 0 &&
-									<Fragment>
-										<TitleBlock 
-											title={journal.title}
-											titleIcon={journal.titleIcon}
-											onChange={handleSaveInfo}
-										/>
-										<JournalToolbar jourId={jourId} viewId={viewId}/>
-										<Divider />
-										{viewInfo[0].type === 'list' && <JournalListView viewId={viewId}/>}
-										{viewInfo[0].type === 'board' && <JournalListView viewId={viewId}/>}
-										{viewInfo[0].type === 'gallery' && <JournalGalleryView viewId={viewId}/>}
-										{viewInfo[0].type === 'table' && <JournalListView viewId={viewId}/>}
-									</Fragment>}
-							</Box>
-						</Fade>
-					</Box>
-				</Slide>
-			</JournalContext.Provider>
+		<div>
+			{viewId ?
+				<JournalContext.Provider value={{
+					viewId,
+					handleChangeView
+				}}>
+					<Slide direction="up" in={journalId === journal._id && viewInfo.length > 0} timeout={500} mountOnEnter unmountOnExit>
+						<Box>
+							<Fade in={journalId === journal._id && viewInfo.length > 0} timeout={2000}>
+								<Box>
+									{viewInfo.length > 0 &&
+										<Fragment>
+											<TitleBlock
+												title={journal.title}
+												titleIcon={journal.titleIcon}
+												onChange={handleSaveInfo}
+											/>
+											<JournalToolbar />
+											<Divider />
+											{viewInfo[0].type === 'list' && <JournalListView />}
+											{viewInfo[0].type === 'board' && <JournalListView />}
+											{viewInfo[0].type === 'gallery' && <JournalGalleryView viewId={viewId}/>}
+											{viewInfo[0].type === 'table' && <JournalListView />}
+										</Fragment>}
+								</Box>
+							</Fade>
+						</Box>
+					</Slide>
+				</JournalContext.Provider>
+				:
+				null}
 		</div>
 	)
 }

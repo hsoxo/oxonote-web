@@ -6,11 +6,9 @@ import {
   AttributeIcon,
   AttributeName,
 } from '../../StyledComponents'
-import notePropTypes from '@/types/constants/note-attributes'
-import action, { useSelector } from '@/store'
+import sagaAction, { useSelector } from '@/store'
 import * as NOTE_ACT from '@/store/note/actions'
 import { NoteState } from '@/types/states'
-import { v4 as uuid } from 'uuid'
 import {bindMenu, bindToggle, usePopupState} from 'material-ui-popup-state/hooks'
 import { Popover } from '@material-ui/core'
 import AttributeTypeEditor from './AttributeTypeEditor'
@@ -24,7 +22,7 @@ const CreateNew = () => {
   });
 
   const handleCreateAttr = (newType: string) => {
-    action({ type: NOTE_ACT.SAGA_CREATE_ATTRIBUTE, noteId: note._id, attrType: newType, label: title })
+    sagaAction({ type: NOTE_ACT.SAGA_CREATE_ATTRIBUTE, noteId: note._id, attrType: newType, label: title })
   }
 
   return (

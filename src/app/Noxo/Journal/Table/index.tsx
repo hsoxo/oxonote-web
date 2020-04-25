@@ -3,7 +3,7 @@ import {Box} from "@material-ui/core";
 import {Link} from "react-router-dom";
 
 import { MarginBox } from "@/components/OxOUI/OxOBox";
-import {NoteState} from "@/types/states";
+import {JournalState, NoteState} from "@/types/states";
 import {useSelector} from "@/store";
 import {JournalView} from "@/types/journal";
 
@@ -12,8 +12,7 @@ type JournalListViewProps = {
 }
 
 const JournalTableView = (props: JournalListViewProps) => {
-  const { curJournal }: NoteState = useSelector(state => state.get('note'))
-  const { views, notes } = curJournal
+  const { journal, views, notes }: JournalState = useSelector(state => state.get('journal'))
   const curViewSetting = views.find(x => x.viewId === props.viewId)
 
   return (

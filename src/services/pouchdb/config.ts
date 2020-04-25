@@ -1,10 +1,11 @@
-import PouchDB from 'pouchdb-browser'
-PouchDB.plugin(require('pouchdb-find').default)
+import { store } from '@/store'
 
+function select(state: any): PouchDB.Database {
+  return state.get('global').browserDBConn
+}
 
-export const dbNote = new PouchDB('@oxo/Noxo')
-export const dbJournal = new PouchDB('@oxo/journal')
+function getConn(): PouchDB.Database {
+  return select(store.getState())
+}
 
-const PDB = new PouchDB('@noxo')
-
-export default PDB
+export default getConn

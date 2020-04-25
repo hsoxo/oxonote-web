@@ -1,11 +1,12 @@
 import {NoteObject} from "@/types/note";
 import {newNote, newNoteContent} from "@/services/pouchdb/Note/default";
-import PDB from "@/services/pouchdb/config";
 import {JournalAttribute} from "@/types/journal";
 import notePropTypes from "@/types/constants/note-attributes";
+import getConn from "@/services/pouchdb/config";
 const journalService = require('../../Journal/index')
 
 export const create = async (journalId: string) => {
+  const PDB = getConn()
   let journalDocs = await journalService.readOne(journalId)
   if (journalDocs) {
     let note: NoteObject = await newNote(journalDocs.journal, journalDocs.attrs)
@@ -16,20 +17,21 @@ export const create = async (journalId: string) => {
 }
 
 export const readOne = async (noteId: string) => {
+  const PDB = getConn()
   const noteDoc: NoteObject = await PDB.get(noteId)
   const noteContent = await PDB.get(`${noteId}-C`)
-  const jourId = noteId.slice(0, 12)
+  const journalId = noteDoc.journalId
+  const journalDoc = await PDB.get(journalId)
   const journalAttrDocs = await PDB.allDocs({
     include_docs: true,
-    startkey: `${jourId}-A-`,
-    endkey: `${jourId}-A-\ufff0`,
+    startkey: `${journalId}-A-`,
+    endkey: `${journalId}-A-\ufff0`,
   })
   const journalAttrs = journalAttrDocs.rows.map(x => x.doc) as unknown as Array<JournalAttribute>
 
   const oriLength = noteDoc.attributes.length
   let attrModified = false
   journalAttrs.forEach(jAttr => {
-    console.log(jAttr)
     const noteAttr = noteDoc.attributes.find(x => x.attrId === jAttr._id)
     if (!noteAttr) {
       noteDoc.attributes.push({
@@ -48,11 +50,13 @@ export const readOne = async (noteId: string) => {
     return {
       note: noteDoc,
       content: noteContent,
+      journal: journalDoc,
       journalAttrs
     }
 }
 
 export const update = async (noteId: string, data: object) => {
+  const PDB = getConn()
   const doc = await PDB.get(noteId)
   await PDB.put({
     ...doc,

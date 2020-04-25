@@ -171,7 +171,7 @@ const OxOEditor = ({value, onChange}: OxOEditorProps) => {
       }
     }
   }
-  console.log(JSON.stringify(value, null, 2))
+  // console.log(JSON.stringify(value, null, 2))
 
   const renderElement = useCallback(props => <Element editor={editor} {...props}/>, [])
   const renderLeaf = useCallback(props => <Leaf {...props} />, [])

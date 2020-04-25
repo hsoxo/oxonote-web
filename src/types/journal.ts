@@ -9,8 +9,8 @@ export interface JournalObject {
     createdTime: number,
     createdUser: string,
     description: string,
+    attrs: Array<string>,
     views: Array<JournalView>,
-    jourAttrs: Array<JournalAttribute>
 }
 
 export interface JournalAttribute {

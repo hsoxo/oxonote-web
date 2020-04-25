@@ -5,7 +5,7 @@ import { NoteAttribute } from "@/types/note";
 import {NoteState} from "@/types/states";
 import {AttributeNameWrapper, AttributeLabel, AttributeIcon, AttributeName} from "../../StyledComponents";
 import notePropTypes from "@/types/constants/note-attributes";
-import action from '@/store'
+import sagaAction from '@/store'
 import { useSelector } from "@/store";
 import * as NOTE_ACT from "@/store/note/actions";
 import AttributeTypeEditor from "./AttributeTypeEditor";
@@ -23,16 +23,16 @@ const Index: React.FunctionComponent<NoteAttribute> = ({attrId}) => {
   const handleChangeType = (newType: string) => {
     popupState.toggle()
     if (type !== newType) {
-      action({ type: NOTE_ACT.SAGA_UPDATE_ATTRIBUTE_TYPE, attrId, newType })
+      sagaAction({ type: NOTE_ACT.SAGA_UPDATE_ATTRIBUTE_TYPE, attrId, newType })
     }
   }
 
   const handleChangeLabel = (newTitle: string) => {
-    action({ type: NOTE_ACT.SAGA_UPDATE_ATTRIBUTE_TITLE, attrId, newTitle })
+    sagaAction({ type: NOTE_ACT.SAGA_UPDATE_ATTRIBUTE_TITLE, attrId, newTitle })
   }
 
   const handleRemove = () => {
-    action({ type: NOTE_ACT.SAGA_REMOVE_ATTRIBUTE, attrId })
+    sagaAction({ type: NOTE_ACT.SAGA_REMOVE_ATTRIBUTE, attrId })
   }
 
   return (

@@ -6,22 +6,18 @@ import FilterSetting from "@/app/Noxo/Journal/Toolbar/Filters";
 import SortSetting from "@/app/Noxo/Journal/Toolbar/Sorts";
 import NewNote from "./NewNote";
 
-type JournalToolbar = {
-  jourId: string
-  viewId: string
-}
 
-const JournalToolbar = (props: JournalToolbar) => {
 
+const JournalToolbar = () => {
   return (
     <FlexCenteredBox>
       <FlexBox>
-        <ViewsManager {...props}/>
+        <ViewsManager />
       </FlexBox>
       <RightBox>
-        <AttributeSetting {...props}/>
-        <FilterSetting {...props}/>
-        <SortSetting {...props}/>
+        <AttributeSetting />
+        {/*<FilterSetting />*/}
+        {/*<SortSetting />*/}
         <NewNote />
       </RightBox>
     </FlexCenteredBox>

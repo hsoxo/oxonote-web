@@ -1,22 +1,20 @@
 import { put, take, call, fork, throttle, select } from 'redux-saga/effects'
 import PouchConn from '@/services/pouchdb'
 import { push } from 'connected-react-router'
-import action from "@/store";
+import sagaAction from "@/store";
 import * as GlobalACT from '@/store/global/actions'
 import * as ACT from './actions'
 import {JournalState} from '@/types/states'
-import {AttributeRangeType} from "@/types/journal";
-import {SAGA_JOURNAL_CREATE} from "./actions";
+import {AttributeRangeType, JournalViewAttribute} from "@/types/journal";
+import {SAGA_JOURNAL_CREATE, SAGA_UPDATE_VIEW_ATTR_SETTING} from "./actions";
 import {SAGA_JOURNAL_READ} from "./actions";
 import {SAGA_UPDATE_ATTR_RANGE} from "./actions";
 
-export function* journalSaveSW() {
-  yield throttle(1000, ACT.SAVE_TO_POUCH, saveToPouch)
-}
+const SAGA_ACTIONS = Object.entries(ACT).filter(x => x[0].startsWith('SAGA') && typeof x[1] === 'string').map(x => x[1]) as unknown as Array<string>
 
 function* journalSW() {
   while (true) {
-    const action: JournalSagaActions = yield take(Object.values(ACT.default))
+    const action: JournalSagaActions = yield take(SAGA_ACTIONS)
     console.log(
       `%c Journal Saga: ${action.type}: ${JSON.stringify(action)}`,
       'color: #f0c002'
@@ -33,6 +31,9 @@ function* journalSW() {
       }
       case ACT.SAGA_UPDATE_ATTR_RANGE: {
         yield fork(journalAttrRangeChange, action.attrId, action.newRange); break;
+      }
+      case ACT.SAGA_UPDATE_VIEW_ATTR_SETTING: {
+        yield fork(updateViewAttrSetting, action.viewId, action.attribute); break;
       }
     }
   }
@@ -59,7 +60,7 @@ interface JournalCreate {
 function* createJournal() {
   try {
     const journalDoc = yield call(PouchConn.journal.create)
-    action({ type: GlobalACT.SAGA_LOAD_JOURNAL_LIST })
+    sagaAction({ type: GlobalACT.SAGA_LOAD_JOURNAL_LIST })
     yield put(push(`/o/journal/${journalDoc._id}`))
   } catch (e) {
     console.error(e)
@@ -84,6 +85,7 @@ interface PartialJournalObject {
   title?: string
   titleIcon?: string
   bannerImg?: string
+  attrs?: Array<string>
 }
 type UpdateJournalInfo = { type: typeof ACT.SAGA_UPDATE_INFO, payload: PartialJournalObject }
 function* updateJournalInfo(payload: any) {
@@ -111,5 +113,34 @@ function* journalAttrRangeChange(attrId: string, newRange: Array<AttributeRangeT
   }
 }
 
-export type JournalSagaActions = JournalCreate | JournalRead | UpdateJournalInfo | JournalAttrRangeChange
+
+interface UpdateViewAttrSetting {
+  type: typeof SAGA_UPDATE_VIEW_ATTR_SETTING
+  viewId: string
+  attribute: Array<JournalViewAttribute>
+}
+function* updateViewAttrSetting(viewId: string, attribute: Array<JournalViewAttribute>) {
+  try {
+    yield call(PouchConn.journal.view.update, viewId, 'attribute', attribute)
+    yield call(refreshJournal)
+  } catch (e) {
+    if (e.status === 404) yield put(push(`/o`))
+    console.error(e)
+  }
+}
+
+export type JournalSagaActions = JournalCreate | JournalRead | UpdateJournalInfo | JournalAttrRangeChange |
+  UpdateViewAttrSetting
+
+function* refreshJournal() {
+  try {
+    const { journal: { _id } } = yield select(state => state.get('journal'))
+    const value = yield call(PouchConn.journal.readOne, _id)
+    yield put(ACT.setAllJournalInfo(value))
+  } catch (e) {
+    if (e.name === 'not_found') put(push(`/o`))
+    console.error(e)
+  }
+}
+
 export default journalSW

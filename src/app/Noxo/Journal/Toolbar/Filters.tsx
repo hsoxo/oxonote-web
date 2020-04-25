@@ -1,4 +1,4 @@
-import React, {Fragment} from 'react'
+import React, {Fragment, useContext} from 'react'
 import {
   bindPopover,
   bindTrigger,
@@ -26,18 +26,17 @@ import { MarginDivider5 } from '@/components/OxOUI/Divider'
 import AddIcon from '@material-ui/icons/Add'
 import { DenseSelect, DenseSelectItem } from "@/components/OxOUI/Select";
 import {BootstrapInput} from "@/components/OxOUI/Input";
+import {JournalContext} from "@/app/Noxo/Journal";
 
-
-type ViewsManagerProps = {
-  jourId: string
-  viewId: string
-}
 
 interface JournalViewFiltersSettingEnhanced extends JournalViewFiltersSetting {
   type: string
 }
 
-const FilterSetting: React.FunctionComponent<ViewsManagerProps> = props => {
+const FilterSetting: React.FunctionComponent = () => {
+  const context = useContext(JournalContext)
+  const { viewId } = context
+
   const popupState = usePopupState({
     variant: 'popover',
     popupId: 'demoPopover'
@@ -45,12 +44,12 @@ const FilterSetting: React.FunctionComponent<ViewsManagerProps> = props => {
   const {
     views, attrs: jourAttrs
   }: JournalState = useSelector(state => state.get('journal'))
-  const curViewIndex = views.findIndex(x => x.viewId === props.viewId)
+  const curViewIndex = views.findIndex(x => x.viewId === viewId)
   const curViewInfo = views[curViewIndex] as JournalView
 
   const handleChange = (index: number, payload: any) => {
     let newViews = JSON.parse(JSON.stringify(views)) as Array<JournalView>
-    let viewIndex = newViews.findIndex(x => x.viewId === props.viewId)
+    let viewIndex = newViews.findIndex(x => x.viewId === viewId)
     let newSetting = newViews[viewIndex].filters.settings
     newSetting[index] = {
       ...newSetting[index],
@@ -61,14 +60,14 @@ const FilterSetting: React.FunctionComponent<ViewsManagerProps> = props => {
 
   const handleChangeRelation = (relation: any) => {
     let newViews = JSON.parse(JSON.stringify(views)) as Array<JournalView>
-    let viewIndex = newViews.findIndex(x => x.viewId === props.viewId)
+    let viewIndex = newViews.findIndex(x => x.viewId === viewId)
     newViews[viewIndex].filters.relation = relation
     // action(NOTE_ACT.SAGA_UPDATE_JOURNAL, { views: newViews })
   }
 
   const handleDelete = (index: number) => {
     let newViews = JSON.parse(JSON.stringify(views)) as Array<JournalView>
-    let viewIndex = newViews.findIndex(x => x.viewId === props.viewId)
+    let viewIndex = newViews.findIndex(x => x.viewId === viewId)
     let newSetting = newViews[viewIndex].filters.settings
     newSetting.splice(index, 1)
     // action(NOTE_ACT.SAGA_UPDATE_JOURNAL, { views: newViews })
@@ -76,7 +75,7 @@ const FilterSetting: React.FunctionComponent<ViewsManagerProps> = props => {
 
   const handleNewFilter = () => {
     let newViews = JSON.parse(JSON.stringify(views)) as Array<JournalView>
-    let viewIndex = newViews.findIndex(x => x.viewId === props.viewId)
+    let viewIndex = newViews.findIndex(x => x.viewId === viewId)
     newViews[viewIndex].filters.settings.push({
       attrId: '',
       operator: '',
@@ -86,7 +85,7 @@ const FilterSetting: React.FunctionComponent<ViewsManagerProps> = props => {
     // action(NOTE_ACT.SAGA_UPDATE_JOURNAL, { views: newViews })
   }
 
-  if (!props.viewId) return <Button>筛选</Button>
+  if (!viewId) return <Button>筛选</Button>
 
   const { relation, settings } = curViewInfo.filters || {}
 

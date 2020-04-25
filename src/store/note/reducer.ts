@@ -24,9 +24,7 @@ const initNoteState: NoteState = {
     },
     journalAttrs: [],
 
-    allJournals: [],
-    journalChanged: false,
-    curJournal: {
+    journal: {
         _id: '',
         _rev: '',
         title: '',
@@ -35,23 +33,8 @@ const initNoteState: NoteState = {
         createdTime: 0,
         createdUser: '',
         description: '',
+        attrs: [],
         views: [],
-        jourAttrs: [],
-        notes: [],
-    },
-    curNote: {
-        _id: '',
-        _rev: '',
-        journalId: '',
-        title: '',
-        titleIcon: '',
-        bannerImg: '',
-        createdTime: 0,
-        createdUser: '',
-        modifiedTime: 0,
-        modifiedUser: '',
-        content: [],
-        attributes: [],
     },
 }
 

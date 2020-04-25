@@ -17,16 +17,14 @@ interface RouteObject {
 }
 
 
-const config: Array<RouteObject> = [
-  // {
-  // 	path: '/',
-  // 	exact: true,
-  // 	component: Layout,
-  // },
+export const publicRoutes: Array<RouteObject> = [
   {
     path: '/login',
     component: loadable(() => import('@/app/Login'))
   },
+]
+
+export const privateRoutes: Array<RouteObject> = [
   {
     path: '/o',
     component: loadable(() => import('@/app/Noxo/index')),
@@ -47,4 +45,3 @@ const config: Array<RouteObject> = [
   }
 ]
 
-export default config

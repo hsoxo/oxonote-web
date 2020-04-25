@@ -1,10 +1,11 @@
 import {newJournal, newJournalAttribute, newJournalView} from "@/services/pouchdb/Journal/default";
 import {CREATED_TIME, CREATED_USER, UPDATED_TIME, UPDATED_USER} from "@/types/constants/note-attributes";
-import PDB, {dbJournal} from "@/services/pouchdb/config";
 import {JournalAttribute, JournalObject, JournalView} from "@/types/journal";
 import {NoteObject} from "@/types/note";
+import getConn from "@/services/pouchdb/config";
 
 export const create = async () => {
+  const PDB = getConn()
   const journalDoc = await newJournal()
   const viewDoc = await newJournalView(journalDoc._id)
   const attrsDocs = [
@@ -13,12 +14,14 @@ export const create = async () => {
     await newJournalAttribute(journalDoc._id, CREATED_USER, '创建人'),
     await newJournalAttribute(journalDoc._id, UPDATED_USER, '最后修改人'),
   ]
+  journalDoc.attrs = attrsDocs.map(x => x._id)
   // @ts-ignore
   await PDB.bulkDocs([journalDoc, viewDoc, ...attrsDocs])
   return journalDoc
 }
 
 export const readAll = async () => {
+  const PDB = getConn()
   const docs = await PDB.allDocs({
     include_docs: true,
     startkey: 'D-',
@@ -27,10 +30,6 @@ export const readAll = async () => {
   const journals = docs.rows.filter(x => x.id.match(/^D-.{10}$/)).map(x => x.doc) as unknown as Array<JournalObject>
   for (const journal of journals) {
     const curJournalRelations = docs.rows.filter(x => x.id.startsWith(journal._id))
-
-    journal.jourAttrs = curJournalRelations
-      .filter(x => x.id.startsWith(`${journal._id}-A-`))
-      .map(x => x.doc) as unknown as Array<JournalAttribute>
 
     journal.views = curJournalRelations
       .filter(x => x.id.startsWith(`${journal._id}-V-`))
@@ -47,15 +46,19 @@ interface ReadOneJournalResult {
   notes: Array<NoteObject>
 }
 export const readOne = async (jourId: string) => {
+  const PDB = getConn()
   const docs = await PDB.allDocs({
     include_docs: true,
     startkey: jourId,
     endkey: `${jourId}\ufff0`,
   })
   let journalDoc = docs.rows.find(x => x.id === jourId)
+
   if (journalDoc) {
     const journal = journalDoc.doc as unknown as JournalObject
-    const noteIdRegexp = new RegExp(`${journal._id}-N-.{10}$`)
+    const noteDocs = await PDB.find({
+      selector: { journalId: journal._id },
+    })
     const result: ReadOneJournalResult = {
       journal,
       attrs: docs.rows
@@ -64,19 +67,16 @@ export const readOne = async (jourId: string) => {
       views: docs.rows
         .filter(x => x.id.startsWith(`${journal._id}-V-`))
         .map(x => x.doc) as unknown as Array<JournalView>,
-      notes: docs.rows
-        .filter(x => x.id.match(noteIdRegexp))
-        .map(x => x.doc) as unknown as Array<NoteObject>,
+      notes: noteDocs.docs as unknown as Array<NoteObject>,
     }
     return result
   }
   return
 }
 
-export const find = PDB.find
-
 
 export const update = async (jourId: string, value: object) => {
+  const PDB = getConn()
   const doc = await PDB.get(jourId)
   const newDoc = {
     ...doc,

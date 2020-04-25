@@ -14,26 +14,20 @@ import {MarginDivider5} from "@/components/OxOUI/Divider";
 import ViewCreate from "./ViewCreate";
 import {JournalContext} from "@/app/Noxo/Journal";
 
-type ViewsManagerProps = {
-  jourId: string
-  viewId: string
-}
 
-const ViewsManager: React.FunctionComponent<ViewsManagerProps> = (props) => {
-  const popupState = usePopupState({
-    variant: 'popover',
-    popupId: 'demoPopover',
-  })
+const ViewsManager: React.FunctionComponent = () => {
+  const popupState = usePopupState({ variant: 'popover', popupId: 'demoPopover' })
 
   const context = useContext(JournalContext)
+  const { viewId, handleChangeView } = context
+  const { views }: JournalState = useSelector(state => state.get('journal'))
 
-  const { views }: JournalState =
-    useSelector(state => state.get('journal'))
+  const curView = views.find(x => x._id === viewId)
 
   return (
     <div>
       <Button {...bindTrigger(popupState)}>
-        视图
+        {curView ? curView.label : 'Error'}
       </Button>
       <Popover
         {...bindPopover(popupState)}

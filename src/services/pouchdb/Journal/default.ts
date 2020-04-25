@@ -17,6 +17,7 @@ export const newJournal: NewJournal = async () => {
     createdTime: new Date().getTime(),
     createdUser: '',
     description: '',
+    attrs: [],
     jourAttrs: [],
     views: [],
   }

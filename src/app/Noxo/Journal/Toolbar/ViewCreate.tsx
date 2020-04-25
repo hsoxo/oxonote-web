@@ -11,7 +11,7 @@ import ViewModuleRoundedIcon from '@material-ui/icons/ViewModuleRounded';
 import TableChartRoundedIcon from '@material-ui/icons/TableChartRounded';
 import DashboardRoundedIcon from '@material-ui/icons/DashboardRounded';
 import {BootstrapInput} from "@/components/OxOUI/Input";
-import {NoteState} from "@/types/states";
+import {JournalState, NoteState} from "@/types/states";
 import {v4 as uuid} from "uuid";
 import {JournalViewTypes} from "@/types/journal";
 import {nanoid} from "nanoid";
@@ -54,7 +54,7 @@ const ViewCreate = () => {
   const [name, setName] = useState('')
   const [view, setView] = useState<JournalViewTypes>('list')
 
-  const { curJournal: { views: curViews } }: NoteState = useSelector(state => state.get('note'))
+  const { views: curViews }: JournalState = useSelector(state => state.get('journal'))
 
   const popupState = usePopupState({
     variant: 'popover',

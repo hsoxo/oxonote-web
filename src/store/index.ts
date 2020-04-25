@@ -11,7 +11,7 @@ import { Map } from "immutable";
 
 import rootSaga from "@/store/rootSaga";
 import globalReducer from "@/store/global/reducer";
-import { globalSagaAction } from './global/actions'
+import {GlobalActionType, globalSagaAction} from './global/actions'
 import noteReducer from "@/store/note/reducer";
 import { NoteSagaAction } from './note/saga'
 import journalReducer from "@/store/journal/reducer";
@@ -50,6 +50,6 @@ export const store = createStore(rootReducer, Map(), enhancer)
 saga.run(rootSaga)
 
 
-const action = (x: globalSagaAction | JournalSagaActions | NoteSagaAction) => store.dispatch(x)
-
-export default action
+const sagaAction = (x: globalSagaAction | JournalSagaActions | NoteSagaAction) => store.dispatch(x)
+export const action = (x: GlobalActionType) => store.dispatch(x)
+export default sagaAction

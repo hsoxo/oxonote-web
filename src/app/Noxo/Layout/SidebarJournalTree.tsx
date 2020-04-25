@@ -7,8 +7,8 @@ import Typography from '@material-ui/core/Typography';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import ArrowRightIcon from '@material-ui/icons/ArrowRight';
 import {NoteState} from "@/types/states";
-import action, {useSelector} from "@/store";
-import {GlobalState} from "@/store/global/type";
+import sagaAction, {useSelector} from "@/store";
+import {GlobalState} from "@/types/states";
 import * as GLOBAL_ACT from "@/store/global/actions";
 
 declare module 'csstype' {
@@ -136,7 +136,7 @@ export default function JournalTreeView() {
   const { journals }: GlobalState = useSelector(state => state.get('global'))
 
   useEffect(() => {
-    action({ type: GLOBAL_ACT.SAGA_LOAD_JOURNAL_LIST })
+    sagaAction({ type: GLOBAL_ACT.SAGA_LOAD_JOURNAL_LIST })
   }, [])
 
   return (
@@ -159,7 +159,7 @@ export default function JournalTreeView() {
               key={y.viewId}
               nodeId={y.viewId}
               labelText={y.label}
-              onClick={() => history.push(`/o/journal/${x._id}/${y.viewId}`)}/>)}
+              onClick={() => history.push(`/o/journal/${x._id}/${y._id}`)}/>)}
         </StyledTreeItem>
       ))}
     </TreeView>

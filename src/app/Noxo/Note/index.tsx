@@ -1,7 +1,7 @@
 import React, {useEffect, Fragment, useState} from 'react'
 import {Box, CircularProgress, Divider, FormControlLabel, Fade, Paper, Switch} from '@material-ui/core'
 import AttributeBlock from './Attributes'
-import action, {useSelector} from "@/store";
+import sagaAction, {useSelector} from "@/store";
 import * as NOTE_ACT from '@/store/note/actions'
 
 import TitleBlock from "../components/Title";
@@ -11,11 +11,11 @@ import { PrismStyled } from "./PrismStyleEditor";
 import debounce from 'lodash/debounce'
 
 const handleSaveContent = debounce((value: any) => {
-  action({ type: NOTE_ACT.SAGA_UPDATE_CONTENT, content: value })
+  sagaAction({ type: NOTE_ACT.SAGA_UPDATE_CONTENT, content: value })
 }, 1000, {maxWait: 5000})
 
 const handleSaveInfo = debounce((key: string, value: string) => {
-  action({ type: NOTE_ACT.SAGA_UPDATE_INFO, payload: { [key]: value } })
+  sagaAction({ type: NOTE_ACT.SAGA_UPDATE_INFO, payload: { [key]: value } })
 }, 500, {maxWait: 5000})
 
 const NoteEditor = (props: React.ComponentProps<any>) => {
@@ -30,7 +30,7 @@ const NoteEditor = (props: React.ComponentProps<any>) => {
   }
 
   useEffect(() => {
-    action({ type: NOTE_ACT.SAGA_READ_NOTE, noteId })
+    sagaAction({ type: NOTE_ACT.SAGA_READ_NOTE, noteId })
   }, [noteId])
 
   useEffect(() => {
