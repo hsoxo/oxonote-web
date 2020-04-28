@@ -32,7 +32,7 @@ const handleKeyDown = (editor) => {
     }
 
     if (event.key === '13') {
-      console.log(1)
+
     }
   }
 }

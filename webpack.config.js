@@ -2,6 +2,7 @@ const path = require("path");
 const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
+const Dotenv = require('dotenv-webpack');
 
 const happyPackWorkers = require('./happypack.config')
 const port = process.env.PORT || 6327;
@@ -20,11 +21,6 @@ module.exports = {
     hot: true,
     historyApiFallback: true,
     proxy: {
-      '/remote-db': {
-        target: 'http://localhost:5984',
-        pathRewrite: {'^/remote-db' : ''},
-        logLevel: 'debug',
-      },
       '/backend': {
         target: 'http://localhost:6389',
         pathRewrite: {'^/backend' : ''},
@@ -76,5 +72,8 @@ module.exports = {
       template: 'public/index.html'
     }),
     new webpack.HotModuleReplacementPlugin(),
+    new Dotenv({
+      path: './.env.dev',
+    }),
   ],
 };

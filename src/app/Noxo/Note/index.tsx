@@ -16,7 +16,7 @@ const handleSaveContent = debounce((value: any) => {
 
 const handleSaveInfo = debounce((key: string, value: string) => {
   sagaAction({ type: NOTE_ACT.SAGA_UPDATE_INFO, payload: { [key]: value } })
-}, 500, {maxWait: 5000})
+}, 1000)
 
 const NoteEditor = (props: React.ComponentProps<any>) => {
   const noteId: string = props.match.params.id

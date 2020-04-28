@@ -22,6 +22,7 @@ export const create = async () => {
 
 export const readAll = async () => {
   const PDB = getConn()
+  if (!PDB) return []
   const docs = await PDB.allDocs({
     include_docs: true,
     startkey: 'D-',

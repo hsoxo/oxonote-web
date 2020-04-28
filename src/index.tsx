@@ -21,7 +21,7 @@ const theme = createMuiTheme({
 ReactDOM.render(
   <MuiThemeProvider theme={theme}>
     <StylesProvider injectFirst>
-      <SnackbarProvider maxSnack={3}>
+      <SnackbarProvider maxSnack={3} anchorOrigin={{horizontal: 'right', vertical: 'top'}} autoHideDuration={3000}>
         <Provider store={store}>
           <ConnectedRouter history={history} noInitialPop>
             <App />

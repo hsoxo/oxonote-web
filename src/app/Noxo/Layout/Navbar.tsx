@@ -18,24 +18,6 @@ const useStyles = makeStyles((theme) => ({
     toolbar: {
         minHeight: navbarHeight,
     },
-    appBar: {
-        transition: theme.transitions.create(['margin', 'width'], {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.leavingScreen,
-        }),
-        backgroundColor: 'var(--primary-bg)',
-        color: 'var(--primary-text)',
-        boxShadow: 'none',
-    },
-    appBarShift: {
-        width: `calc(100% - ${sidebarWidth}px)`,
-        marginLeft: sidebarWidth,
-        transition: theme.transitions.create(['margin', 'width'], {
-            easing: theme.transitions.easing.easeOut,
-            duration: theme.transitions.duration.enteringScreen,
-        }),
-        boxShadow: 'none',
-    },
     menuButton: {
         marginRight: theme.spacing(2),
     },
@@ -63,28 +45,25 @@ const Navbar = (props: SidebarProps) => {
   // }
 
   return (
-    <div className={classes.root}>
+    <div>
       <CssBaseline />
-      <AppBar
-        position="fixed"
-        className={clsx(classes.appBar, {
-          [classes.appBarShift]: props.shift,
-        })}>
+      <div>
         <Toolbar className={classes.toolbar}>
           <IconButton
+            className={clsx(classes.menuButton, props.shift && classes.hide)}
             size="small"
             color="inherit"
             aria-label="open drawer"
             onClick={props.onToggleSidebar}
             edge="start"
-            className={clsx(classes.menuButton, props.shift && classes.hide)}>
+          >
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap>
             {title.map((x, index) => <span key={index}>{x}{index !== title.length-1 && ' / '}</span>)}
           </Typography>
         </Toolbar>
-      </AppBar>
+      </div>
     </div>
   )
 }

@@ -11,6 +11,9 @@ import {TitleBlockPropsType} from './type'
 import styled from 'styled-components'
 
 import { FlexCenteredBox } from "@/components/OxOUI/OxOBox";
+import debounce from "lodash/debounce";
+import sagaAction from "@/store";
+import * as JOURNAL_ACT from "@/store/journal/actions";
 
 
 const TitleIconBox = styled(Box)`
@@ -84,10 +87,14 @@ const TitleMainArea: React.FunctionComponent<TitleBlockPropsType> = ({title, tit
         </TitleIconBox>
       )}
       <StyledContentEditable
+        id={"titleContent"}
         html={title}
         disabled={false}
         onKeyDown={handleContentEditableKeyPress}
-        onChange={e => onChange('title', e.target.value)}
+        onChange={() => {
+          const el = document.getElementById("titleContent")
+          onChange('title', el ? el.innerText : '')
+        }}
         tagName="h1" // Use a custom HTML tag (uses a div by default)
         style={{ outline: 'none', fontSize: '2.5rem' }}
       />

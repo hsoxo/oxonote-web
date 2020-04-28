@@ -1,8 +1,14 @@
-const webpackConfig = require('./webpack.config')
+const path = require("path");
+const webpack = require('webpack')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
+const Dotenv = require('dotenv-webpack');
+
+const happyPackWorkers = require('./happypack.config')
+
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 module.exports = {
-  ...webpackConfig,
   mode: "production",
   output: {
     path: __dirname + "/dist",
@@ -10,8 +16,41 @@ module.exports = {
     chunkFilename: 'static/js/[name].[hash:8].chunk.js',
     publicPath: '/',
   },
+  resolve: {
+    extensions: ['.tsx', '.ts', '.js', '.json', '.css'],
+    alias: {
+      '@': path.resolve(__dirname, './src'),
+    },
+  },
+  module: {
+    rules: [
+      {
+        test: /\.(ts|tsx)?$/,
+        exclude: /node_modules/,
+        use: [
+          { loader: 'ts-loader', options: { transpileOnly: true } }
+        ],
+      },
+      {
+        test: /\.(css|sass|scss)$/,
+        use: ['happypack/loader?id=css'],
+      },
+      {
+        test: /\.(jpg|jpeg|png|woff|woff2|eot|ttf|svg)$/,
+        loader: 'url-loader?limit=100000'
+      }
+    ]
+  },
   plugins: [
-    ...webpackConfig.plugins,
+    ...happyPackWorkers,
+    new HtmlWebpackPlugin({
+      filename: 'index.html',
+      template: 'public/index.html'
+    }),
+    new webpack.HotModuleReplacementPlugin(),
+    new Dotenv({
+      path: './.env.prod',
+    }),
     new BundleAnalyzerPlugin({
       analyzerPort: 6330
     })
@@ -30,7 +69,7 @@ module.exports = {
         common: {
           test: /[\\/]node_modules[\\/]/,
           name: 'common',
-          chunks: 'initial',
+          chunks: 'all',
           priority: 2,
           minChunks: 2,
         },

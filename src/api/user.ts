@@ -17,3 +17,15 @@ export function getInfo() {
     method: 'GET',
   })
 }
+
+export function register(username: string, password: string, email: string) {
+  return request({
+    url: '/backend/api/v1/user/register',
+    method: 'POST',
+    data: {
+      username,
+      password,
+      email,
+    }
+  })
+}

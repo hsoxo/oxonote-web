@@ -9,6 +9,7 @@ body {
     --mu-bg: #fafafa;
     --inline-bg: rgb(248, 248, 248);
     line-height: unset;
+    background-color: var(--primary-bg);
 }
 
 a {

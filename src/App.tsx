@@ -5,29 +5,27 @@ import { privateRoutes, publicRoutes } from './routes'
 import {getToken} from "@/utils/auth";
 import sagaAction from "@/store";
 import {SAGA_LOAD_USER} from "@/store/global/actions";
+import {LinearProgress} from "@material-ui/core";
 
 export default function App() {
   return (
     <Switch>
-      <Switch>
-        {publicRoutes.map((route, i) => (
-          <PublicRouteWithSubRoutes key={i} {...route} />
-        ))}
-        <Route
-          exact
-          path={["/"]}
-          component={() => <Redirect from="/" to="/login" />}
-        />
-        {privateRoutes.map((route, i) => (
-          <PrivateRouteWithSubRoutes key={i} {...route} />
-        ))}
-      </Switch>
+      {publicRoutes.map((route, i) => (
+        <PublicRouteWithSubRoutes key={i} {...route} />
+      ))}
+      {privateRoutes.map((route, i) => (
+        <PrivateRouteWithSubRoutes key={i} {...route} />
+      ))}
+      <Route
+        exact
+        path={["/"]}
+        component={() => <Redirect from="/" to="/login" />}
+      />
     </Switch>
   )
 }
 
 function PrivateRouteWithSubRoutes(route: any) {
-
   return (
     <Route
       path={route.path}
@@ -55,9 +53,9 @@ function PrivateRouteWithSubRoutes(route: any) {
 }
 
 function PublicRouteWithSubRoutes(route: any) {
-  if (route.path === '/login' && getToken()) {
-    sagaAction({ type: SAGA_LOAD_USER })
-    return null
+  if ((route.path === '/login' || route.path === '/register') && getToken()) {
+    sagaAction({ type: SAGA_LOAD_USER, payload: '/o' })
+    return <LinearProgress color="secondary" />
   }
   return (
     <Route

@@ -22,6 +22,8 @@
     "axios": "^0.19.2",
     "clsx": "^1.1.0",
     "connected-react-router": "^6.8.0",
+    "delay": "^4.3.0",
+    "dotenv-webpack": "^1.7.0",
     "emoji-mart": "^3.0.0",
     "immutable": "^4.0.0-rc.12",
     "katex": "^0.11.1",

@@ -9,6 +9,7 @@ import {AttributeRangeType, JournalViewAttribute} from "@/types/journal";
 import {SAGA_JOURNAL_CREATE, SAGA_UPDATE_VIEW_ATTR_SETTING} from "./actions";
 import {SAGA_JOURNAL_READ} from "./actions";
 import {SAGA_UPDATE_ATTR_RANGE} from "./actions";
+import {SAGA_LOAD_JOURNAL_LIST} from "@/store/global/actions";
 
 const SAGA_ACTIONS = Object.entries(ACT).filter(x => x[0].startsWith('SAGA') && typeof x[1] === 'string').map(x => x[1]) as unknown as Array<string>
 
@@ -93,6 +94,9 @@ function* updateJournalInfo(payload: any) {
     const { journal: { _id } }: JournalState = yield select(state => state.get('journal'))
     yield call(PouchConn.journal.update, _id, payload)
     yield put(ACT.setJournalInfo(payload))
+    if ('title' in payload) {
+      yield put({type: SAGA_LOAD_JOURNAL_LIST})
+    }
   } catch (e) {
     console.error(e)
   }

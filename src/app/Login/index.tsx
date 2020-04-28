@@ -9,25 +9,17 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import {makeStyles} from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import sagaAction, {useSelector} from "@/store";
-import {SAGA_LOAD_USER, SAGA_LOGIN} from "@/store/global/actions";
+import sagaAction, {action, useSelector} from "@/store";
+import {SAGA_LOAD_USER, SAGA_LOGIN, setLoginStatus} from "@/store/global/actions";
 import {GlobalState} from "@/types/states";
-import {RequestProcessing} from "@/types/request";
-import {CircularProgress} from "@material-ui/core";
+import {RequestDefault, RequestDone, RequestError, RequestProcessing} from "@/types/request";
+import {CircularProgress, Grid} from "@material-ui/core";
 import {getToken} from "@/utils/auth";
 
-function Copyright() {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {'Copyright © '}
-      <Link color="inherit" href="https://material-ui.com/">
-        Noxo
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
+import Copyright from "@/components/Copyright";
+import {useSnackbar} from "notistack";
+import {Spring, Transition, animated} from "react-spring/renderprops-universal";
+
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -66,7 +58,10 @@ const handleLogin = (username: string, password: string) => {
 
 
 export default function SignIn() {
+  const { enqueueSnackbar } = useSnackbar();
+
   const classes = useStyles();
+  const [showForm, toggleForm] = useState(true)
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
 
@@ -74,73 +69,95 @@ export default function SignIn() {
 
   const processing = loginStatus === RequestProcessing
 
+  useEffect(() => {
+    if (loginStatus === RequestError) {
+      enqueueSnackbar('登陆失败', { variant: 'error' });
+    } else if (loginStatus === RequestDone) {
+      enqueueSnackbar('登陆成功', { variant: 'success' });
+    }
+    action(setLoginStatus(RequestDefault))
+  }, [loginStatus])
+
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
-      <div className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <LockOutlinedIcon />
-        </Avatar>
-        <Typography component="h1" variant="h5">
-          Sign in
-        </Typography>
-        <form className={classes.form} noValidate>
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            id="username"
-            label="用户名"
-            name="username"
-            onChange={e => setUsername(e.target.value)}
-            autoFocus
-          />
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            name="password"
-            label="密码"
-            type="password"
-            id="password"
-            onChange={e => setPassword(e.target.value)}
-          />
-          {/*<FormControlLabel*/}
-          {/*  control={<Checkbox value="remember" color="primary" />}*/}
-          {/*  label="Remember me"*/}
-          {/*/>*/}
-          <div className={classes.wrapper}>
-            <Button
-              fullWidth
-              variant="contained"
-              color="primary"
-              className={classes.submit}
-              disabled={processing}
-              onClick={() => handleLogin(username, password)}
-            >
-              Sign In
-            </Button>
-            {processing && <CircularProgress size={24} className={classes.buttonProgress} />}
-          </div>
-          {/*<Grid container>*/}
-          {/*  <Grid item xs>*/}
-          {/*    <Link href="#" variant="body2">*/}
-          {/*      Forgot password?*/}
-          {/*    </Link>*/}
-          {/*  </Grid>*/}
-          {/*  <Grid item>*/}
-          {/*    <Link href="#" variant="body2">*/}
-          {/*      {"Don't have an account? Sign Up"}*/}
-          {/*    </Link>*/}
-          {/*  </Grid>*/}
-          {/*</Grid>*/}
-        </form>
-      </div>
-      <Box mt={8}>
-        <Copyright />
+      <Box minHeight={"100vh"} margin={"0 auto -50px"}>
+        <Transition
+          items={showForm}
+          config={{ tension: 210, friction: 23}}
+          from={{ opacity: 0 }}
+          enter={{ opacity: 1 }}
+          leave={{ opacity: 0 }}>
+          {showForm =>
+            props =>
+              showForm ?
+                <div style={props}>
+                  <div className={classes.paper}>
+                    <Avatar className={classes.avatar}>
+                      <LockOutlinedIcon />
+                    </Avatar>
+                    <Typography component="h1" variant="h5">
+                      Sign in
+                    </Typography>
+                    <form className={classes.form} noValidate>
+                      <TextField
+                        variant="outlined"
+                        margin="normal"
+                        required
+                        fullWidth
+                        id="username"
+                        label="用户名"
+                        name="username"
+                        onChange={e => setUsername(e.target.value)}
+                        autoFocus
+                      />
+                      <TextField
+                        variant="outlined"
+                        margin="normal"
+                        required
+                        fullWidth
+                        name="password"
+                        label="密码"
+                        type="password"
+                        id="password"
+                        onChange={e => setPassword(e.target.value)}
+                      />
+                      {/*<FormControlLabel*/}
+                      {/*  control={<Checkbox value="remember" color="primary" />}*/}
+                      {/*  label="Remember me"*/}
+                      {/*/>*/}
+                      <div className={classes.wrapper}>
+                        <Button
+                          fullWidth
+                          variant="contained"
+                          color="primary"
+                          className={classes.submit}
+                          disabled={processing}
+                          onClick={() => handleLogin(username, password)}
+                        >
+                          Sign In
+                        </Button>
+                        {processing && <CircularProgress size={24} className={classes.buttonProgress} />}
+                      </div>
+                      <Grid container>
+                        {/*<Grid item xs>*/}
+                        {/*  <Link href="#" variant="body2">*/}
+                        {/*    Forgot password?*/}
+                        {/*  </Link>*/}
+                        {/*</Grid>*/}
+                        <Grid item>
+                          <Link href="/register" variant="body2">
+                            {"Don't have an account? Sign Up"}
+                          </Link>
+                        </Grid>
+                      </Grid>
+                    </form>
+                  </div>
+                </div>
+                : null}
+        </Transition>
       </Box>
+      <Copyright />
     </Container>
   );
 }

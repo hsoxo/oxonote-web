@@ -5,7 +5,9 @@ import PouchDB from "pouchdb-browser";
 
 const initialState: GlobalState = {
   title: 'Welcome to OxO Notes',
+  globalLoading: false,
   loginStatus: '',
+  signUpStatus: '',
   token: getToken(),
   userInfo: null,
   journals: [],
@@ -23,6 +25,8 @@ function reducerGlobal(
       return { ...state, title: action.payload || 'Welcome to OxO Notes' }
     case ACT.SET_LOGIN_STATUS:
       return { ...state, loginStatus: action.payload }
+    case ACT.SET_SIGN_UP_STATUS:
+      return { ...state, signUpStatus: action.payload }
     case ACT.SET_USER_INFO:
       return { ...state, userInfo: action.payload }
     case ACT.SET_JOURNAL_LIST:

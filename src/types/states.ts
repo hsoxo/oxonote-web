@@ -39,7 +39,9 @@ export interface RemoteDBInfo {
 }
 export interface GlobalState {
     title: string
+    globalLoading: boolean
     loginStatus: RequestStatus
+    signUpStatus: RequestStatus
     token: string
     userInfo: UserInfo | null
     journals: Array<JournalObject>

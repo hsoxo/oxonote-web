@@ -68,6 +68,7 @@ const HoveringToolbar = () => {
       Editor.string(editor, selection) === ''
     ) {
       el.removeAttribute('style')
+      el.style.opacity = 0
       return
     }
 
@@ -84,7 +85,7 @@ const HoveringToolbar = () => {
 
   return (
     <Portal>
-        <Menu ref={ref}/>
+        <Menu style={{opacity: 0}} ref={ref}/>
     </Portal>
   )
 }
