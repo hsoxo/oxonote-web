@@ -20,7 +20,7 @@ const JournalListView = () => {
     return <Box>Error</Box>
 
   const activeAttrs: Array<JournalAttribute> = []
-  journal.attrs.forEach(attrId => {
+  journal.attrIds.forEach(attrId => {
     const exist = attrs.find(y => y._id === attrId)
     if (exist) {
       const isActive = curView.attribute.some(y => (y.attrId === exist._id) && y.status)

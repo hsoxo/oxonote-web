@@ -1,11 +1,10 @@
-import {AttributeRangeType, JournalAttribute, JournalObject, JournalView} from "@/types/journal";
+import {AttributeRangeType, JournalAttribute, JournalObject, JournalView, JournalViewTypes} from "@/types/journal";
 import { customAlphabet } from 'nanoid/async'
+import { tagColorList } from "@/types/constants/colors";
 const nanoid = customAlphabet('1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', 10)
-import notePropTypes from "@/types/constants/note-attributes";
-import {tagColorList} from "@/types/constants/colors";
+
 
 type NewJournal = () => Promise<JournalObject>
-
 export const newJournal: NewJournal = async () => {
   const newId = await nanoid()
   return {
@@ -17,22 +16,22 @@ export const newJournal: NewJournal = async () => {
     createdTime: new Date().getTime(),
     createdUser: '',
     description: '',
-    attrs: [],
+    attrIds: [],
     jourAttrs: [],
-    views: [],
+    viewIds: [],
   }
 }
 
-type NewJournalView = (journalId: string) => Promise<JournalView>
 
-export const newJournalView: NewJournalView = async (journalId: string) => {
+type NewJournalView = (journalId: string, type?: JournalViewTypes, label?: string) => Promise<JournalView>
+export const newJournalView: NewJournalView = async (journalId: string, type: JournalViewTypes = 'list', label = '全部文档') => {
   const newId = await nanoid()
   return {
     _id: `${journalId}-V-${newId}`,
     _rev: '',
+    type: type || 'list',
     viewId: newId,
-    type: 'list',
-    label: '全部文档',
+    label: label || '全部文档',
     attribute: [],
     filters: {
       relation: 'and',
@@ -42,8 +41,8 @@ export const newJournalView: NewJournalView = async (journalId: string) => {
   }
 }
 
-type NewJournalAttribute = (journalId: string, attrType: string, label: string) => Promise<JournalAttribute>
 
+type NewJournalAttribute = (journalId: string, attrType: string, label: string) => Promise<JournalAttribute>
 export const newJournalAttribute: NewJournalAttribute = async (journalId, attrType, label) => {
   const newId = await nanoid()
   return {
@@ -54,6 +53,7 @@ export const newJournalAttribute: NewJournalAttribute = async (journalId, attrTy
     label: label || '',
   }
 }
+
 
 type NewJournalAttributeRangeItem = (label: string) => Promise<AttributeRangeType>
 export const newRangeItem: NewJournalAttributeRangeItem = async (label) => {

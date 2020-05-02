@@ -6,21 +6,24 @@ import {
   Popover,
   IconButton
 } from "@material-ui/core";
-import {JournalState, NoteState} from "@/types/states";
+import { JournalState } from "@/types/states";
 import {useSelector} from "@/store";
-import {DenseListItem, DenseListItemBoxNoHover, DenseListItemIcon} from "@/components/OxOUI/List";
+import {DenseListItem, DenseListItemIcon} from "@/components/OxOUI/List";
 import DeleteIcon from "@material-ui/icons/Delete";
 import {MarginDivider5} from "@/components/OxOUI/Divider";
 import ViewCreate from "./ViewCreate";
 import {JournalContext} from "@/app/Noxo/Journal";
-
 
 const ViewsManager: React.FunctionComponent = () => {
   const popupState = usePopupState({ variant: 'popover', popupId: 'demoPopover' })
 
   const context = useContext(JournalContext)
   const { viewId, handleChangeView } = context
-  const { views }: JournalState = useSelector(state => state.get('journal'))
+  const { views, journal: { viewIds } }: JournalState = useSelector(state => state.get('journal'))
+
+  let sortedViews = views
+    .filter(x => viewIds.indexOf(x._id) > -1)
+    .sort((a, b) => viewIds.indexOf(a._id) - viewIds.indexOf(b._id))
 
   const curView = views.find(x => x._id === viewId)
 
@@ -46,7 +49,7 @@ const ViewsManager: React.FunctionComponent = () => {
       >
         <Box>
           <div style={{ height: '0.6rem' }} />
-          {views.map(x =>
+          {sortedViews.map(x =>
             <DenseListItem button key={x.viewId} onClick={() => context.handleChangeView(x.viewId)}>
               {x.label}
               <DenseListItemIcon style={{marginLeft: 'auto'}}>

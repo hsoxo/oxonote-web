@@ -4,7 +4,7 @@ import {DenseListItem, DenseListItemIcon} from "@/components/OxOUI/List";
 import AddIcon from "@material-ui/icons/Add";
 import {Box, Button, Grid, ListItem, Popover} from "@material-ui/core";
 import {bindPopover, bindTrigger, usePopupState} from "material-ui-popup-state/hooks";
-import { useSelector } from "@/store";
+import sagaAction, { useSelector } from "@/store";
 import CheckIcon from '@material-ui/icons/Check';
 import ViewListRoundedIcon from '@material-ui/icons/ViewListRounded';
 import ViewModuleRoundedIcon from '@material-ui/icons/ViewModuleRounded';
@@ -15,6 +15,7 @@ import {JournalState, NoteState} from "@/types/states";
 import {v4 as uuid} from "uuid";
 import {JournalViewTypes} from "@/types/journal";
 import {nanoid} from "nanoid";
+import {SAGA_CREATE_VIEW} from "@/store/journal/actions";
 
 interface ViewTypeSetting {
   id: JournalViewTypes
@@ -54,8 +55,6 @@ const ViewCreate = () => {
   const [name, setName] = useState('')
   const [view, setView] = useState<JournalViewTypes>('list')
 
-  const { views: curViews }: JournalState = useSelector(state => state.get('journal'))
-
   const popupState = usePopupState({
     variant: 'popover',
     popupId: 'demoPopover',
@@ -63,19 +62,7 @@ const ViewCreate = () => {
 
   const handleCreate = () => {
     if (!name) return;
-    const newViews = curViews.slice()
-    if (view)
-      newViews.push({
-        _id: nanoid(),
-        _rev: '',
-        type: view,
-        viewId: uuid(),
-        label: name,
-        attribute: [],
-        filters: {relation: 'and', settings: []},
-        sorts: [],
-      })
-    // action(NOTE_ACT.SAGA_UPDATE_JOURNAL, {views: newViews})
+    sagaAction({ type: SAGA_CREATE_VIEW, viewType: view, viewLabel: name})
   }
 
   return (

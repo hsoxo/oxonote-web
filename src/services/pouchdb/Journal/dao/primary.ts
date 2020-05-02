@@ -14,7 +14,8 @@ export const create = async () => {
     await newJournalAttribute(journalDoc._id, CREATED_USER, '创建人'),
     await newJournalAttribute(journalDoc._id, UPDATED_USER, '最后修改人'),
   ]
-  journalDoc.attrs = attrsDocs.map(x => x._id)
+  journalDoc.attrIds = attrsDocs.map(x => x._id)
+  journalDoc.viewIds = [viewDoc._id]
   // @ts-ignore
   await PDB.bulkDocs([journalDoc, viewDoc, ...attrsDocs])
   return journalDoc
@@ -35,6 +36,8 @@ export const readAll = async () => {
     journal.views = curJournalRelations
       .filter(x => x.id.startsWith(`${journal._id}-V-`))
       .map(x => x.doc) as unknown as Array<JournalView>
+    journal.views
+      .sort((a, b) => journal.viewIds.indexOf(a._id) - journal.viewIds.indexOf(b._id))
   }
   return journals
 }

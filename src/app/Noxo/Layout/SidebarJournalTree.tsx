@@ -154,12 +154,13 @@ export default function JournalTreeView() {
           labelIcon={x.titleIcon || '📒'}
           labelText={x.title || '未命名笔记本'}
           onClick={() => history.push(`/o/journal/${x._id}`)}>
-          {x.views.map(y =>
+          {x.views ? x.views.map(y =>
             <StyledTreeItem
               key={y.viewId}
               nodeId={y.viewId}
               labelText={y.label}
-              onClick={() => history.push(`/o/journal/${x._id}/${y._id}`)}/>)}
+              onClick={() => history.push(`/o/journal/${x._id}/${y._id}`)}/>)
+            : null}
         </StyledTreeItem>
       ))}
     </TreeView>

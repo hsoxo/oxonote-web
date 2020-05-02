@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useContext} from 'react'
 import {Box, Grid} from "@material-ui/core";
 import {Link} from "react-router-dom";
 import GalleryCard from './Card'
@@ -7,22 +7,28 @@ import { MarginBox } from "@/components/OxOUI/OxOBox";
 import {JournalState, NoteState} from "@/types/states";
 import {useSelector} from "@/store";
 import {JournalView} from "@/types/journal";
+import {JournalContext} from "@/app/Noxo/Journal";
 
 type JournalListViewProps = {
   viewId: string
 }
 
 const JournalGalleryView = (props: JournalListViewProps) => {
-  const { journal, views, notes }: JournalState = useSelector(state => state.get('journal'))
-  const curViewSetting = views.find(x => x.viewId === props.viewId)
+  const { journal, views, notes, attrs }: JournalState = useSelector(state => state.get('journal'))
+  const context = useContext(JournalContext)
+  const { viewId } = context
+  const curView = views.find(x => x._id === viewId)
+
+  if (!curView)
+    return <Box>Error</Box>
 
   return (
     <MarginBox>
       <Grid container>
-        { curViewSetting &&
+        { curView &&
         notes.map(x => (
-          <Grid item xs={3}>
-           <GalleryCard key={x._id} {...x}/>
+          <Grid item xs={3} key={x._id}>
+            <GalleryCard {...x}/>
           </Grid>
         ))}
       </Grid>

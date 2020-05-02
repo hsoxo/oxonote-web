@@ -121,6 +121,12 @@ export default function SignIn() {
                         type="password"
                         id="password"
                         onChange={e => setPassword(e.target.value)}
+                        onKeyPress={(e) => {
+                          if (e.key === 'Enter') {
+                            handleLogin(username, password)
+                            e.preventDefault();
+                          }
+                        }}
                       />
                       {/*<FormControlLabel*/}
                       {/*  control={<Checkbox value="remember" color="primary" />}*/}

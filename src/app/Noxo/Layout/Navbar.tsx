@@ -49,16 +49,6 @@ const Navbar = (props: SidebarProps) => {
       <CssBaseline />
       <div>
         <Toolbar className={classes.toolbar}>
-          <IconButton
-            className={clsx(classes.menuButton, props.shift && classes.hide)}
-            size="small"
-            color="inherit"
-            aria-label="open drawer"
-            onClick={props.onToggleSidebar}
-            edge="start"
-          >
-            <MenuIcon />
-          </IconButton>
           <Typography variant="h6" noWrap>
             {title.map((x, index) => <span key={index}>{x}{index !== title.length-1 && ' / '}</span>)}
           </Typography>

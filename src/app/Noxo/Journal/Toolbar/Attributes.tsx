@@ -40,8 +40,8 @@ const AttributeSetting: React.FunctionComponent = () => {
 
   let attributes = jourAttrs
     .map(x => ({...notePropTypes[x.type], ...x}))
-    .filter(x => journal.attrs.indexOf(x._id) > -1)
-    .sort((a, b) => journal.attrs.indexOf(a._id) - journal.attrs.indexOf(b._id))
+    .filter(x => journal.attrIds.indexOf(x._id) > -1)
+    .sort((a, b) => journal.attrIds.indexOf(a._id) - journal.attrIds.indexOf(b._id))
 
   const attrSetting = curView.attribute || []
 
@@ -66,7 +66,7 @@ const AttributeSetting: React.FunctionComponent = () => {
     // dropped outside the list
     if (!result.destination) return;
 
-    const newAttrSetting: Array<string> = JSON.parse(JSON.stringify(journal.attrs))
+    const newAttrSetting: Array<string> = JSON.parse(JSON.stringify(journal.attrIds))
     const [removed] = newAttrSetting.splice(result.source.index, 1);
     newAttrSetting.splice(result.destination.index, 0, removed)
     sagaAction({ type: JOURNAL_ACT.SAGA_UPDATE_INFO, payload: { attrs: newAttrSetting} })

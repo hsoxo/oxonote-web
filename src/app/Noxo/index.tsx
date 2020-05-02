@@ -10,36 +10,14 @@ import { FlexBox } from '@/components/OxOUI/OxOBox'
 import styled from 'styled-components'
 import { GlobalState } from '@/types/states'
 import sagaAction, { action, useSelector } from '@/store'
-import { CircularProgress } from '@material-ui/core'
-import {
-  Keyframes,
-  Spring,
-  Transition
-} from 'react-spring/renderprops-universal'
 import { SAGA_LOAD_USER, setDBSyncStatus } from '@/store/global/actions'
 import '@/styles/base.css'
-import delay from 'delay'
 
 import PouchDB from 'pouchdb-browser'
-import {useSpring, animated, config, useTransition} from 'react-spring'
+import {useSpring, animated, useTransition} from 'react-spring'
 import ClapSpinner from "@/components/Spiner";
 PouchDB.plugin(require('pouchdb-authentication'))
 
-type ToggleProps = {
-  sidebar: boolean
-}
-
-const MainWrapper = styled.div`
-  flex-grow: 1;
-  padding: 3rem;
-  transition: margin ease 200ms;
-  margin-left: 0;
-  background-color: var(--primary-bg);
-  overflow-y: scroll;
-  font-size: 1rem;
-  color: var(--primary-color);
-  height: calc(100vh - ${navbarHeight}px);
-`
 
 const NoteLayout: React.FunctionComponent<
   InnerRouteProps & RouteComponentProps
@@ -162,6 +140,18 @@ const StyledWrapper = styled.div`
   font-size: 10%;
   //margin-top: 30%;
   text-align: center;
+`
+
+const MainWrapper = styled.div`
+  flex-grow: 1;
+  padding: 1.5rem 3rem;
+  transition: margin ease 200ms;
+  margin-left: 0;
+  background-color: var(--primary-bg);
+  overflow-y: scroll;
+  font-size: 1rem;
+  color: var(--primary-color);
+  height: calc(100vh - ${navbarHeight}px);
 `
 
 export default NoteLayout

@@ -13,7 +13,7 @@ const AttributeBlockBox = styled(Box)`
 `
 
 const AttributeBlock = () => {
-  const { note: { attributes }, journal: { attrs: journalAttrOrder }, journalAttrs }: NoteState = useSelector(state => state.get('note'))
+  const { note: { attributes }, journal: { attrIds: journalAttrOrder }, journalAttrs }: NoteState = useSelector(state => state.get('note'))
 
   const activeAttrs = []
   for (const attrId of journalAttrOrder) {

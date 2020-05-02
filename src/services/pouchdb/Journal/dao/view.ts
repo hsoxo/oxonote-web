@@ -1,12 +1,16 @@
 import {newJournalView} from "@/services/pouchdb/Journal/default";
-import {JournalView} from "@/types/journal";
+import {JournalObject, JournalView, JournalViewTypes} from "@/types/journal";
 import getConn from "@/services/pouchdb/config";
 
-export const create = async (journalId: string) => {
+export const create = async (journalId: string, type: JournalViewTypes = 'list', label = '全部文档') => {
   const PDB = getConn()
-  const viewDoc = await newJournalView(journalId)
+  const viewDoc = await newJournalView(journalId, type, label)
   // @ts-ignore
   await PDB.put(viewDoc)
+  const journalDoc: JournalObject = await PDB.get(journalId)
+  journalDoc.viewIds.push(viewDoc._id)
+  // @ts-ignore
+  await PDB.put(journalDoc)
   return viewDoc
 }
 
@@ -23,7 +27,7 @@ export const update = async (viewId: string, updateKey: 'attribute', value: any)
   }
 }
 
-export const remove = async () => {
+export const remove = async (viewId: string) => {
   const PDB = getConn()
 
 }

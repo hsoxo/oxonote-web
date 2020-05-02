@@ -79,17 +79,14 @@ const Sidebar = ({ active, onToggleSidebar }: SidebarProps) => {
   return (
     <div>
       <SidebarWrapper style={springStyle}>
+        <ToggleButtonWrapper
+          style={{left: active ? `${sidebarWidth - 20}px` : `${sidebarWidth - 10}px`}}
+          onClick={onToggleSidebar}
+        >
+          <NavigateBeforeIcon fontSize="small" style={{transform: active ? '' : 'rotate(180deg)', transition: 'transform ease 400ms'}}/>
+        </ToggleButtonWrapper>
         <ListItem>
           <ListItemText primary={"OxO Notes"} />
-          <ListItemIcon className={classes.menuIcon}>
-            <IconButton
-              edge="end"
-              // style={{float: "right"}}
-              size={"small"}
-              onClick={onToggleSidebar}>
-              <NavigateBeforeIcon/>
-            </IconButton>
-          </ListItemIcon>
         </ListItem>
         <List>
           <ListItem className={classes.listItem} button>
@@ -126,6 +123,20 @@ const SidebarWrapper = styled(animated.div)`
   height: 100vh;
   width: ${sidebarWidth}px;
   background-color: var(--secondary-bg);
+`
+const ToggleButtonWrapper = styled.button`
+  position: absolute;
+  top: 50px;
+  background-color: var(--secondary-bg);
+  box-shadow: rgba(0,0,0,0.1) 0px 0px 10px 2px;
+  border: 0;
+  height: 40px;
+  width: 40px;
+  border-radius: 20px;
+  z-index: 100;
+  &:hover {
+    cursor: pointer;
+  }
 `
 
 export default Sidebar

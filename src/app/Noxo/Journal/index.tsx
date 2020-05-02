@@ -46,7 +46,7 @@ const Journal = (props: React.ComponentProps<any>) => {
   }, [journalId])
 
   useEffect(() => {
-    if ((!viewId || viewId !== activeViewId) && Array.isArray(views) && views.length > 0 && views[0]._id.startsWith(journalId))
+    if (!viewId && Array.isArray(views) && views.length > 0 && views[0]._id.startsWith(journalId))
       history.push(`/o/journal/${journalId}/${views[0]._id}`)
     if (viewId !== activeViewId)
       setActiveViewId(viewId)

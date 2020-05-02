@@ -33,8 +33,8 @@ const initNoteState: NoteState = {
         createdTime: 0,
         createdUser: '',
         description: '',
-        attrs: [],
-        views: [],
+        attrIds: [],
+        viewIds: [],
     },
 }
 

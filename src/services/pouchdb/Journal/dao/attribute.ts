@@ -8,10 +8,10 @@ export const create = async (journalId: string, attrType: string, attrLabel: str
   await PDB.put(newAttrDoc)
   const journalDoc: JournalObject = await PDB.get(journalId)
   if (replace) {
-    const replaceIndex = journalDoc.attrs.findIndex(x => x === replace)
-    journalDoc.attrs.splice(replaceIndex, 1, newAttrDoc._id)
+    const replaceIndex = journalDoc.attrIds.findIndex(x => x === replace)
+    journalDoc.attrIds.splice(replaceIndex, 1, newAttrDoc._id)
   } else {
-    journalDoc.attrs.push(newAttrDoc._id)
+    journalDoc.attrIds.push(newAttrDoc._id)
   }
   // @ts-ignore
   await PDB.put(journalDoc)

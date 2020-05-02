@@ -6,7 +6,7 @@ import * as GlobalACT from '@/store/global/actions'
 import * as ACT from './actions'
 import {JournalState} from '@/types/states'
 import {AttributeRangeType, JournalViewAttribute} from "@/types/journal";
-import {SAGA_JOURNAL_CREATE, SAGA_UPDATE_VIEW_ATTR_SETTING} from "./actions";
+import {SAGA_CREATE_VIEW, SAGA_DELETE_VIEW, SAGA_JOURNAL_CREATE, SAGA_UPDATE_VIEW_ATTR_SETTING} from "./actions";
 import {SAGA_JOURNAL_READ} from "./actions";
 import {SAGA_UPDATE_ATTR_RANGE} from "./actions";
 import {SAGA_LOAD_JOURNAL_LIST} from "@/store/global/actions";
@@ -35,6 +35,15 @@ function* journalSW() {
       }
       case ACT.SAGA_UPDATE_VIEW_ATTR_SETTING: {
         yield fork(updateViewAttrSetting, action.viewId, action.attribute); break;
+      }
+      case ACT.SAGA_CREATE_VIEW: {
+        yield fork(createJournalView, action.viewType, action.viewLabel); break;
+      }
+      // case ACT.SAGA_UPDATE_VIEW: {
+      //   yield fork(updateViewAttrSetting, action.viewId, action.attribute); break;
+      // }
+      case ACT.SAGA_DELETE_VIEW: {
+        yield fork(deleteJournalView, action.viewId); break;
       }
     }
   }
@@ -133,8 +142,53 @@ function* updateViewAttrSetting(viewId: string, attribute: Array<JournalViewAttr
   }
 }
 
+
+interface CreateJournalView {
+  type: typeof SAGA_CREATE_VIEW
+  viewType: string
+  viewLabel: string
+}
+function* createJournalView(viewType: string, viewLabel: string) {
+  try {
+    const { journal: { _id } }: JournalState = yield select(state => state.get('journal'))
+    yield call(PouchConn.journal.view.create, _id, viewType, viewLabel)
+    yield call(refreshJournal)
+  } catch (e) {
+    if (e.status === 404) yield put(push(`/o`))
+    console.error(e)
+  }
+}
+
+interface UpdateJournalView {
+  type: typeof SAGA_UPDATE_VIEW_ATTR_SETTING
+  viewId: string
+  attribute: Array<JournalViewAttribute>
+}
+function* updateJournalView(viewId: string, attribute: Array<JournalViewAttribute>) {
+  try {
+    yield call(PouchConn.journal.view.update, viewId, 'attribute', attribute)
+    yield call(refreshJournal)
+  } catch (e) {
+    if (e.status === 404) yield put(push(`/o`))
+    console.error(e)
+  }
+}
+
+interface DeleteJournalView {
+  type: typeof SAGA_DELETE_VIEW
+  viewId: string
+}
+function* deleteJournalView(viewId: string) {
+  try {
+    yield call(PouchConn.journal.view.remove, viewId, )
+    yield call(refreshJournal)
+  } catch (e) {
+    if (e.status === 404) yield put(push(`/o`))
+    console.error(e)
+  }
+}
 export type JournalSagaActions = JournalCreate | JournalRead | UpdateJournalInfo | JournalAttrRangeChange |
-  UpdateViewAttrSetting
+  UpdateViewAttrSetting | CreateJournalView | DeleteJournalView
 
 function* refreshJournal() {
   try {
