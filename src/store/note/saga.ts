@@ -5,6 +5,7 @@ import { push } from 'connected-react-router'
 import * as ACT from './actions'
 import {NoteState} from '@/types/states'
 import {NoteContent} from "@/types/note";
+import {setAllJournalInfo} from "@/store/journal/actions";
 
 const SAGA_ACTIONS = Object.entries(ACT).filter(x => x[0].startsWith('SAGA')).map(x => x[1])
 
@@ -183,8 +184,15 @@ export type NoteSagaAction = CreateNote | ReadNote | UpdateNoteInfo | UpdateNote
 function* refreshNote() {
   try {
     const { note: { _id } } = yield select(state => state.get('note'))
-    const value = yield call(PouchConn.note.readOne, _id)
-    yield put(ACT.setNoteAll(value))
+    if (_id) {
+      const value = yield call(PouchConn.note.readOne, _id)
+      yield put(ACT.setNoteAll(value))
+    }
+    const { journal: { _id: jid } } = yield select(state => state.get('journal'))
+    if (jid) {
+      const value = yield call(PouchConn.journal.readOne, jid)
+      yield put(setAllJournalInfo(value))
+    }
   } catch (e) {
     if (e.name === 'not_found') put(push(`/o`))
     console.error(e)

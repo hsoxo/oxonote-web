@@ -14,7 +14,7 @@ import { SAGA_LOAD_USER, setDBSyncStatus } from '@/store/global/actions'
 import '@/styles/base.css'
 
 import PouchDB from 'pouchdb-browser'
-import {useSpring, animated, useTransition} from 'react-spring'
+import {useSpring, animated, useTransition, interpolate} from 'react-spring'
 import ClapSpinner from "@/components/Spiner";
 PouchDB.plugin(require('pouchdb-authentication'))
 
@@ -84,8 +84,9 @@ const NoteLayout: React.FunctionComponent<
   }, [browserDBConn, remoteDBInfo])
 
   const leftStyle = useSpring({
-    to: { width: state ? `${sidebarWidth}px` : '0' },
-    delay: 100,
+    width: state ? `${sidebarWidth}px` : '0',
+    minWidth: state ? `${sidebarWidth}px` : '0',
+    maxWidth: state ? `${sidebarWidth}px` : '0',
   })
 
   const transitions = useTransition(!!browserDBConn, null, {
@@ -94,7 +95,9 @@ const NoteLayout: React.FunctionComponent<
     leave: { opacity: 0 },
     config: { mass: 1, tension: 280, friction: 30 }
   })
+  const props1 = useSpring({ width: state ? 220 : 0 })
 
+  leftStyle.width
   return (
     <FlexBox>
       <Suspense fallback="loading...">
@@ -104,7 +107,12 @@ const NoteLayout: React.FunctionComponent<
               <animated.div style={leftStyle}>
                 <Sidebar onToggleSidebar={handleToggleState} active={state} />
               </animated.div>
-              <animated.div style={{ width: `100vw` }}>
+              <animated.div style={{
+                width: '100%',
+                position: 'absolute',
+                paddingLeft: leftStyle.width.interpolate((x:any) => x),
+                zIndex: -1,
+              }}>
                 <div style={{ display: 'flex', flexDirection: 'column' }}>
                   <Navbar onToggleSidebar={handleToggleState} shift={state} />
                   <MainWrapper>

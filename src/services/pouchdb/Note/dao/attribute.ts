@@ -23,7 +23,6 @@ export const updateValue = async (noteId: string, attrId: string, value: string 
   const doc: NoteObject = await PDB.get(noteId)
   const attrDoc: JournalAttribute = await PDB.get(attrId)
   const curAttr = doc.attributes[doc.attributes.findIndex(x => x.attrId === attrId)]
-  attrDoc.range
   if (doc) {
     if (attrDoc.type === SINGLE_SELECT && typeof value === 'string') {
       if (attrDoc.range) {
