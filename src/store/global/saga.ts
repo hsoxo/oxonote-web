@@ -8,7 +8,7 @@ import {
 } from "./actions";
 import PouchConn from "@/services/pouchdb";
 import {getInfo, login, register} from "@/api/user";
-import {removeToken, setToken} from "@/utils/auth";
+import {getToken, removeToken, setToken} from "@/utils/auth";
 import {RequestDone, RequestError, RequestProcessing} from "@/types/request";
 import {push} from "connected-react-router";
 import PouchDB from "pouchdb-browser";
@@ -77,14 +77,19 @@ function* loadUserInfo(redirect: string | undefined) {
     yield put(setUserInfo(info.data))
     const cdbInfo = info.data.workspaces[0]
     yield put(setRemoteDBInfo(cdbInfo))
-    const {user: pdbUser, password: pdbPass, database} = cdbInfo
+    const {user: pdbUser, database} = cdbInfo
     const pdb = new PouchDB(database)
     yield put(setGlobalLoading(true))
-    const remote = new PouchDB(`${process.env.NOXO_COUCH_ADDRESS}/${database}`, {skip_setup: true})
+    const remote = new PouchDB(`${process.env.NOXO_COUCH_ADDRESS}/${database}`, {skip_setup: true,
+      fetch: function (url, opts) {
+        // @ts-ignore
+        opts.headers.set('x-noxo-token', getToken());
+        // @ts-ignore
+        opts.headers.set('x-noxo-key', pdbUser)
+        return PouchDB.fetch(url, opts);
+      }})
     yield call(async () => {
-      // @ts-ignore
-      await remote.login(pdbUser, pdbPass)
-      await pdb.sync(remote)
+      await pdb.sync(remote, {retry: true})
     })
     yield put(setBrowserDBConn(pdb))
     if (redirect !== '') yield put(push(redirect || `/o/`))
