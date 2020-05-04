@@ -52,6 +52,6 @@ jobs:
         username: ${{ secrets.ALIYUN_USER }}
         password: ${{ secrets.ALIYUN_PASS }}
         port: ${{ secrets.ALIYUN_PORT }}
-        local: "./dist/*"
+        local: "./dist"
         remote: "/home/noxo/frontend/"
       
