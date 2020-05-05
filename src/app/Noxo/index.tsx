@@ -16,6 +16,7 @@ import '@/styles/base.css'
 import PouchDB from 'pouchdb-browser'
 import {useSpring, animated, useTransition, interpolate} from 'react-spring'
 import ClapSpinner from "@/components/Spiner";
+import {getToken} from "@/utils/auth";
 PouchDB.plugin(require('pouchdb-authentication'))
 
 
@@ -45,38 +46,42 @@ const NoteLayout: React.FunctionComponent<
 
   useEffect(() => {
     if (browserDBConn && remoteDBInfo) {
-      const { user: pdbUser, password: pdbPass, database } = remoteDBInfo
-      // const remoteDB = new PouchDB(`http://${pdbUser}:${pdbPass}@localhost:6381/${database}`)
+      const { user: pdbUser, database } = remoteDBInfo
       var remote = new PouchDB(
         `${process.env.NOXO_COUCH_ADDRESS}/${database}`,
-        { skip_setup: true }
+        {
+          skip_setup: true,
+          fetch: function (url, opts) {
+            // @ts-ignore
+            opts.headers.set('x-noxo-token', getToken());
+            // @ts-ignore
+            opts.headers.set('x-noxo-key', pdbUser)
+            return PouchDB.fetch(url, opts);
+          }}
       )
-      // @ts-ignore
-      remote.login(pdbUser, pdbPass).then(() => {
-        const sync = browserDBConn
-          .sync(remote, {
-            live: true,
-            retry: true
-          })
-          .on('change', info => {
-          })
-          .on('paused', err => {
-            action(setDBSyncStatus('idle'))
-          })
-          .on('active', () => {
-            action(setDBSyncStatus('syncing'))
-          })
-          .on('denied', err => {
-            action(setDBSyncStatus('error'))
-          })
-          .on('complete', info => {
-            // handle complete
-          })
-          .on('error', err => {
-            action(setDBSyncStatus('error'))
-          })
-        setSyncHandler(sync)
-      })
+      const sync = browserDBConn
+        .sync(remote, {
+          live: true,
+          retry: true
+        })
+        .on('change', info => {
+        })
+        .on('paused', err => {
+          action(setDBSyncStatus('idle'))
+        })
+        .on('active', () => {
+          action(setDBSyncStatus('syncing'))
+        })
+        .on('denied', err => {
+          action(setDBSyncStatus('error'))
+        })
+        .on('complete', info => {
+          // handle complete
+        })
+        .on('error', err => {
+          action(setDBSyncStatus('error'))
+        })
+      setSyncHandler(sync)
     }
     return () => {
       if (syncHandler) syncHandler.cancel()

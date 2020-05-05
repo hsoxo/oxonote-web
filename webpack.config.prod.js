@@ -51,9 +51,9 @@ module.exports = {
     new Dotenv({
       path: './.env.prod',
     }),
-    new BundleAnalyzerPlugin({
-      analyzerPort: 6330
-    })
+    // new BundleAnalyzerPlugin({
+    //   analyzerPort: 6330
+    // })
   ],
   optimization: {
     splitChunks: {
