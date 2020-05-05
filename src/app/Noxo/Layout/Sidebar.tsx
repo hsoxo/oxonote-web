@@ -77,45 +77,46 @@ const Sidebar = ({ active, onToggleSidebar }: SidebarProps) => {
   }
 
   return (
-    <div>
-      <SidebarWrapper style={springStyle}>
-        <ToggleButtonWrapper
-          style={{left: active ? `${sidebarWidth - 20}px` : `${sidebarWidth - 10}px`}}
-          onClick={onToggleSidebar}
-        >
-          <NavigateBeforeIcon fontSize="small" style={{transform: active ? '' : 'rotate(180deg)', transition: 'transform ease 400ms'}}/>
-        </ToggleButtonWrapper>
-        <ListItem>
-          <ListItemText primary={"OxO Notes"} />
+    <SidebarWrapper style={springStyle}>
+      <ToggleButtonWrapper
+        style={{
+          left: active ? `${sidebarWidth - 20}px` : `${sidebarWidth - 10}px`,
+          zIndex: 20,
+        }}
+        onClick={onToggleSidebar}
+      >
+        <NavigateBeforeIcon fontSize="small" style={{transform: active ? '' : 'rotate(180deg)', transition: 'transform ease 400ms'}}/>
+      </ToggleButtonWrapper>
+      <ListItem>
+        <ListItemText primary={"OxO Notes"} />
+      </ListItem>
+      <List>
+        <ListItem className={classes.listItem} button>
+          <ListItemIcon className={classes.listItemIcon}>
+            <SearchIcon/>
+          </ListItemIcon>
+          <ListItemText primary={"搜索"} />
         </ListItem>
+        <ListItem className={classes.listItem} button onClick={handleCreateJournal}>
+          <ListItemIcon className={classes.listItemIcon}>
+            <AddIcon/>
+          </ListItemIcon>
+          <ListItemText primary={"新建笔记本"} />
+        </ListItem>
+      </List>
+      <div style={{height: 20}} />
+      <List>
+        <JournalTreeView />
+      </List>
+      <div style={{height: 20}} />
+      <Box className={classes.btmArea}>
         <List>
-          <ListItem className={classes.listItem} button>
-            <ListItemIcon className={classes.listItemIcon}>
-              <SearchIcon/>
-            </ListItemIcon>
-            <ListItemText primary={"搜索"} />
-          </ListItem>
-          <ListItem className={classes.listItem} button onClick={handleCreateJournal}>
-            <ListItemIcon className={classes.listItemIcon}>
-              <AddIcon/>
-            </ListItemIcon>
-            <ListItemText primary={"新建笔记本"} />
+          <ListItem className={classes.listItem} button onClick={() => sagaAction({ type: SAGA_LOGOUT })}>
+            <ListItemText primary={"Log out"} />
           </ListItem>
         </List>
-        <div style={{height: 20}} />
-        <List>
-          <JournalTreeView />
-        </List>
-        <div style={{height: 20}} />
-        <Box className={classes.btmArea}>
-          <List>
-            <ListItem className={classes.listItem} button onClick={() => sagaAction({ type: SAGA_LOGOUT })}>
-              <ListItemText primary={"Log out"} />
-            </ListItem>
-          </List>
-        </Box>
-      </SidebarWrapper>
-    </div>
+      </Box>
+    </SidebarWrapper>
   )
 }
 
@@ -123,6 +124,7 @@ const SidebarWrapper = styled(animated.div)`
   height: 100vh;
   width: ${sidebarWidth}px;
   background-color: var(--secondary-bg);
+  position: fixed;
 `
 const ToggleButtonWrapper = styled.button`
   position: absolute;

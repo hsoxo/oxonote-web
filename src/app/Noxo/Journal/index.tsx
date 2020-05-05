@@ -1,16 +1,18 @@
-import React, { createContext, Fragment, useEffect, useState } from 'react'
-import { useHistory } from 'react-router-dom'
+import React, {createContext, Fragment, useEffect, useState} from 'react'
+import {useHistory} from 'react-router-dom'
 
-import { Box, Divider, Fade, LinearProgress, Slide } from '@material-ui/core'
-import sagaAction, { useSelector } from '@/store'
+import {Divider} from '@material-ui/core'
+import sagaAction, {useSelector} from '@/store'
 import TitleBlock from '../components/Title'
 import JournalToolbar from './Toolbar'
 import JournalListView from '@/app/Noxo/Journal/List'
-import { JournalState, NoteState } from '@/types/states'
+import {JournalState} from '@/types/states'
 import JournalGalleryView from '@/app/Noxo/Journal/Gallery'
 import * as JOURNAL_ACT from '@/store/journal/actions'
 import debounce from 'lodash/debounce'
-import {useTransition, animated, config} from "react-spring";
+import {animated, config, useTransition} from "react-spring";
+import {JOURNAL_KANBAN_VIEW} from "@/types/journal";
+import JournalKanbanView from "@/app/Noxo/Journal/Kanban";
 
 export const JournalContext = createContext({
   viewId: '',
@@ -86,7 +88,7 @@ const Journal = (props: React.ComponentProps<any>) => {
                   <JournalToolbar />
                   <Divider />
                   {viewInfo[0].type === 'list' && <JournalListView />}
-                  {viewInfo[0].type === 'board' && <JournalListView />}
+                  {viewInfo[0].type === JOURNAL_KANBAN_VIEW && <JournalKanbanView />}
                   {viewInfo[0].type === 'gallery' && (
                     <JournalGalleryView viewId={activeViewId} />
                   )}

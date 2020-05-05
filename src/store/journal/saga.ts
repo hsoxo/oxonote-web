@@ -118,9 +118,9 @@ interface JournalAttrRangeChange {
 }
 function* journalAttrRangeChange(attrId: string, newRange: Array<AttributeRangeType>) {
   try {
-    const value = yield call(PouchConn.journal.attr.update, attrId, 'range', newRange)
-    yield put(ACT.setAllJournalInfo(value))
-  } catch (e) {
+    yield call(PouchConn.journal.attr.update, attrId, 'range', newRange)
+    yield call(refreshJournal)
+ } catch (e) {
     if (e.status === 404) yield put(push(`/o`))
     console.error(e)
   }

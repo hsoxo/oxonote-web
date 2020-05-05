@@ -32,9 +32,15 @@ export interface JournalView {
     attribute: Array<JournalViewAttribute>
     filters: JournalViewFilter
     sorts: Array<JournalViewSort>
+    kanbanAttrId?: string
 }
 
-export type JournalViewTypes = 'table' | 'list' | 'gallery' | 'board'
+export const JOURNAL_TABLE_VIEW = 'table'
+export const JOURNAL_LIST_VIEW = 'list'
+export const JOURNAL_GALLERY_VIEW = 'gallery'
+export const JOURNAL_KANBAN_VIEW = 'board'
+
+export type JournalViewTypes = typeof JOURNAL_TABLE_VIEW | typeof JOURNAL_LIST_VIEW | typeof JOURNAL_GALLERY_VIEW | typeof JOURNAL_KANBAN_VIEW
 export interface JournalViewSort {
     attrId: string
     direction: '+' | '-' | ''
