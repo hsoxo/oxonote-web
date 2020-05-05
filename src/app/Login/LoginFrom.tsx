@@ -9,9 +9,11 @@ import {RequestDefault, RequestDone, RequestError, RequestProcessing} from "@/ty
 import {SAGA_LOGIN, setLoginStatus} from "@/store/global/actions";
 import {useSnackbar} from "notistack";
 import styled from "styled-components";
+import {pbkdf2Sync} from "pbkdf2";
 
 const handleLogin = (username: string, password: string) => {
-  sagaAction({ type: SAGA_LOGIN, username, password })
+  const derivedKey = pbkdf2Sync(password, 'someSalt', 100, 32, 'sha512')
+  sagaAction({ type: SAGA_LOGIN, username, password: derivedKey.toString('hex') })
 }
 
 
