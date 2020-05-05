@@ -86,7 +86,7 @@ function* loadUserInfo(redirect: string | undefined) {
         opts.headers.set('x-noxo-token', getToken());
         // @ts-ignore
         opts.headers.set('x-noxo-key', pdbUser)
-        return PouchDB.fetch(url, opts);
+        return PouchDB.fetch(url, opts)
       }})
     yield call(async () => {
       await pdb.sync(remote, {retry: true})

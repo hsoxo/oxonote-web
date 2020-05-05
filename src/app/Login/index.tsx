@@ -1,169 +1,175 @@
-import React, {useEffect, useState} from 'react';
-import Avatar from '@material-ui/core/Avatar';
-import Button from '@material-ui/core/Button';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import TextField from '@material-ui/core/TextField';
-import Link from '@material-ui/core/Link';
-import Box from '@material-ui/core/Box';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import Typography from '@material-ui/core/Typography';
-import {makeStyles} from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
-import sagaAction, {action, useSelector} from "@/store";
-import {SAGA_LOAD_USER, SAGA_LOGIN, setLoginStatus} from "@/store/global/actions";
-import {GlobalState} from "@/types/states";
-import {RequestDefault, RequestDone, RequestError, RequestProcessing} from "@/types/request";
-import {CircularProgress, Grid} from "@material-ui/core";
-import {getToken} from "@/utils/auth";
-
-import Copyright from "@/components/Copyright";
-import {useSnackbar} from "notistack";
-import {Spring, Transition, animated} from "react-spring/renderprops-universal";
-
-
-const useStyles = makeStyles((theme) => ({
-  paper: {
-    marginTop: theme.spacing(8),
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-  },
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
-  },
-  form: {
-    width: '100%', // Fix IE 11 issue.
-    marginTop: theme.spacing(1),
-  },
-  submit: {
-    margin: theme.spacing(3, 0, 2),
-  },
-  wrapper: {
-    margin: theme.spacing(1),
-    position: 'relative',
-  },
-  buttonProgress: {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    marginTop: -8,
-    marginLeft: -12,
-  },
-}));
-
-const handleLogin = (username: string, password: string) => {
-  sagaAction({ type: SAGA_LOGIN, username, password })
-}
-
+import React, {useState} from 'react';
+import styled from "styled-components";
+import LoginFrom from "@/app/Login/LoginFrom";
+import {useSpring, animated} from "react-spring";
+import RegisterForm from "@/app/Login/RegisterForm";
 
 export default function SignIn() {
-  const { enqueueSnackbar } = useSnackbar();
+  const [open, toggleOpen] = useState(false)
+  const [ isSignIn, toggleCard] = useState(true)
 
-  const classes = useStyles();
-  const [showForm, toggleForm] = useState(true)
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
+  const { transform, opacity, visibility } = useSpring({
+    opacity: isSignIn ? 1 : 0,
+    visibility: isSignIn ? 'unset' : 'hidden',
+    transform: `perspective(600px) rotateX(${isSignIn ? 180 : 0}deg)`,
+    config: { mass: 5, tension: 500, friction: 60 }
+  })
 
-  const { loginStatus }: GlobalState = useSelector(state => state.get('global'))
-
-  const processing = loginStatus === RequestProcessing
-
-  useEffect(() => {
-    if (loginStatus === RequestError) {
-      enqueueSnackbar('登陆失败', { variant: 'error' });
-    } else if (loginStatus === RequestDone) {
-      enqueueSnackbar('登陆成功', { variant: 'success' });
-    }
-    action(setLoginStatus(RequestDefault))
-  }, [loginStatus])
+  const CloseButton = (
+    <button
+      className="close-button"
+      onClick={() => toggleOpen(!open)}
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50">
+        <path
+          d="M 25 3 C 12.86158 3 3 12.86158 3 25 C 3 37.13842 12.86158 47 25 47 C 37.13842 47 47 37.13842 47 25 C 47 12.86158 37.13842 3 25 3 z M 25 5 C 36.05754 5 45 13.94246 45 25 C 45 36.05754 36.05754 45 25 45 C 13.94246 45 5 36.05754 5 25 C 5 13.94246 13.94246 5 25 5 z M 16.990234 15.990234 A 1.0001 1.0001 0 0 0 16.292969 17.707031 L 23.585938 25 L 16.292969 32.292969 A 1.0001 1.0001 0 1 0 17.707031 33.707031 L 25 26.414062 L 32.292969 33.707031 A 1.0001 1.0001 0 1 0 33.707031 32.292969 L 26.414062 25 L 33.707031 17.707031 A 1.0001 1.0001 0 0 0 32.980469 15.990234 A 1.0001 1.0001 0 0 0 32.292969 16.292969 L 25 23.585938 L 17.707031 16.292969 A 1.0001 1.0001 0 0 0 16.990234 15.990234 z"></path>
+      </svg>
+    </button>
+  )
 
   return (
-    <Container component="main" maxWidth="xs">
-      <CssBaseline />
-      <Box minHeight={"100vh"} margin={"0 auto -50px"}>
-        <Transition
-          items={showForm}
-          config={{ tension: 210, friction: 23}}
-          from={{ opacity: 0 }}
-          enter={{ opacity: 1 }}
-          leave={{ opacity: 0 }}>
-          {showForm =>
-            props =>
-              showForm ?
-                <div style={props}>
-                  <div className={classes.paper}>
-                    <Avatar className={classes.avatar}>
-                      <LockOutlinedIcon />
-                    </Avatar>
-                    <Typography component="h1" variant="h5">
-                      Sign in
-                    </Typography>
-                    <form className={classes.form} noValidate>
-                      <TextField
-                        variant="outlined"
-                        margin="normal"
-                        required
-                        fullWidth
-                        id="username"
-                        label="用户名"
-                        name="username"
-                        onChange={e => setUsername(e.target.value)}
-                        autoFocus
-                      />
-                      <TextField
-                        variant="outlined"
-                        margin="normal"
-                        required
-                        fullWidth
-                        name="password"
-                        label="密码"
-                        type="password"
-                        id="password"
-                        onChange={e => setPassword(e.target.value)}
-                        onKeyPress={(e) => {
-                          if (e.key === 'Enter') {
-                            handleLogin(username, password)
-                            e.preventDefault();
-                          }
-                        }}
-                      />
-                      {/*<FormControlLabel*/}
-                      {/*  control={<Checkbox value="remember" color="primary" />}*/}
-                      {/*  label="Remember me"*/}
-                      {/*/>*/}
-                      <div className={classes.wrapper}>
-                        <Button
-                          fullWidth
-                          variant="contained"
-                          color="primary"
-                          className={classes.submit}
-                          disabled={processing}
-                          onClick={() => handleLogin(username, password)}
-                        >
-                          Sign In
-                        </Button>
-                        {processing && <CircularProgress size={24} className={classes.buttonProgress} />}
-                      </div>
-                      <Grid container>
-                        {/*<Grid item xs>*/}
-                        {/*  <Link href="#" variant="body2">*/}
-                        {/*    Forgot password?*/}
-                        {/*  </Link>*/}
-                        {/*</Grid>*/}
-                        <Grid item>
-                          <Link href="/register" variant="body2">
-                            {"Don't have an account? Sign Up"}
-                          </Link>
-                        </Grid>
-                      </Grid>
-                    </form>
-                  </div>
-                </div>
-                : null}
-        </Transition>
-      </Box>
-      <Copyright />
-    </Container>
+    <div>
+      <BackgroundBox />
+      <Modal open={open}>
+        <div className="modal-container">
+          <animated.div
+            style={{
+              // @ts-ignore
+              opacity: opacity.interpolate(o => 1 - o),
+              // @ts-ignore
+              visibility: visibility.interpolate(o => o === 'hidden' ? 'unset' : 'hidden' ),
+              transform,
+              position: 'fixed',
+            }}
+          >
+            <div className="modal-left">
+              <RegisterForm
+                toggle={() => toggleCard(!isSignIn)}
+              />
+              {CloseButton}
+            </div>
+          </animated.div>
+          <animated.div
+            style={{
+              opacity,
+              visibility,
+              transform: transform.interpolate(t => `${t} rotateX(180deg)`)
+            }}
+          >
+            <div className="modal-left">
+              <LoginFrom
+                toggle={() => toggleCard(!isSignIn)}
+              />
+              {CloseButton}
+            </div>
+          </animated.div>
+        </div>
+        <button
+          className="modal-button"
+          onClick={() => {toggleOpen(!open)}}
+        >
+          Click here to login
+        </button>
+      </Modal>
+    </div>
   );
 }
+
+const BackgroundBox = styled.div`
+  height: 100vh;
+  background-image: url(https://images.unsplash.com/photo-1538137524007-21e48fa42f3f?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=ac9fa0975bd2ebad7afd906c5a3a15ab&auto=format&fit=crop&w=1834&q=80);
+  background-size: cover;
+  background-position: 50% 70%;
+  background-repeat: no-repeat;
+`
+
+const Modal = styled.div<{open: boolean}>`
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 80px;
+  background: rgba(255,255,255, 0.5);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: height ease 0.6s;
+
+  .modal-container {
+    display: flex;
+    max-width: 720px;
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+    transition-duration: 0.3s;
+    transform: translateY(100px) scale(0.4);
+
+    .modal-left {
+      text-align: center;
+      transform: scale(1.5);
+      transition: transform ease 0.3s;
+      transition-duration: 1.2s;
+      overflow: hidden;
+      border-radius: 10px;
+      background-color: rgba(255,255,255,0.8);
+      box-shadow: 0px 0px 40px 16px rgba(0,0,0,0.22);
+      min-height: 500px;
+    }
+    
+    .close-button {
+      outline: 0;
+      position: absolute;
+      right: 10px;
+      top: 12px;
+      width: 32px;
+      height: 32px;
+      border: 0;
+      background: 0;
+      padding: 0;
+      cursor: pointer;
+    }
+  }
+
+  .modal-button {
+    color: darken(#8c7569, 5%); 
+    font-family: "SwankyandMooMoo", sans-serif;
+    font-size: 22px;
+    font-weight: bold;
+    text-transform: uppercase;
+    cursor: pointer;
+    outline: 0;
+    padding: 5px 40px;
+    border-radius: 30px;
+    background: rgb(255, 255, 255, 0.8);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.16);
+    transition: 0.3s;
+
+    &:hover {
+      background: rgb(255, 255, 255);
+    }
+  }
+
+  ${p => p.open ? `
+    height: 100%;
+
+    .modal-button {
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    .modal-container {
+      opacity: 1;
+      transition-duration: 0.6s;
+      pointer-events: auto;
+      transform: translateY(0) scale(1);
+      
+      .modal-left {
+        transform: scale(1);
+        opacity: 1;
+        transition-delay: 0.1s;
+      }
+      
+    }
+  ` : ''}
+`
