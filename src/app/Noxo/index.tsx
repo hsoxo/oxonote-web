@@ -11,7 +11,6 @@ import styled from 'styled-components'
 import { GlobalState } from '@/types/states'
 import sagaAction, { action, useSelector } from '@/store'
 import { SAGA_LOAD_USER, setDBSyncStatus } from '@/store/global/actions'
-import '@/styles/base.css'
 
 import PouchDB from 'pouchdb-browser'
 import {useSpring, animated, useTransition} from 'react-spring'

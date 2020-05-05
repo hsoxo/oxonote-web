@@ -6,6 +6,7 @@ import {getToken} from "@/utils/auth";
 import sagaAction from "@/store";
 import {SAGA_LOAD_USER} from "@/store/global/actions";
 import {LinearProgress} from "@material-ui/core";
+import '@/styles/base.css'
 
 export default function App() {
   return (
