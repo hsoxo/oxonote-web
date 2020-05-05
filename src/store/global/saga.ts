@@ -105,11 +105,12 @@ function* sagaSignUp(username: string, password: string, email: string) {
   try {
     yield put(setSignUpStatus(RequestProcessing))
     yield call(register, username, password, email)
-    yield put(setLoginStatus(RequestDone))
+    yield put(setSignUpStatus(RequestDone))
     yield call(sagaLogin, username, password)
     yield put(push(`/welcome`))
   } catch (e) {
-    yield put(setLoginStatus(RequestError))
+    // @ts-ignore
+    yield put(setSignUpStatus(Number(e.message)))
     console.error(e)
   }
 }

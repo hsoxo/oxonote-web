@@ -2,12 +2,13 @@ import * as ACT from './actions'
 import { GlobalState } from '@/types/states'
 import {getToken} from "@/utils/auth";
 import PouchDB from "pouchdb-browser";
+import {RequestDefault} from "@/types/request";
 
 const initialState: GlobalState = {
   title: 'Welcome to OxO Notes',
   globalLoading: false,
-  loginStatus: '',
-  signUpStatus: '',
+  loginStatus: RequestDefault,
+  signUpStatus: RequestDefault,
   token: getToken(),
   userInfo: null,
   journals: [],

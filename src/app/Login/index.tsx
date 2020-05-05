@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import styled from "styled-components";
 import LoginFrom from "@/app/Login/LoginFrom";
 import {useSpring, animated} from "react-spring";
-import RegisterForm from "@/app/Login/RegisterForm";
+import RegistrationForm from "@/app/Login/RegistrationForm";
 
 export default function SignIn() {
   const [open, toggleOpen] = useState(false)
@@ -43,7 +43,7 @@ export default function SignIn() {
             }}
           >
             <div className="modal-left">
-              <RegisterForm
+              <RegistrationForm
                 toggle={() => toggleCard(!isSignIn)}
               />
               {CloseButton}

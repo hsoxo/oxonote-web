@@ -22,10 +22,6 @@ export const publicRoutes: Array<RouteObject> = [
     path: '/login',
     component: loadable(() => import('@/app/Login'))
   },
-  {
-    path: '/register',
-    component: loadable(() => import('@/app/Register'))
-  },
 ]
 
 export const privateRoutes: Array<RouteObject> = [

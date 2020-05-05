@@ -35,7 +35,7 @@ service.interceptors.response.use(
     if (response.status === 200 && response.data.code === 20000) {
       return response.data
     } else {
-      return Promise.reject(new Error(response.data.msg || 'Error'))
+      return Promise.reject(new Error(response.data.code || 'Error'))
     }
   },
   error => Promise.reject(error),

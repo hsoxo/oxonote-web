@@ -1,53 +1,17 @@
 import React, {useEffect, useState} from 'react';
-import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
-import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
-import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
-
-import Copyright from "@/components/Copyright";
 import sagaAction, {action, useSelector} from "@/store";
-import {SAGA_LOGIN, SAGA_SIGN_UP, setLoginStatus, setSignUpStatus} from "@/store/global/actions";
+import {SAGA_SIGN_UP, setSignUpStatus} from "@/store/global/actions";
 import {useSnackbar} from "notistack";
-import {red} from "@material-ui/core/colors";
 import {GlobalState} from "@/types/states";
-import {RequestDefault, RequestDone, RequestError, RequestProcessing} from "@/types/request";
+import {RequestDefault, RequestDone, RequestErrorMsg, RequestProcessing} from "@/types/request";
 import {CircularProgress} from "@material-ui/core";
-
-const useStyles = makeStyles((theme) => ({
-  paper: {
-    marginTop: theme.spacing(8),
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-  },
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
-  },
-  form: {
-    width: '100%', // Fix IE 11 issue.
-    marginTop: theme.spacing(3),
-  },
-  submit: {
-    margin: theme.spacing(3, 0, 2),
-  },
-  buttonProgress: {
-    position: 'absolute',
-    left: '50%',
-    marginTop: 29,
-    marginLeft: -12,
-  },
-}));
-
+import styled from "styled-components";
+import {pbkdf2Sync} from 'pbkdf2'
 
 const validateEmail = (email: string) => {
   const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -89,8 +53,7 @@ const validatePasswordChar = (username: string) => {
 }
 
 
-export default function SignUp() {
-  const classes = useStyles();
+const RegistrationForm: React.FC<{toggle: () => void}> = ({ toggle }) => {
   const { enqueueSnackbar } = useSnackbar();
 
   const [username, setUsername] = useState('')
@@ -111,8 +74,10 @@ export default function SignUp() {
     !validPasswordLength
 
   const handleSignUp = () => {
-    if (!notValid)
-      sagaAction({ type: SAGA_SIGN_UP, username, password, email })
+    if (!notValid) {
+      const derivedKey = pbkdf2Sync(password, 'someSalt', 100, 32, 'sha512')
+      sagaAction({ type: SAGA_SIGN_UP, username, password: derivedKey.toString('hex'), email })
+    }
   }
 
   const { signUpStatus }: GlobalState = useSelector(state => state.get('global'))
@@ -120,30 +85,23 @@ export default function SignUp() {
   const processing = signUpStatus === RequestProcessing
 
   useEffect(() => {
-    if (signUpStatus === RequestError) {
-      enqueueSnackbar('注册失败', { variant: 'error' });
-    } else if (signUpStatus === RequestDone) {
+    if (signUpStatus === RequestDone) {
       enqueueSnackbar('注册成功', { variant: 'success' });
+    } else if (signUpStatus >= 40000) {
+      enqueueSnackbar(RequestErrorMsg[signUpStatus], { variant: 'error' });
+    } else {
+      return
     }
     action(setSignUpStatus(RequestDefault))
   }, [signUpStatus])
 
   return (
-    <Container component="main" maxWidth="xs">
-      <CssBaseline />
-      <input type="password" hidden autoComplete="new-password"/>
-      <div className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <LockOutlinedIcon />
-        </Avatar>
-        <Typography component="h1" variant="h5">
-          Sign up
-        </Typography>
-        <form className={classes.form} noValidate>
+    <RegisterWrapper>
+      <div className="site-title">OxO Note</div>
+        <form noValidate>
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <TextField
-                variant="outlined"
                 required
                 fullWidth
                 label="用户名"
@@ -161,7 +119,6 @@ export default function SignUp() {
             </Grid>
             <Grid item xs={12}>
               <TextField
-                variant="outlined"
                 required
                 fullWidth
                 label="Email"
@@ -174,7 +131,6 @@ export default function SignUp() {
             </Grid>
             <Grid item xs={12}>
               <TextField
-                variant="outlined"
                 required
                 fullWidth
                 label="密码"
@@ -214,31 +170,48 @@ export default function SignUp() {
             {/*  />*/}
             {/*</Grid>*/}
           </Grid>
-          <Grid container>
+          <Box width={'70%'} margin={'30px auto 50px'}>
             <Button
               fullWidth
               variant="contained"
               color="primary"
               disabled={notValid || processing}
               onClick={handleSignUp}
-              className={classes.submit}
             >
               Sign Up
             </Button>
-            {processing && <CircularProgress size={24} className={classes.buttonProgress} />}
-          </Grid>
-          <Grid container justify="flex-end">
-            <Grid item>
-              <Link href="/login" variant="body2">
-                Already have an account? Sign in
-              </Link>
-            </Grid>
-          </Grid>
+            {processing && <CircularProgress size={24}/>}
+          </Box>
+          <ButtomActionArea>
+            <div onClick={toggle}>
+              {"Already have an account? Sign in ➡️"}
+            </div>
+          </ButtomActionArea>
         </form>
-      </div>
-      <Box mt={5}>
-        <Copyright />
-      </Box>
-    </Container>
+    </RegisterWrapper>
   );
 }
+
+const RegisterWrapper = styled.div`
+  margin: 5px 40px;
+  min-height: 45vh;
+  .site-title {
+    font-family: "SwankyandMooMoo", sans-serif;
+    font-weight: bold;
+    font-size: 3rem;
+    color: var(--primary-color);
+    margin-bottom: 30px;
+  }
+`
+const ButtomActionArea = styled.div`
+  width: calc(100% - 80px);
+  position: fixed;
+  bottom: 10px;
+  margin: 5px auto;
+  color: var(--primary-color);
+  &:hover {
+    cursor: pointer;
+  }
+`
+
+export default RegistrationForm
