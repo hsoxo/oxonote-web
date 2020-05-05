@@ -1,64 +1,71 @@
-import React, {useEffect, useState} from 'react';
-import {Transition} from "react-spring/renderprops-universal";
+import React, {useEffect, useState} from 'react'
+import {useHistory} from 'react-router-dom'
+import {animated, useSpring, useTransition} from 'react-spring'
 import styled from "styled-components";
-import {CircularProgress} from "@material-ui/core";
-import ClapSpinner from "@/components/Spiner";
-import {useHistory} from "react-router-dom";
-
-const WELCOME_BACK = Array.from("Welcome Back").map((x, i) => ({key: i, text: x}))
 
 
-const Index = () => {
+const WELCOME_TEXT = Array.from("Welcome back").map((value, index) => ({i: index, t: value}))
+
+function Index() {
   const history = useHistory()
+  const [out, setOut] = useState(false)
+  const [items, setItems] = useState<Array<{i: number, t: string}>>([])
 
-  const [showWelcome, toggleWelcome] = useState(false)
-  const [showLoading, toggleLoading] = useState(false)
-  const [trail, setTrail] = useState(150)
-  const [words, setWords] = useState(WELCOME_BACK)
+  const transitions = useTransition(items, item => item.i, {
+    from: { transform: 'translate3d(0,-40px,0)', opacity: 0 },
+    enter: { transform: 'translate3d(0,0px,0)', opacity: 1 },
+    leave: { transform: 'translate3d(0,-40px,0)' },
+  })
 
+  const spring = useSpring({
+    transform: out ? `scale(3)` : `scale(1)`,
+    opacity: out ? 0 : 1,
+    config: { mass: 10, tension: 2000, friction: 200, duration: 400 },
+  })
 
   useEffect(() => {
-    setTimeout(() => toggleWelcome(true), 600)
-    setTimeout(() => setTrail(0), 3600)
-    setTimeout(() => setWords([]), 3600)
-    setTimeout(() => toggleWelcome(false), 4500)
-    setTimeout(() => toggleLoading(true), 4900)
-    setTimeout(() => history.push('/o'), 4900)
+    WELCOME_TEXT.forEach((value, i) =>
+      setTimeout(() => setItems(WELCOME_TEXT.slice(0, 1 + i)), i * 120)
+    )
+    setTimeout(() => setOut(true), 2000)
+    setTimeout(() => history.push('/o'), 2400)
   }, [])
 
   return (
-    <div>
-      {showWelcome ?
-        <StyledWrapper>
-          <div style={{display: 'flex', margin: '0 auto'}}>
-            <Transition
-              items={words} keys={i => i.key}
-              from={{ transform: 'translate3d(0,-40px,0)', opacity: 0 }}
-              enter={{ transform: 'translate3d(0,0px,0)', opacity: 1 }}
-              leave={{ transform: 'translate3d(0,-40px,0)', opacity: 0 }}
-              trail={trail}>
-              {item => props => <div style={{...props}}>{item.text}</div>}
-            </Transition>
+    <Wrapper>
+      <animated.div style={spring}>
+        {transitions.map(({ item, props, key }) =>
+          <div style={{display: 'inline-block', minWidth: 50}} key={key}>
+            <animated.div className="trails-text" style={props}>{item.t}</animated.div>
           </div>
-        </StyledWrapper>
-        : null}
-      {showLoading ?
-        <StyledWrapper style={{transform: "translateX(50%)"}}>
-          <ClapSpinner size={60}/>
-        </StyledWrapper>
-        : null}
-    </div>
-  );
-};
+        )}
+      </animated.div>
+    </Wrapper>
+  )
+}
 
-const StyledWrapper = styled.div`
-  display: flex;
+const Wrapper = styled.div`
+  position: relative;
   width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
   align-items: center;
-  justify-items: center;
-  font-size: 60px;
-  margin-top: 30%;
-  text-align: center;
+  .trails-text {
+    position: relative;
+    width: 100%;
+    height: 80px;
+    line-height: 80px;
+    color: palevioletred;
+    font-size: 5rem;
+    font-weight: 800;
+    font-family: "SwankyandMooMoo", sans-serif;
+    text-align: center;
+    will-change: transform, opacity;
+    overflow: hidden;
+  }
 `
 
-export default Index;
+export default Index
