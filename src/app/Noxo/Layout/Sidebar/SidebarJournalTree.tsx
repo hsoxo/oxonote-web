@@ -1,12 +1,12 @@
 import React, {useEffect} from 'react';
 import {useHistory} from 'react-router-dom'
-import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
+import {createStyles, makeStyles, Theme} from '@material-ui/core/styles';
 import TreeView from '@material-ui/lab/TreeView';
-import TreeItem, { TreeItemProps } from '@material-ui/lab/TreeItem';
+import TreeItem, {TreeItemProps} from '@material-ui/lab/TreeItem';
 import Typography from '@material-ui/core/Typography';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import ArrowRightIcon from '@material-ui/icons/ArrowRight';
-import {NoteState} from "@/types/states";
+
 import sagaAction, {useSelector} from "@/store";
 import {GlobalState} from "@/types/states";
 import * as GLOBAL_ACT from "@/store/global/actions";
@@ -17,7 +17,6 @@ declare module 'csstype' {
     '--tree-view-bg-color'?: string;
   }
 }
-
 
 type StyledTreeItemProps = TreeItemProps & {
   bgColor?: string;

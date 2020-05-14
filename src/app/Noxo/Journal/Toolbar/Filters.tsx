@@ -1,30 +1,15 @@
 import React, {Fragment, useContext} from 'react'
-import {
-  bindPopover,
-  bindTrigger,
-  usePopupState
-} from 'material-ui-popup-state/hooks'
-import {
-  Box,
-  Button,
-  MenuItem,
-  Popover,
-  IconButton,
-  FormControl
-} from '@material-ui/core'
+import {bindPopover, bindTrigger, usePopupState} from 'material-ui-popup-state/hooks'
+import {Box, Button, FormControl, IconButton, MenuItem, Popover} from '@material-ui/core'
 import {JournalState} from '@/types/states'
-import { useSelector } from '@/store'
+import {useSelector} from '@/store'
 import {AttributeRangeType, JournalView, JournalViewFiltersSetting} from '@/types/journal'
 import DeleteIcon from '@material-ui/icons/Delete'
 import notePropTypes from '@/types/constants/note-attributes'
-import {
-  DenseListItem,
-  DenseListItemBoxNoHover,
-  DenseListItemIcon
-} from '@/components/OxOUI/List'
-import { MarginDivider5 } from '@/components/OxOUI/Divider'
+import {DenseListItem, DenseListItemBoxNoHover, DenseListItemIcon} from '@/components/OxOUI/List'
+import {MarginDivider5} from '@/components/OxOUI/Divider'
 import AddIcon from '@material-ui/icons/Add'
-import { DenseSelect, DenseSelectItem } from "@/components/OxOUI/Select";
+import {DenseSelect, DenseSelectItem} from "@/components/OxOUI/Select";
 import {BootstrapInput} from "@/components/OxOUI/Input";
 import {JournalContext} from "@/app/Noxo/Journal";
 

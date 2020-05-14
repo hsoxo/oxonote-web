@@ -1,8 +1,8 @@
-import { spawn, call, delay, fork } from 'redux-saga/effects'
+import {call, delay, spawn} from 'redux-saga/effects'
 
 import globalSW from './global/saga'
 import journalSW from '@/store/journal/saga'
-import noteSW, { noteSaveSW } from '@/store/note/saga'
+import noteSW, {noteSaveSW} from '@/store/note/saga'
 
 const makeRestartable = (saga: any) => {
   return function* () {

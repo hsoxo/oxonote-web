@@ -1,7 +1,6 @@
 import React, {FunctionComponent} from 'react';
-import {DenseListItem, DenseListItemHeader, DenseListItemIcon} from "@/components/OxOUI/List";
+import {DenseListItem, DenseListItemHeader} from "@/components/OxOUI/List";
 import {color100} from "@/types/constants/colors";
-import {Box} from "@material-ui/core";
 import styled from "styled-components";
 
 interface ColorPickerProps {

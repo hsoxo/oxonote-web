@@ -3,10 +3,10 @@ import {Box} from "@material-ui/core";
 import {Link} from "react-router-dom";
 import JournalListViewRow from './Row'
 
-import { MarginBox } from "@/components/OxOUI/OxOBox";
-import {JournalState, NoteState} from "@/types/states";
+import {MarginBox} from "@/components/OxOUI/OxOBox";
+import {JournalState} from "@/types/states";
 import {useSelector} from "@/store";
-import {JournalAttribute, JournalView} from "@/types/journal";
+import {JournalAttribute} from "@/types/journal";
 import listHelper from "./list-helper";
 import {JournalContext} from "@/app/Noxo/Journal";
 

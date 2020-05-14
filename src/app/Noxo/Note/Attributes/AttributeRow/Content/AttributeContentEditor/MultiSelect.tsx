@@ -1,12 +1,9 @@
 import React from 'react'
-import { ElementProps } from './types'
-import BaseElement, {
-  ContentPopoverProps,
-  ContentViewProps
-} from './Base'
+import {ElementProps} from './types'
+import BaseElement, {ContentPopoverProps, ContentViewProps} from './Base'
 import BaseSelectEditor from './BaseSelectEditor'
 import {AttributeRangeType} from '@/types/journal'
-import { MarginRightChip } from "@/components/OxOUI/Chip";
+import {MarginRightChip} from "@/components/OxOUI/Chip";
 
 export const MultiSelectContent = ({ noteAttr, jourAttr }: ContentViewProps) => {
   const { range } = jourAttr

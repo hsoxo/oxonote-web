@@ -1,8 +1,8 @@
 import {newJournalView} from "@/services/pouchdb/Journal/default";
-import {JournalAttribute, JOURNAL_KANBAN_VIEW, JournalObject, JournalView, JournalViewTypes} from "@/types/journal";
+import {JOURNAL_KANBAN_VIEW, JournalAttribute, JournalObject, JournalView, JournalViewTypes} from "@/types/journal";
 import getConn from "@/services/pouchdb/config";
 import {MULTI_SELECT, SINGLE_SELECT} from "@/types/constants/note-attributes";
-import { create as createAttr } from './attribute'
+import {create as createAttr} from './attribute'
 
 export const create = async (journalId: string, type: JournalViewTypes = 'list', label = '全部文档') => {
   const PDB = getConn()

@@ -1,25 +1,15 @@
 import React, {useContext} from "react";
 import {bindPopover, bindTrigger, usePopupState} from "material-ui-popup-state/hooks";
-import {
-  Box,
-  Button,
-  Popover,
-  IconButton,
-} from "@material-ui/core";
+import {Box, Button, IconButton, Popover,} from "@material-ui/core";
 import {JournalState} from "@/types/states";
 import {useSelector} from "@/store";
 import {JournalView} from "@/types/journal";
 import DeleteIcon from '@material-ui/icons/Delete';
-import { DenseSelect, DenseSelectItem } from "@/components/OxOUI/Select";
-import {
-  DenseListItem,
-  DenseListItemBoxNoHover,
-  DenseListItemIcon
-} from '@/components/OxOUI/List'
+import {DenseSelect, DenseSelectItem} from "@/components/OxOUI/Select";
+import {DenseListItem, DenseListItemBoxNoHover, DenseListItemIcon} from '@/components/OxOUI/List'
 import {MarginDivider5} from "@/components/OxOUI/Divider";
 import AddIcon from "@material-ui/icons/Add";
 import {JournalContext} from "@/app/Noxo/Journal";
-
 
 
 const SortSetting: React.FunctionComponent = () => {

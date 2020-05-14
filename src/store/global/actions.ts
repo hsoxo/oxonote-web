@@ -1,5 +1,5 @@
 import {JournalObject} from "@/types/journal";
-import {GlobalState, RemoteDBInfo, UserInfo} from "@/types/states";
+import {RemoteDBInfo, UserInfo} from "@/types/states";
 import {RequestStatus} from "@/types/request";
 import PouchDB from "pouchdb-browser";
 

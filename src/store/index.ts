@@ -1,23 +1,19 @@
-import { applyMiddleware, compose, createStore } from 'redux'
+import {applyMiddleware, compose, createStore} from 'redux'
 import createSagaMiddleware from 'redux-saga'
-import {
-    useSelector as useReduxSelector,
-    TypedUseSelectorHook,
-} from 'react-redux'
-import { combineReducers } from 'redux-immutable'
-import { connectRouter, routerMiddleware } from 'connected-react-router'
-import { createBrowserHistory, History } from 'history'
-import { Map } from "immutable";
+import {TypedUseSelectorHook, useSelector as useReduxSelector,} from 'react-redux'
+import {combineReducers} from 'redux-immutable'
+import {connectRouter, routerMiddleware} from 'connected-react-router'
+import {createBrowserHistory, History} from 'history'
+import {Map} from "immutable";
 
 import rootSaga from "@/store/rootSaga";
 import globalReducer from "@/store/global/reducer";
 import {GlobalActionType, globalSagaAction} from './global/actions'
 import noteReducer from "@/store/note/reducer";
-import { NoteSagaAction } from './note/saga'
+import {NoteSagaAction} from './note/saga'
 import journalReducer from "@/store/journal/reducer";
-import { JournalSagaActions } from './journal/saga'
+import {JournalSagaActions} from './journal/saga'
 import {util} from "prismjs";
-import type = util.type;
 
 const createRootReducer = (history: History) => combineReducers({
     router: connectRouter(history),

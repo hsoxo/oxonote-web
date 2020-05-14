@@ -1,6 +1,6 @@
-import { put, take, call, fork, throttle, select } from 'redux-saga/effects'
+import {call, fork, put, select, take, throttle} from 'redux-saga/effects'
 import PouchConn from '@/services/pouchdb'
-import { push } from 'connected-react-router'
+import {push} from 'connected-react-router'
 
 import * as ACT from './actions'
 import {NoteState} from '@/types/states'

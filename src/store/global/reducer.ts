@@ -1,7 +1,6 @@
 import * as ACT from './actions'
-import { GlobalState } from '@/types/states'
+import {GlobalState} from '@/types/states'
 import {getToken} from "@/utils/auth";
-import PouchDB from "pouchdb-browser";
 import {RequestDefault} from "@/types/request";
 
 const initialState: GlobalState = {

@@ -11,7 +11,7 @@ import {GlobalState} from "@/types/states";
 import {RequestDefault, RequestDone, RequestErrorMsg, RequestProcessing} from "@/types/request";
 import {CircularProgress} from "@material-ui/core";
 import styled from "styled-components";
-import {pbkdf2Sync} from 'pbkdf2'
+import {sha256} from "@/utils/sha256";
 
 const validateEmail = (email: string) => {
   const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -75,8 +75,8 @@ const RegistrationForm: React.FC<{toggle: () => void}> = ({ toggle }) => {
 
   const handleSignUp = () => {
     if (!notValid) {
-      const derivedKey = pbkdf2Sync(password, 'someSalt', 100, 32, 'sha512')
-      sagaAction({ type: SAGA_SIGN_UP, username, password: derivedKey.toString('hex'), email })
+      const derivedKey = sha256(password) as string
+      sagaAction({ type: SAGA_SIGN_UP, username, password: derivedKey, email })
     }
   }
 

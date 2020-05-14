@@ -1,9 +1,7 @@
-import React, {FocusEvent, KeyboardEvent, FunctionComponent, useState, ChangeEvent} from 'react'
-import { ElementProps } from './types'
-import { NoBorderInput } from '@/components/OxOUI/Input'
-import BaseElement from './Base'
-
-import { ContentViewProps, ContentPopoverProps } from './Base'
+import React, {ChangeEvent, FunctionComponent, KeyboardEvent, useState} from 'react'
+import {ElementProps} from './types'
+import {NoBorderInput} from '@/components/OxOUI/Input'
+import BaseElement, {ContentPopoverProps, ContentViewProps} from './Base'
 
 export const TextContent = ({ noteAttr }: ContentViewProps) => {
   return noteAttr.value

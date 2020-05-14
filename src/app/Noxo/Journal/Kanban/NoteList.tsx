@@ -2,7 +2,6 @@ import React from 'react';
 import {NoteObject} from "@/types/note";
 import NoteCard from "@/app/Noxo/Journal/Kanban/NoteCard";
 import {Draggable, DraggableProvided, DraggableStateSnapshot, Droppable} from "react-beautiful-dnd";
-import {AttributeRangeType} from "@/types/journal";
 import ReactDOM from "react-dom";
 import portal from "@/app/Noxo/Journal/Kanban/Portal";
 

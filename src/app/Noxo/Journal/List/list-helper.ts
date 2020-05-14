@@ -1,6 +1,7 @@
-import {JournalAttribute, JournalEnhancedObject, JournalObject, JournalView} from "@/types/journal";
-import {NoteObject, NoteSummaryObject} from "@/types/note";
+import {JournalAttribute, JournalObject, JournalView} from "@/types/journal";
+import {NoteObject} from "@/types/note";
 import notePropTypes from "@/types/constants/note-attributes";
+
 type label = '等于' | '不等于' | '是空' | '不是空' | '是' | '不是' | '包含' | '不包含' | '以...开始' | '以...结束' | '在...之前' | '在...之后'
 
 const isEqual = (source: any, target: any) => {

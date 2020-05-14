@@ -9,7 +9,7 @@ import CheckBoxIcon from '@material-ui/icons/CheckBox'
 
 import * as Elements from '@/app/Noxo/Note/Attributes/AttributeRow/Content/AttributeContentEditor'
 
-import { NoteAttributeTypesObject } from "@/types/note-attribute";
+import {NoteAttributeTypesObject} from "@/types/note-attribute";
 
 export const SINGLE_SELECT = 'SINGLE_SELECT'
 export const MULTI_SELECT = 'MULTI_SELECT'

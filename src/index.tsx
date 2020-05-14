@@ -1,15 +1,13 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { Router } from 'react-router-dom'
-import { Provider } from 'react-redux'
-import { SnackbarProvider } from 'notistack'
-import { ConnectedRouter } from 'connected-react-router/immutable'
-import { StylesProvider } from '@material-ui/core/styles';
+import {Provider} from 'react-redux'
+import {SnackbarProvider} from 'notistack'
+import {ConnectedRouter} from 'connected-react-router/immutable'
+import {createMuiTheme, MuiThemeProvider, StylesProvider} from '@material-ui/core/styles';
 
 import App from './App'
-import { store, history } from '@/store/index'
+import {history, store} from '@/store/index'
 
-import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
 const theme = createMuiTheme({
   palette: {
     primary: {

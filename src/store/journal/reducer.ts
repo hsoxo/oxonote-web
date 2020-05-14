@@ -1,5 +1,5 @@
 import * as ACT from './actions'
-import { JournalState } from '@/types/states'
+import {JournalState} from '@/types/states'
 
 const initJournalState: JournalState = {
   journalChanged: false,

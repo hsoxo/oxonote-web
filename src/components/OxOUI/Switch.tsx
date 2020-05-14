@@ -1,6 +1,6 @@
-import { withStyles } from '@material-ui/core/styles';
+import {withStyles} from '@material-ui/core/styles';
 import Switch from '@material-ui/core/Switch';
-import { grey } from "@material-ui/core/colors";
+import {grey} from "@material-ui/core/colors";
 
 export const AntSwitch = withStyles({
   root: {

@@ -1,15 +1,15 @@
 // @ts-nocheck
-import React, {useContext, useEffect, useRef, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import ReactDOM from 'react-dom'
-import {useSlate, ReactEditor} from "slate-react";
-import {Editor, Transforms, Range} from "slate";
+import {ReactEditor, useSlate} from "slate-react";
+import {Editor, Range} from "slate";
 import styled from "styled-components";
-import {Paper, IconButton} from "@material-ui/core";
+import {IconButton, Paper} from "@material-ui/core";
 import FormatBoldIcon from '@material-ui/icons/FormatBold';
 import FormatItalicIcon from '@material-ui/icons/FormatItalic';
 import CodeIcon from '@material-ui/icons/Code';
 import * as NAMES from '../constants/names'
-import { toggleFormat } from "../utils/toggleFormat";
+import {toggleFormat} from "../utils/toggleFormat";
 
 
 export const _Menu = React.forwardRef(({ className, ...props }: any, ref) => {

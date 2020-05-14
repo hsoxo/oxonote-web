@@ -1,22 +1,15 @@
 import * as React from 'react';
-import {
-  Button, Popover,
-  ListItemSecondaryAction, Box
-} from "@material-ui/core";
-import {
-  usePopupState,
-  bindTrigger,
-  bindPopover,
-} from 'material-ui-popup-state/hooks'
+import {useContext} from 'react';
+import {Box, Button, ListItemSecondaryAction, Popover} from "@material-ui/core";
+import {bindPopover, bindTrigger, usePopupState,} from 'material-ui-popup-state/hooks'
 import styled from "styled-components";
-import { JournalState } from "@/types/states";
+import {JournalState} from "@/types/states";
 import sagaAction, {useSelector} from "@/store";
 import notePropTypes from "@/types/constants/note-attributes";
 import {JournalView, JournalViewAttribute} from "@/types/journal";
-import { DenseListItemBox, DenseListItemIcon } from "@/components/OxOUI/List";
-import { AntSwitch } from "@/components/OxOUI/Switch";
+import {DenseListItemBox, DenseListItemIcon} from "@/components/OxOUI/List";
+import {AntSwitch} from "@/components/OxOUI/Switch";
 import * as JOURNAL_ACT from "@/store/journal/actions";
-import {useContext} from "react";
 import {JournalContext} from "@/app/Noxo/Journal";
 import {DragDropContext, Draggable, Droppable, DropResult} from "react-beautiful-dnd";
 import DragIndicatorIcon from "@material-ui/icons/DragIndicator";

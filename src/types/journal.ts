@@ -1,4 +1,4 @@
-import { NoteSummaryObject } from "@/types/note";
+import {NoteSummaryObject} from "@/types/note";
 
 export interface JournalObject {
     _id: string,

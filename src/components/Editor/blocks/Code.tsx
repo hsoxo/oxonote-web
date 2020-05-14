@@ -1,12 +1,11 @@
-import React, {useCallback} from "react";
-import ReactDOM from 'react-dom'
-import {Editor, Transforms} from 'slate'
-import { EditorElementProps } from "../types/index";
-import PopupState, { bindTrigger, bindMenu } from 'material-ui-popup-state'
-import {Button, Menu, MenuItem} from "@material-ui/core";
+import React from "react";
+import {Transforms} from 'slate'
+import {EditorElementProps} from "../types/index";
+import PopupState, {bindMenu, bindTrigger} from 'material-ui-popup-state'
+import {Button, Menu} from "@material-ui/core";
 import {DenseListItemBox} from '@/components/OxOUI/List'
 
-import { langList } from "../utils/prism";
+import {langList} from "../utils/prism";
 
 class CodeElement extends React.Component<EditorElementProps> {
   private focusRef: React.RefObject<HTMLDivElement>;

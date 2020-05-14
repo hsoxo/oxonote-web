@@ -1,6 +1,6 @@
 import React from 'react'
-import { ElementProps } from './types'
-import BaseElement, { ContentViewProps } from './Base'
+import {ElementProps} from './types'
+import BaseElement, {ContentViewProps} from './Base'
 
 export const ModifiedTimeContent = ({ noteInfo }: ContentViewProps) => {
   return noteInfo.modifiedTime

@@ -1,21 +1,22 @@
-import React, { Suspense, useEffect, useState } from 'react'
-import { Route } from 'react-router-dom'
-import { InnerRouteProps } from '@/routes'
+import React, {Suspense, useEffect, useState} from 'react'
+import {Route, RouteComponentProps} from 'react-router-dom'
+import {animated, useSpring, useTransition} from 'react-spring'
+import styled from 'styled-components'
+import PouchDB from 'pouchdb-browser'
+
+
+import {FlexBox} from '@/components/OxOUI/OxOBox'
+import ClapSpinner from "@/components/Spiner";
+import {InnerRouteProps} from '@/routes'
+import {GlobalState} from '@/types/states'
+import sagaAction, {action, useSelector} from '@/store'
+import {SAGA_LOAD_USER, setDBSyncStatus} from '@/store/global/actions'
+import {getToken} from "@/utils/auth";
+
+import {navbarHeight, sidebarWidth} from './Layout/config'
 import Sidebar from './Layout/Sidebar'
 import Navbar from './Layout/Navbar'
-import { RouteComponentProps } from 'react-router-dom'
 
-import { sidebarWidth, navbarHeight } from './Layout/config'
-import { FlexBox } from '@/components/OxOUI/OxOBox'
-import styled from 'styled-components'
-import { GlobalState } from '@/types/states'
-import sagaAction, { action, useSelector } from '@/store'
-import { SAGA_LOAD_USER, setDBSyncStatus } from '@/store/global/actions'
-
-import PouchDB from 'pouchdb-browser'
-import {useSpring, animated, useTransition, interpolate} from 'react-spring'
-import ClapSpinner from "@/components/Spiner";
-import {getToken} from "@/utils/auth";
 PouchDB.plugin(require('pouchdb-authentication'))
 
 

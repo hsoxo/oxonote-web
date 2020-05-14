@@ -1,11 +1,9 @@
 import React from 'react'
-import {Box} from "@material-ui/core";
 import {Link} from "react-router-dom";
 
-import { MarginBox } from "@/components/OxOUI/OxOBox";
-import {JournalState, NoteState} from "@/types/states";
+import {MarginBox} from "@/components/OxOUI/OxOBox";
+import {JournalState} from "@/types/states";
 import {useSelector} from "@/store";
-import {JournalView} from "@/types/journal";
 
 type JournalListViewProps = {
   viewId: string

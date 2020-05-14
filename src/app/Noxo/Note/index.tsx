@@ -1,5 +1,5 @@
-import React, {useEffect, Fragment, useState} from 'react'
-import {Box, CircularProgress, Divider, FormControlLabel, Fade, Paper, Switch} from '@material-ui/core'
+import React, {useEffect, useState} from 'react'
+import {Box, Divider, Fade} from '@material-ui/core'
 import AttributeBlock from './Attributes'
 import sagaAction, {useSelector} from "@/store";
 import * as NOTE_ACT from '@/store/note/actions'
@@ -7,7 +7,7 @@ import * as NOTE_ACT from '@/store/note/actions'
 import TitleBlock from "../components/Title";
 import OxOEditor from "@/components/Editor";
 import {NoteState} from "@/types/states";
-import { PrismStyled } from "./PrismStyleEditor";
+import {PrismStyled} from "./PrismStyleEditor";
 import debounce from 'lodash/debounce'
 
 const handleSaveContent = debounce((value: any) => {

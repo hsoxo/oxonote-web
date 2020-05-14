@@ -1,23 +1,18 @@
-// @ts-nocheck
-import React, { useRef } from "react";
-import { Box, Drawer, IconButton, List, ListItem, ListItemText, ListItemIcon } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
-import SearchIcon from '@material-ui/icons/Search';
-import SettingsIcon from '@material-ui/icons/Settings';
-import HelpIcon from '@material-ui/icons/Help';
-import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
-import NavigateBeforeIcon from '@material-ui/icons/NavigateBefore';
+import React from "react";
+import {List, ListItem, ListItemIcon, ListItemText} from '@material-ui/core';
+import {makeStyles} from '@material-ui/core/styles';
 import AddIcon from '@material-ui/icons/Add';
-import clsx from "clsx";
+import SearchIcon from '@material-ui/icons/Search';
+import NavigateBeforeIcon from '@material-ui/icons/NavigateBefore';
+import styled from "styled-components";
+import {animated, useSpring} from "react-spring";
 
-import { sidebarWidth } from './config'
 import sagaAction from "@/store";
 import * as JOURNAL_ACT from "@/store/journal/actions"
+
+import {sidebarWidth} from '../config'
 import JournalTreeView from "./SidebarJournalTree";
-import {SAGA_LOGOUT} from "@/store/global/actions";
-import {useTransition, useChain, animated, config, useSpring} from "react-spring";
-import styled from "styled-components";
-import {Transition} from "react-spring/renderprops-universal";
+import HeaderButton from "@/app/Noxo/Layout/Sidebar/HeaderButton";
 
 const useStyles = makeStyles((theme) => ({
   listItem: {
@@ -29,11 +24,6 @@ const useStyles = makeStyles((theme) => ({
   listItemIcon: {
     minWidth: 30,
     flex: 'none',
-  },
-  btmArea: {
-    position: 'absolute',
-    bottom: 0,
-    width: sidebarWidth,
   },
   drawer: {
     width: 0,
@@ -65,7 +55,7 @@ interface SidebarProps {
   onToggleSidebar: {(): void}
 }
 
-const Sidebar = ({ active, onToggleSidebar }: SidebarProps) => {
+const Index = ({ active, onToggleSidebar }: SidebarProps) => {
   const classes = useStyles();
   const springStyle = useSpring({
     to: { transform: active ? "translateX(0%)" : "translateX(-100%)" },
@@ -87,16 +77,14 @@ const Sidebar = ({ active, onToggleSidebar }: SidebarProps) => {
       >
         <NavigateBeforeIcon fontSize="small" style={{transform: active ? '' : 'rotate(180deg)', transition: 'transform ease 400ms'}}/>
       </ToggleButtonWrapper>
-      <ListItem>
-        <ListItemText primary={"OxO Notes"} />
-      </ListItem>
+      <HeaderButton />
       <List>
-        <ListItem className={classes.listItem} button>
-          <ListItemIcon className={classes.listItemIcon}>
-            <SearchIcon/>
-          </ListItemIcon>
-          <ListItemText primary={"搜索"} />
-        </ListItem>
+        {/*<ListItem className={classes.listItem} button>*/}
+        {/*  <ListItemIcon className={classes.listItemIcon}>*/}
+        {/*    <SearchIcon/>*/}
+        {/*  </ListItemIcon>*/}
+        {/*  <ListItemText primary={"搜索"} />*/}
+        {/*</ListItem>*/}
         <ListItem className={classes.listItem} button onClick={handleCreateJournal}>
           <ListItemIcon className={classes.listItemIcon}>
             <AddIcon/>
@@ -108,14 +96,6 @@ const Sidebar = ({ active, onToggleSidebar }: SidebarProps) => {
       <List>
         <JournalTreeView />
       </List>
-      <div style={{height: 20}} />
-      <Box className={classes.btmArea}>
-        <List>
-          <ListItem className={classes.listItem} button onClick={() => sagaAction({ type: SAGA_LOGOUT })}>
-            <ListItemText primary={"Log out"} />
-          </ListItem>
-        </List>
-      </Box>
     </SidebarWrapper>
   )
 }
@@ -141,4 +121,4 @@ const ToggleButtonWrapper = styled.button`
   }
 `
 
-export default Sidebar
+export default Index

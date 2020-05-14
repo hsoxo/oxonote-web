@@ -1,15 +1,20 @@
-import { put, take, call, fork, throttle, select } from 'redux-saga/effects'
+import {call, fork, put, select, take} from 'redux-saga/effects'
 import PouchConn from '@/services/pouchdb'
-import { push } from 'connected-react-router'
+import {push} from 'connected-react-router'
 import sagaAction from "@/store";
 import * as GlobalACT from '@/store/global/actions'
+import {SAGA_LOAD_JOURNAL_LIST} from '@/store/global/actions'
 import * as ACT from './actions'
+import {
+  SAGA_CREATE_VIEW,
+  SAGA_DELETE_VIEW,
+  SAGA_JOURNAL_CREATE,
+  SAGA_JOURNAL_READ,
+  SAGA_UPDATE_ATTR_RANGE,
+  SAGA_UPDATE_VIEW_ATTR_SETTING
+} from './actions'
 import {JournalState} from '@/types/states'
 import {AttributeRangeType, JournalViewAttribute} from "@/types/journal";
-import {SAGA_CREATE_VIEW, SAGA_DELETE_VIEW, SAGA_JOURNAL_CREATE, SAGA_UPDATE_VIEW_ATTR_SETTING} from "./actions";
-import {SAGA_JOURNAL_READ} from "./actions";
-import {SAGA_UPDATE_ATTR_RANGE} from "./actions";
-import {SAGA_LOAD_JOURNAL_LIST} from "@/store/global/actions";
 
 const SAGA_ACTIONS = Object.entries(ACT).filter(x => x[0].startsWith('SAGA') && typeof x[1] === 'string').map(x => x[1]) as unknown as Array<string>
 

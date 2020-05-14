@@ -1,7 +1,7 @@
 // @ts-nocheck
-import {Editor, Text, Transforms} from "slate";
+import {Transforms} from "slate";
 import * as NAMES from '../../constants/names'
-import { toggleFormat } from "../../utils/toggleFormat";
+import {toggleFormat} from "../../utils/toggleFormat";
 
 const handleKeyDown = (editor) => {
   return (event) => {

@@ -1,15 +1,9 @@
-import React, {useCallback} from 'react';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import React from 'react';
+import {makeStyles} from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
-import { navbarHeight, sidebarWidth } from './config'
-import clsx from "clsx";
-import {NoteState} from "@/types/states";
-import {useSelector} from "@/store";
+import {navbarHeight} from './config'
 
 const useStyles = makeStyles((theme) => ({
     root: {
