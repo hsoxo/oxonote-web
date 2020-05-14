@@ -1,7 +1,7 @@
-import React, { useMemo, useCallback } from "react";
+import React, {useCallback, useMemo} from "react";
 
-import {createEditor, Editor, Element as SlateElement, Range, Transforms, Text} from 'slate'
-import { Slate, Editable, withReact } from 'slate-react'
+import {createEditor, Editor, Element as SlateElement, Range, Text, Transforms} from 'slate'
+import {Editable, Slate, withReact} from 'slate-react'
 import MarkdownPlugin from "./plugins/Markdown";
 
 import withPlugins from "./utils/withPlugins";

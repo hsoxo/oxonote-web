@@ -4,17 +4,14 @@ import {DenseListItem, DenseListItemIcon} from "@/components/OxOUI/List";
 import AddIcon from "@material-ui/icons/Add";
 import {Box, Button, Grid, ListItem, Popover} from "@material-ui/core";
 import {bindPopover, bindTrigger, usePopupState} from "material-ui-popup-state/hooks";
-import sagaAction, { useSelector } from "@/store";
+import sagaAction from "@/store";
 import CheckIcon from '@material-ui/icons/Check';
 import ViewListRoundedIcon from '@material-ui/icons/ViewListRounded';
 import ViewModuleRoundedIcon from '@material-ui/icons/ViewModuleRounded';
 import TableChartRoundedIcon from '@material-ui/icons/TableChartRounded';
 import DashboardRoundedIcon from '@material-ui/icons/DashboardRounded';
 import {BootstrapInput} from "@/components/OxOUI/Input";
-import {JournalState, NoteState} from "@/types/states";
-import {v4 as uuid} from "uuid";
 import {JournalViewTypes} from "@/types/journal";
-import {nanoid} from "nanoid";
 import {SAGA_CREATE_VIEW} from "@/store/journal/actions";
 
 interface ViewTypeSetting {

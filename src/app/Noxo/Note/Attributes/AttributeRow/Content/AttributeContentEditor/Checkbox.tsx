@@ -1,7 +1,7 @@
 import React from 'react'
-import { ElementProps } from './types'
-import BaseElement, { ContentPopoverProps, ContentViewProps } from './Base'
-import { Checkbox } from '@material-ui/core'
+import {ElementProps} from './types'
+import BaseElement, {ContentViewProps} from './Base'
+import {Checkbox} from '@material-ui/core'
 
 export const CheckboxContent = ({ noteAttr }: ContentViewProps) => {
   return noteAttr.value

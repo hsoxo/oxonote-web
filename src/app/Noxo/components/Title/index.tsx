@@ -1,9 +1,9 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Box } from '@material-ui/core'
+import {Box} from '@material-ui/core'
 import TitleTopArea from './TitleTopArea'
 import TitleMainArea from './TitleMainArea'
-import { TitleBlockPropsType } from '@/app/Noxo/components/Title/type'
+import {TitleBlockPropsType} from '@/app/Noxo/components/Title/type'
 
 const TitleBlockWrapper = styled(Box)`
   flex-wrap: wrap;

@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { InputBase } from "@material-ui/core";
+import {InputBase} from "@material-ui/core";
 
 export const BootstrapInput = styled(InputBase)`
   width: 100%;

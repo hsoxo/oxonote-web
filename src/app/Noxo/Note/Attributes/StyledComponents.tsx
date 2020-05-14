@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import {Box, Popover, Grid, Button, Chip} from "@material-ui/core";
+import {Box, Button, Chip, Grid, Popover} from "@material-ui/core";
 
 
 export const HoverGrid = styled(Grid)`

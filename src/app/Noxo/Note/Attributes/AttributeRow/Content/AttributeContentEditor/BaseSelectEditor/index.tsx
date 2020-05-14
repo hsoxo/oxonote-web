@@ -1,19 +1,18 @@
-import React, { useState } from 'react'
-import { ContentPopoverProps } from '../Base'
-import { DropResult } from 'react-beautiful-dnd'
-import { reorder } from '../../../../utils/dnd-helper'
-import { AttributeRangeType } from '@/types/journal'
-import { Box } from '@material-ui/core'
-import { NoBorderInput } from '@/components/OxOUI/Input'
-import { FlexCenteredBox } from '@/components/OxOUI/OxOBox'
+import React, {useState} from 'react'
+import {ContentPopoverProps} from '../Base'
+import {DropResult} from 'react-beautiful-dnd'
+import {reorder} from '../../../../utils/dnd-helper'
+import {AttributeRangeType} from '@/types/journal'
+import {Box} from '@material-ui/core'
+import {NoBorderInput} from '@/components/OxOUI/Input'
+import {FlexCenteredBox} from '@/components/OxOUI/OxOBox'
 import styled from 'styled-components'
-import { MarginRightChip } from '@/components/OxOUI/Chip'
-import { HoverBox, NoHoverButton, ClickableChip } from '../../../../StyledComponents'
+import {MarginRightChip} from '@/components/OxOUI/Chip'
+import {ClickableChip, HoverBox, NoHoverButton} from '../../../../StyledComponents'
 import SelectionList from './SelectionList'
 import sagaAction, {useSelector} from "@/store";
 import * as NOTE_ACT from "@/store/note/actions";
 import {NoteState} from "@/types/states";
-import {NoteAttribute} from "@/types/note";
 
 interface SelectTypeContentPopoverProps extends ContentPopoverProps {
   isMulti: boolean

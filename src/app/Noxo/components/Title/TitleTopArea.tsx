@@ -1,16 +1,7 @@
 import React from "react";
-import {
-  Box,
-  Button,
-  Popover,
-} from "@material-ui/core";
-import { Picker } from "emoji-mart";
-import {
-  usePopupState,
-  bindToggle,
-  bindPopover,
-} from "material-ui-popup-state/hooks";
-import { BaseEmoji } from "emoji-mart";
+import {Box, Button, Popover,} from "@material-ui/core";
+import {BaseEmoji, Picker} from "emoji-mart";
+import {bindPopover, bindToggle, usePopupState,} from "material-ui-popup-state/hooks";
 import 'emoji-mart/css/emoji-mart.css'
 import styled from "styled-components";
 import {TitleBlockPropsType} from "@/app/Noxo/components/Title/type";

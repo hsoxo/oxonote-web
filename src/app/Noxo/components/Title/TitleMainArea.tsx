@@ -1,19 +1,12 @@
 import React from 'react'
 import ContentEditable from 'react-contenteditable'
-import { Box, Popover } from '@material-ui/core'
-import { BaseEmoji, Picker } from 'emoji-mart'
-import {
-  usePopupState,
-  bindToggle,
-  bindPopover
-} from 'material-ui-popup-state/hooks'
+import {Box, Popover} from '@material-ui/core'
+import {BaseEmoji, Picker} from 'emoji-mart'
+import {bindPopover, bindToggle, usePopupState} from 'material-ui-popup-state/hooks'
 import {TitleBlockPropsType} from './type'
 import styled from 'styled-components'
 
-import { FlexCenteredBox } from "@/components/OxOUI/OxOBox";
-import debounce from "lodash/debounce";
-import sagaAction from "@/store";
-import * as JOURNAL_ACT from "@/store/journal/actions";
+import {FlexCenteredBox} from "@/components/OxOUI/OxOBox";
 
 
 const TitleIconBox = styled(Box)`

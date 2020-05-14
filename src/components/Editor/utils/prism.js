@@ -1,4 +1,3 @@
-import Prism from 'prismjs'
 import "prismjs/components/prism-aspnet";
 import "prismjs/components/prism-bash";
 import "prismjs/components/prism-c";

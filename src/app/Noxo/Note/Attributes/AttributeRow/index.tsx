@@ -2,7 +2,7 @@ import React from 'react'
 import AttributeContent from './Content'
 import AttributeLabel from "./Label";
 import CreateNew from './Label/CreateNew'
-import { HoverGrid } from "../StyledComponents";
+import {HoverGrid} from "../StyledComponents";
 import styled from "styled-components";
 import {Grid} from "@material-ui/core";
 import {NoteAttribute} from "@/types/note";

@@ -4,10 +4,7 @@ import React from 'react'
 import elementsTypes from "./HtmlElementWrapper";
 
 import Leaf from "./Leaf";
-
-import clsx from "clsx";
 import ToolWrapper from "../toolbar/Wrapper";
-import { useSelected, useFocused } from "slate-react";
 import styled from "styled-components";
 
 interface EditorElementProps {

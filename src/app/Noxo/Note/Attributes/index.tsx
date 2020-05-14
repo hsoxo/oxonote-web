@@ -1,10 +1,9 @@
-import React, {useContext} from 'react'
-import { v4 as uuid } from "uuid";
+import React from 'react'
 import {NoteState} from "@/types/states";
 import {useSelector} from "@/store";
-import { Box } from "@material-ui/core";
+import {Box} from "@material-ui/core";
 
-import AttributeRow, { AttributeNewRow } from "./AttributeRow/index";
+import AttributeRow, {AttributeNewRow} from "./AttributeRow/index";
 
 import styled from "styled-components";
 

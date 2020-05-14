@@ -1,5 +1,5 @@
 import React from 'react'
-import { EditorElementProps } from "./types";
+import {EditorElementProps} from "./types";
 
 const Leaf: React.FunctionComponent<EditorElementProps> = props => {
   return (

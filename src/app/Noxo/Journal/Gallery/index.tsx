@@ -1,12 +1,10 @@
 import React, {useContext} from 'react'
 import {Box, Grid} from "@material-ui/core";
-import {Link} from "react-router-dom";
 import GalleryCard from './Card'
 
-import { MarginBox } from "@/components/OxOUI/OxOBox";
-import {JournalState, NoteState} from "@/types/states";
+import {MarginBox} from "@/components/OxOUI/OxOBox";
+import {JournalState} from "@/types/states";
 import {useSelector} from "@/store";
-import {JournalView} from "@/types/journal";
 import {JournalContext} from "@/app/Noxo/Journal";
 
 type JournalListViewProps = {

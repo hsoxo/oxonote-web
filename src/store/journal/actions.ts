@@ -1,5 +1,4 @@
-import {AttributeRangeType, JournalAttribute, JournalEnhancedObject, JournalObject, JournalView} from "@/types/journal";
-import {JournalState} from "@/types/states";
+import {JournalAttribute, JournalObject, JournalView} from "@/types/journal";
 import {NoteObject} from "@/types/note";
 
 export const SET_JOURNAL_ALL = 'JOURNAL/SET_ALL'

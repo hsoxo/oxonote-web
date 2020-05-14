@@ -3,6 +3,7 @@ import notePropTypes, {MULTI_SELECT, SINGLE_SELECT} from "@/types/constants/note
 import {JournalAttribute} from "@/types/journal";
 import {newRangeItem} from "@/services/pouchdb/Journal/default";
 import getConn from "@/services/pouchdb/config";
+
 const journalService = require('../../Journal/index')
 
 

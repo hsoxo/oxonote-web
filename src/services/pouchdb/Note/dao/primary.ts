@@ -3,6 +3,7 @@ import {newNote, newNoteContent} from "@/services/pouchdb/Note/default";
 import {JournalAttribute} from "@/types/journal";
 import notePropTypes from "@/types/constants/note-attributes";
 import getConn from "@/services/pouchdb/config";
+
 const journalService = require('../../Journal/index')
 
 export const create = async (journalId: string) => {

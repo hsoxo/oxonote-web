@@ -5,17 +5,12 @@ import * as H from './Header'
 
 
 import * as NAMES from '../constants/names'
-import * as PATTERN from '../constants/md-block-pattern'
 import ParagraphElement from './Paragraph'
 import React, {useEffect, useRef} from 'react'
-import { EditorElementProps } from '../types'
+import {EditorElementProps} from '../types'
 import styled from 'styled-components'
-import {Editor, Node, Path, Point, Range} from 'slate'
-import {ReactEditor} from "slate-react";
-import PopupState, {bindMenu, bindHover, bindPopper} from "material-ui-popup-state";
-import {Button, IconButton, Menu, Popper} from "@material-ui/core";
-import DeleteIcon from '@material-ui/icons/Delete';
-import OpenInNewIcon from '@material-ui/icons/OpenInNew';
+import {Node, Point} from 'slate'
+
 export const BlockSetting = {
   [NAMES.PARAGRAPH]: ParagraphElement,
   [NAMES.H1]: H.HeadOneElement,

@@ -1,7 +1,7 @@
-import React, {useEffect} from 'react'
-import { Route, BrowserRouter as Router, Switch, Redirect } from 'react-router-dom'
+import React from 'react'
+import {Redirect, Route, Switch} from 'react-router-dom'
 
-import { privateRoutes, publicRoutes } from './routes'
+import {privateRoutes, publicRoutes} from './routes'
 import {getToken} from "@/utils/auth";
 import sagaAction from "@/store";
 import {SAGA_LOAD_USER} from "@/store/global/actions";

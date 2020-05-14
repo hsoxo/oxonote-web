@@ -1,10 +1,9 @@
-import { customAlphabet } from 'nanoid/async'
-const nanoid = customAlphabet('1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', 10)
-
+import {customAlphabet} from 'nanoid/async'
 import {JournalAttribute, JournalObject} from "@/types/journal";
 import notePropTypes from "@/types/constants/note-attributes";
-import { NoteObject } from "@/types/note";
-import {Node} from "slate";
+import {NoteObject} from "@/types/note";
+
+const nanoid = customAlphabet('1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', 10)
 
 
 type NewNote = (journal: JournalObject, jAttrs: Array<JournalAttribute>) => Promise<NoteObject>

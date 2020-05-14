@@ -1,12 +1,11 @@
 import React from "react";
-import {Grid, Popover} from "@material-ui/core";
-import {usePopupState, bindMenu, bindToggle} from "material-ui-popup-state/hooks";
-import { NoteAttribute } from "@/types/note";
+import {Popover} from "@material-ui/core";
+import {bindMenu, bindToggle, usePopupState} from "material-ui-popup-state/hooks";
+import {NoteAttribute} from "@/types/note";
 import {NoteState} from "@/types/states";
-import {AttributeNameWrapper, AttributeLabel, AttributeIcon, AttributeName} from "../../StyledComponents";
+import {AttributeIcon, AttributeLabel, AttributeName, AttributeNameWrapper} from "../../StyledComponents";
 import notePropTypes from "@/types/constants/note-attributes";
-import sagaAction from '@/store'
-import { useSelector } from "@/store";
+import sagaAction, {useSelector} from '@/store'
 import * as NOTE_ACT from "@/store/note/actions";
 import AttributeTypeEditor from "./AttributeTypeEditor";
 

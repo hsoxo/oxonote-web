@@ -1,7 +1,7 @@
 const path = require("path");
 const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
-const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
+const TerserPlugin = require("terser-webpack-plugin");
 const Dotenv = require('dotenv-webpack');
 
 const happyPackWorkers = require('./happypack.config')
@@ -34,6 +34,7 @@ module.exports = {
       {
         test: /\.(css|sass|scss)$/,
         use: ['happypack/loader?id=css'],
+        sideEffects: true,
       },
       {
         test: /\.(jpg|jpeg|png|woff|woff2|eot|ttf|svg)$/,
@@ -51,11 +52,14 @@ module.exports = {
     new Dotenv({
       path: './.env.prod',
     }),
-    // new BundleAnalyzerPlugin({
-    //   analyzerPort: 6330
-    // })
+    new BundleAnalyzerPlugin({
+      analyzerPort: 6330
+    })
   ],
   optimization: {
+    usedExports: true,
+    minimize: true,
+    minimizer: [new TerserPlugin({ sourceMap: true })],
     splitChunks: {
       chunks: 'async',
       minSize: 30000,

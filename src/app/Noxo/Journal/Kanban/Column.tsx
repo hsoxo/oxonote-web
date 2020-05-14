@@ -7,7 +7,6 @@ import {Box, Button, Chip} from "@material-ui/core";
 import {Draggable, DraggableProvided, DraggableStateSnapshot} from "react-beautiful-dnd";
 import NoteList from "@/app/Noxo/Journal/Kanban/NoteList";
 import portal from "./Portal";
-import {MarginRightChip} from "@/components/OxOUI/Chip";
 
 
 const Column: React.FC<AttributeRangeType & { notes: Array<NoteObject>, index: number }> = (x) => {

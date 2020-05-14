@@ -1,12 +1,10 @@
-import {Editor, Transforms, Point, Range, Text, Node, Path, Element, NodeEntry} from "slate";
-import { BlockSetting } from "../../blocks";
+import {Editor, Element, Point, Range, Transforms} from "slate";
 import * as P_BLOCK from '../../constants/md-block-pattern'
 import * as P_INLINE from '../../constants/md-inline-pattern'
 import * as NAMES from '../../constants/names'
-import Journal from "@/app/Noxo/Journal";
 
 import PathSelect from "../../utils/pathSelect";
-import { langList } from "../../utils/prism";
+import {langList} from "../../utils/prism";
 
 const insertLeafWithMark = (editor: Editor, text: string, markName: string, marker: string, additional: Array<Array<string>> = []) => {
   Editor.addMark(editor, markName, true)

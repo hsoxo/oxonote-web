@@ -1,6 +1,7 @@
 import {AttributeRangeType, JournalAttribute, JournalObject, JournalView, JournalViewTypes} from "@/types/journal";
-import { customAlphabet } from 'nanoid/async'
-import { tagColorList } from "@/types/constants/colors";
+import {customAlphabet} from 'nanoid/async'
+import {tagColorList} from "@/types/constants/colors";
+
 const nanoid = customAlphabet('1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', 10)
 
 

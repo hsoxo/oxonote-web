@@ -1,4 +1,4 @@
-import { Theme } from "@material-ui/core";
+import {Theme} from "@material-ui/core";
 
 export interface OxOTheme extends Theme {
     backgroundColor: {

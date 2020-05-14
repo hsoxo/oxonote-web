@@ -1,16 +1,11 @@
-import React, {useContext, useState} from 'react'
+import React, {useState} from 'react'
 import AddIcon from '@material-ui/icons/Add'
-import {
-  AttributeNameWrapper,
-  AttributeLabel,
-  AttributeIcon,
-  AttributeName,
-} from '../../StyledComponents'
-import sagaAction, { useSelector } from '@/store'
+import {AttributeIcon, AttributeLabel, AttributeName, AttributeNameWrapper,} from '../../StyledComponents'
+import sagaAction, {useSelector} from '@/store'
 import * as NOTE_ACT from '@/store/note/actions'
-import { NoteState } from '@/types/states'
+import {NoteState} from '@/types/states'
 import {bindMenu, bindToggle, usePopupState} from 'material-ui-popup-state/hooks'
-import { Popover } from '@material-ui/core'
+import {Popover} from '@material-ui/core'
 import AttributeTypeEditor from './AttributeTypeEditor'
 
 const CreateNew = () => {

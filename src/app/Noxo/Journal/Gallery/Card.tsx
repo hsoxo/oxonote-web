@@ -1,8 +1,7 @@
 import React, {FunctionComponent} from "react";
-import {Box, Card, CardActionArea, CardContent, CardMedia, Divider, Paper, Typography} from "@material-ui/core";
+import {Box, CardActionArea, CardMedia, Divider, Paper, Typography} from "@material-ui/core";
 import {NoteSummaryObject} from "@/types/note";
 import {Link} from "react-router-dom";
-
 
 
 const GalleryCard: FunctionComponent<NoteSummaryObject> = (props) => {

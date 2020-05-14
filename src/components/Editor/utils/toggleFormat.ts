@@ -1,4 +1,4 @@
-import { MouseEvent, KeyboardEvent } from 'react'
+import {KeyboardEvent, MouseEvent} from 'react'
 import {Editor} from "slate";
 import * as NAMES from '../constants/names'
 

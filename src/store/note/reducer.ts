@@ -1,5 +1,5 @@
 import * as ACT from "./actions";
-import { NoteState } from "@/types/states";
+import {NoteState} from "@/types/states";
 
 const initNoteState: NoteState = {
     noteChanged: false,

@@ -1,6 +1,6 @@
 import React from "react";
 import {useSelector} from "@/store";
-import { AttributeValueWrapper, AttributeValue } from "../../StyledComponents";
+import {AttributeValue, AttributeValueWrapper} from "../../StyledComponents";
 
 import notePropTypes from "@/types/constants/note-attributes";
 import {NoteAttribute} from "@/types/note";

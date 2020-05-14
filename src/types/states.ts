@@ -1,4 +1,4 @@
-import {JournalObject, JournalEnhancedObject, JournalView, JournalAttribute} from "@/types/journal";
+import {JournalAttribute, JournalObject, JournalView} from "@/types/journal";
 import {NoteContent, NoteObject} from "@/types/note";
 import {RequestStatus} from "@/types/request";
 import PouchDB from "pouchdb-browser";
@@ -20,8 +20,9 @@ export interface JournalState {
 }
 
 interface WorkSpace {
-    link: string
+    database: string
     name: string
+    user: string
 }
 
 export interface UserInfo {

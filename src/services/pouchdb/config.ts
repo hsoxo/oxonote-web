@@ -1,4 +1,4 @@
-import { store } from '@/store'
+import {store} from '@/store'
 
 function select(state: any): PouchDB.Database {
   return state.get('global').browserDBConn

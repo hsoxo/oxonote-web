@@ -1,12 +1,7 @@
 import React, {useContext} from "react";
 import {bindPopover, bindTrigger, usePopupState} from "material-ui-popup-state/hooks";
-import {
-  Box,
-  Button,
-  Popover,
-  IconButton
-} from "@material-ui/core";
-import { JournalState } from "@/types/states";
+import {Box, Button, IconButton, Popover} from "@material-ui/core";
+import {JournalState} from "@/types/states";
 import {useSelector} from "@/store";
 import {DenseListItem, DenseListItemIcon} from "@/components/OxOUI/List";
 import DeleteIcon from "@material-ui/icons/Delete";

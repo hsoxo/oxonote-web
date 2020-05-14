@@ -1,9 +1,11 @@
 import {call, fork, put, take} from "redux-saga/effects";
 import * as ACT from "./actions";
 import {
-  setBrowserDBConn, setGlobalLoading,
+  setBrowserDBConn,
+  setGlobalLoading,
   setLoginStatus,
-  setRemoteDBInfo, setSignUpStatus,
+  setRemoteDBInfo,
+  setSignUpStatus,
   setUserInfo
 } from "./actions";
 import PouchConn from "@/services/pouchdb";
@@ -12,8 +14,7 @@ import {getToken, removeToken, setToken} from "@/utils/auth";
 import {RequestDone, RequestError, RequestProcessing} from "@/types/request";
 import {push} from "connected-react-router";
 import PouchDB from "pouchdb-browser";
-import {action} from "@/store";
-import {setDBSyncStatus} from "./actions";
+
 PouchDB.plugin(require('pouchdb-find').default)
 PouchDB.plugin(require('pouchdb-authentication').default)
 

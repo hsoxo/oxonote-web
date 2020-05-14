@@ -1,21 +1,19 @@
 import React, {useEffect, useState} from 'react';
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
-import {Box, CircularProgress, Grid} from "@material-ui/core";
-import Link from "@material-ui/core/Link";
+import {Box, CircularProgress} from "@material-ui/core";
 import {GlobalState} from "@/types/states";
 import sagaAction, {action, useSelector} from "@/store";
 import {RequestDefault, RequestDone, RequestError, RequestProcessing} from "@/types/request";
 import {SAGA_LOGIN, setLoginStatus} from "@/store/global/actions";
 import {useSnackbar} from "notistack";
 import styled from "styled-components";
-import {pbkdf2Sync} from "pbkdf2";
+import {sha256} from "@/utils/sha256";
 
 const handleLogin = (username: string, password: string) => {
-  const derivedKey = pbkdf2Sync(password, 'someSalt', 100, 32, 'sha512')
-  sagaAction({ type: SAGA_LOGIN, username, password: derivedKey.toString('hex') })
+  const derivedKey = sha256(password) as string
+  sagaAction({ type: SAGA_LOGIN, username, password: derivedKey })
 }
-
 
 const LoginFrom: React.FC<{toggle: () => void}> = ({ toggle }) => {
   const { enqueueSnackbar } = useSnackbar();

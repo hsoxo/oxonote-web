@@ -1,9 +1,6 @@
 import React, {Fragment, FunctionComponent} from 'react';
 import DragIndicatorIcon from "@material-ui/icons/DragIndicator";
-import {
-  ClickableChip,
-  NoHoverButton
-} from "../../../../StyledComponents";
+import {ClickableChip, NoHoverButton} from "../../../../StyledComponents";
 import {AttributeRangeType} from "@/types/journal";
 import {bindMenu, bindToggle, usePopupState} from "material-ui-popup-state/hooks";
 import {Box, Popover} from "@material-ui/core";

@@ -1,14 +1,10 @@
-import React, { useContext } from 'react'
-import { Box } from '@material-ui/core'
-import { NoteAttribute, NoteSummaryObject, NoteObject } from '@/types/note'
+import React from 'react'
+import {Box} from '@material-ui/core'
+import {NoteAttribute, NoteObject} from '@/types/note'
 import styled from 'styled-components'
-import { JournalAttribute, JournalObject, JournalView } from '@/types/journal'
+import {JournalAttribute, JournalView} from '@/types/journal'
 import notePropTypes from '@/types/constants/note-attributes'
-import { FlexCenteredBox } from '@/components/OxOUI/OxOBox'
-import { JournalContext } from '@/app/Noxo/Journal'
-import { JournalState } from '@/types/states'
-import { useSelector } from '@/store'
-import { view } from '@/services/pouchdb/Journal'
+import {FlexCenteredBox} from '@/components/OxOUI/OxOBox'
 
 type JournalListViewRowProps = {
   note: NoteObject

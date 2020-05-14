@@ -1,5 +1,5 @@
 import React from "react";
-import { EditorElementProps } from "../types/index";
+import {EditorElementProps} from "../types/index";
 
 export class ListItemElement extends React.Component<EditorElementProps> {
   render() {

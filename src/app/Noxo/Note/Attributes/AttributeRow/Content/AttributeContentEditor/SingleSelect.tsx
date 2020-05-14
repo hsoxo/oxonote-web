@@ -1,10 +1,7 @@
 import React from 'react'
-import { Chip } from '@material-ui/core'
-import { ElementProps } from './types'
-import BaseElement, {
-  ContentPopoverProps,
-  ContentViewProps
-} from './Base'
+import {Chip} from '@material-ui/core'
+import {ElementProps} from './types'
+import BaseElement, {ContentPopoverProps, ContentViewProps} from './Base'
 import BaseSelectEditor from "./BaseSelectEditor";
 import {AttributeRangeType} from "@/types/journal";
 

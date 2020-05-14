@@ -1,6 +1,5 @@
 import React, {useContext} from 'react';
 import {JournalContext} from "@/app/Noxo/Journal";
-import {usePopupState} from "material-ui-popup-state/hooks";
 import {JournalState} from "@/types/states";
 import sagaAction, {useSelector} from "@/store";
 import {JournalAttribute, JournalView} from "@/types/journal";
@@ -8,10 +7,9 @@ import Column from "@/app/Noxo/Journal/Kanban/Column";
 import styled from "styled-components";
 import {DragDropContext, Droppable, DropResult} from "react-beautiful-dnd";
 import {reorder} from "@/app/Noxo/Note/Attributes/utils/dnd-helper";
-import * as NOTE_ACT from "@/store/note/actions";
+import {SAGA_UPDATE_ATTRIBUTE_VALUE} from "@/store/note/actions";
 import {SAGA_UPDATE_ATTR_RANGE} from "@/store/journal/actions";
 import {SINGLE_SELECT} from "@/types/constants/note-attributes";
-import {SAGA_UPDATE_ATTRIBUTE_VALUE} from "@/store/note/actions";
 
 const JournalKanbanView = () => {
   const context = useContext(JournalContext)
