@@ -19,7 +19,7 @@ const validateEmail = (email: string) => {
 }
 
 const validateLength = (s: string) => {
-  return s.length > 6 && s.length < 20
+  return s.length >= 6 && s.length <= 20
 }
 
 const validateUsernameChar = (username: string) => {
@@ -138,7 +138,7 @@ const RegistrationForm: React.FC<{toggle: () => void}> = ({ toggle }) => {
                 autoComplete="new-password"
                 onChange={e => setPassword(e.target.value)}
               />
-              {password.length > 0 && !validUsernameLength &&
+              {password.length > 0 && !validPasswordLength &&
               <Typography component="p" variant="body2" color={"secondary"}>
                 密码长度需要大于6并且小于20
               </Typography>}

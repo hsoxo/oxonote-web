@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import ContentEditable from 'react-contenteditable'
 import {Box, Popover} from '@material-ui/core'
 import {BaseEmoji, Picker} from 'emoji-mart'
@@ -28,6 +28,9 @@ const StyledContentEditable = styled(ContentEditable)`
     display: flex;
     margin: 0.5rem 0;
     width: 100%;
+    outline: none; 
+    font-size: 2.5rem;
+    line-height: 3rem;
     &:empty:before {
       color: #8e8e8e;
       content:"Untitled";
@@ -50,6 +53,18 @@ const TitleMainArea: React.FunctionComponent<TitleBlockPropsType> = ({title, tit
     variant: 'popover',
     popupId: 'title-main-emoji-picker'
   })
+  const [content, setContent] = useState('')
+
+  const handleChange = () => {
+    const el = document.getElementById("titleContent")
+    const text = el ? el.innerText : ''
+    setContent(text)
+    onChange('title', text)
+  }
+
+  useEffect(() => {
+    setContent(title)
+  }, [title, setContent])
 
   return (
     <FlexCenteredBox>
@@ -81,15 +96,11 @@ const TitleMainArea: React.FunctionComponent<TitleBlockPropsType> = ({title, tit
       )}
       <StyledContentEditable
         id={"titleContent"}
-        html={title}
+        html={content}
         disabled={false}
         onKeyDown={handleContentEditableKeyPress}
-        onChange={() => {
-          const el = document.getElementById("titleContent")
-          onChange('title', el ? el.innerText : '')
-        }}
+        onChange={handleChange}
         tagName="h1" // Use a custom HTML tag (uses a div by default)
-        style={{ outline: 'none', fontSize: '2.5rem' }}
       />
     </FlexCenteredBox>
   )

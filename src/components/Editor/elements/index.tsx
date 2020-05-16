@@ -35,7 +35,7 @@ const ElementBox = styled.div`
   padding: 0.3rem 0.5rem;
   border-radius: 5px;
   &:hover > #element-toolbar {
-    transition: all ease 500ms;
+    transition: opacity ease 500ms;
     opacity: 1;
   }
 `

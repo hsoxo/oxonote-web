@@ -36,6 +36,11 @@ const useStyles = makeStyles((theme) => ({
     borderRight: 0,
     zIndex: 0,
   },
+  btmArea: {
+    position: 'absolute',
+    bottom: 0,
+    width: sidebarWidth,
+  },
   menuIcon: {
     minWidth: 20,
   },
@@ -78,24 +83,20 @@ const Index = ({ active, onToggleSidebar }: SidebarProps) => {
         <NavigateBeforeIcon fontSize="small" style={{transform: active ? '' : 'rotate(180deg)', transition: 'transform ease 400ms'}}/>
       </ToggleButtonWrapper>
       <HeaderButton />
-      <List>
-        {/*<ListItem className={classes.listItem} button>*/}
-        {/*  <ListItemIcon className={classes.listItemIcon}>*/}
-        {/*    <SearchIcon/>*/}
-        {/*  </ListItemIcon>*/}
-        {/*  <ListItemText primary={"搜索"} />*/}
-        {/*</ListItem>*/}
-        <ListItem className={classes.listItem} button onClick={handleCreateJournal}>
-          <ListItemIcon className={classes.listItemIcon}>
-            <AddIcon/>
-          </ListItemIcon>
-          <ListItemText primary={"新建笔记本"} />
-        </ListItem>
-      </List>
-      <div style={{height: 20}} />
+      <div style={{height: 40}} />
       <List>
         <JournalTreeView />
       </List>
+      <div className={classes.btmArea}>
+        <List>
+          <ListItem className={classes.listItem} button onClick={handleCreateJournal}>
+            <ListItemIcon className={classes.listItemIcon}>
+              <AddIcon/>
+            </ListItemIcon>
+            <ListItemText primary={"新建笔记本"} />
+          </ListItem>
+        </List>
+      </div>
     </SidebarWrapper>
   )
 }
