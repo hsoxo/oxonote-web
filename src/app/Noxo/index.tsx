@@ -1,4 +1,4 @@
-import React, { Suspense, useEffect, useState } from 'react'
+import React, {ReactText, Suspense, useEffect, useState} from 'react'
 import { Route, RouteComponentProps } from 'react-router-dom'
 import { animated, useSpring, useTransition } from 'react-spring'
 import styled from 'styled-components'
@@ -15,26 +15,30 @@ import { getToken } from '@/utils/auth'
 import { navbarHeight, sidebarWidth } from './Layout/config'
 import Sidebar from './Layout/Sidebar'
 import Navbar from './Layout/Navbar'
+import {useSnackbar} from "notistack";
 
 PouchDB.plugin(require('pouchdb-authentication'))
 
 const NoteLayout: React.FunctionComponent<
   InnerRouteProps & RouteComponentProps
 > = props => {
-  const [state, toggleState] = React.useState(true)
-  const handleToggleState = () => toggleState(!state)
-
   const { routes } = props
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
-  const {
-    globalLoading,
-    browserDBConn,
-    remoteDBInfo
-  }: GlobalState = useSelector(state => state.get('global'))
+  const [state, toggleState] = React.useState(true)
+  const [snackbar, setSnackbarId] = React.useState<ReactText | null>(null)
   const [
     syncHandler,
     setSyncHandler
   ] = useState<PouchDB.Replication.Sync<{}> | null>(null)
+
+  const {
+    browserDBConn,
+    dbSyncStatus,
+    remoteDBInfo,
+  }: GlobalState = useSelector(state => state.get('global'))
+
+  const handleToggleState = () => toggleState(!state)
 
   useEffect(() => {
     if (!browserDBConn) {
@@ -58,10 +62,9 @@ const NoteLayout: React.FunctionComponent<
           }
         }
       )
-      const sync = browserDBConn
+      const sync = () => browserDBConn
         .sync(remote, {
           live: true,
-          retry: true
         })
         .on('change', info => {})
         .on('paused', err => {
@@ -74,17 +77,45 @@ const NoteLayout: React.FunctionComponent<
           action(setDBSyncStatus('error'))
         })
         .on('complete', info => {
-          // handle complete
+          action(setDBSyncStatus('complete'))
         })
         .on('error', err => {
-          action(setDBSyncStatus('error'))
+          // @ts-ignore
+          if (err.status === 409) {
+            // conflict, no need to restart
+            return;
+          }
+          setTimeout(function () {
+            const h = sync();
+            setSyncHandler(h)
+          }, 30000);
         })
-      setSyncHandler(sync)
+      const handler = sync()
+      setSyncHandler(handler)
     }
     return () => {
       if (syncHandler) syncHandler.cancel()
     }
   }, [browserDBConn, remoteDBInfo])
+
+  useEffect(() => {
+    if (dbSyncStatus === 'error') {
+      const key = enqueueSnackbar('No connection', {
+        variant: 'warning',
+        persist: true,
+      })
+      setSnackbarId(key)
+    } else {
+      console.log(snackbar)
+      if (snackbar) {
+        closeSnackbar(snackbar)
+        enqueueSnackbar('Connected', {
+          variant: 'success',
+          autoHideDuration: 3000,
+        })
+      }
+    }
+  }, [dbSyncStatus])
 
   const leftStyle = useSpring({
     width: state ? `${sidebarWidth}px` : '0',

@@ -13,7 +13,7 @@ const initialState: GlobalState = {
   journals: [],
   dbSyncStatus: '',
   browserDBConn: null,
-  remoteDBInfo: null
+  remoteDBInfo: null,
 }
 
 function reducerGlobal(

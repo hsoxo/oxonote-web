@@ -2,6 +2,7 @@ import { call, fork, put, take } from 'redux-saga/effects'
 import * as ACT from './actions'
 import {
   setBrowserDBConn,
+  setDBSyncStatus,
   setGlobalLoading,
   setLoginStatus,
   setRemoteDBInfo,
@@ -105,9 +106,15 @@ function* loadUserInfo(redirect: string | undefined) {
         }
       }
     )
-    yield call(async () => {
-      await pdb.sync(remote, { retry: true })
-    })
+    try {
+      yield call(async () => {
+        await pdb.sync(remote)
+      })
+      yield put(setDBSyncStatus('complete'))
+    } catch {
+      console.error('remote db connecting error')
+      yield put(setDBSyncStatus('error'))
+    }
     yield put(setBrowserDBConn(pdb))
     if (redirect !== '') yield put(push(redirect || `/o/`))
     yield put(setGlobalLoading(false))
