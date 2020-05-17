@@ -1,17 +1,20 @@
 import React from 'react'
-import {ElementProps} from './types'
-import BaseElement, {ContentPopoverProps, ContentViewProps} from './Base'
+import { ElementProps } from './types'
+import BaseElement, { ContentPopoverProps, ContentViewProps } from './Base'
 import BaseSelectEditor from './BaseSelectEditor'
-import {AttributeRangeType} from '@/types/journal'
-import {MarginRightChip} from "@/components/OxOUI/Chip";
+import { AttributeRangeType } from '@/types/journal'
+import { MarginRightChip } from '@/components/OxOUI/Chip'
 
-export const MultiSelectContent = ({ noteAttr, jourAttr }: ContentViewProps) => {
+export const MultiSelectContent = ({
+  noteAttr,
+  jourAttr
+}: ContentViewProps) => {
   const { range } = jourAttr
   let curSelections: Array<string> = []
-  if (range) curSelections = range.filter(x => x.id === noteAttr.value).map(x => x.label)
+  if (range)
+    curSelections = range.filter(x => x.id === noteAttr.value).map(x => x.label)
   return curSelections.join('')
 }
-
 
 export const MultiSelectContentView: React.FunctionComponent<ContentViewProps> = ({
   noteAttr,

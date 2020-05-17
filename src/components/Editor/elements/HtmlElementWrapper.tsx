@@ -57,63 +57,63 @@ const elementsTypes = [
   {
     type: 'default',
     elem: DefaultElement,
-    shortcut: null,
+    shortcut: null
   },
   {
     type: 'paragraph',
     elem: DefaultElement,
-    shortcut: null,
+    shortcut: null
   },
   {
     type: 'bulleted-list',
     elem: BulletListElement,
-    shortcut: '-',
+    shortcut: '-'
   },
   {
     type: 'code',
     elem: CodeElement,
-    shortcut: '```',
+    shortcut: '```'
   },
   {
     type: 'orderedList',
     elem: ListElement,
-    shortcut: '1.',
+    shortcut: '1.'
   },
   {
     type: 'block-quote',
     elem: BlockQuoteElement,
-    shortcut: '>',
+    shortcut: '>'
   },
   {
     type: 'heading-one',
     elem: HeadOneElement,
-    shortcut: '#',
+    shortcut: '#'
   },
   {
     type: 'heading-two',
     elem: HeadTwoElement,
-    shortcut: '##',
+    shortcut: '##'
   },
   {
     type: 'heading-three',
     elem: HeadThreeElement,
-    shortcut: '###',
+    shortcut: '###'
   },
   {
     type: 'heading-four',
     elem: HeadFourElement,
-    shortcut: '####',
+    shortcut: '####'
   },
   {
     type: 'heading-five',
     elem: HeadFiveElement,
-    shortcut: '#####',
+    shortcut: '#####'
   },
   {
     type: 'heading-six',
     elem: HeadSixElement,
-    shortcut: '######',
-  },
+    shortcut: '######'
+  }
 ]
 
 export default elementsTypes

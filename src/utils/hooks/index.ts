@@ -1,7 +1,4 @@
-import useInterval from "./useInterval";
-import useTraceUpdate from "./useTraceUpate";
+import useInterval from './useInterval'
+import useTraceUpdate from './useTraceUpate'
 
-export {
-  useInterval,
-  useTraceUpdate,
-}
+export { useInterval, useTraceUpdate }

@@ -1,7 +1,7 @@
 import * as ACT from './actions'
-import {GlobalState} from '@/types/states'
-import {getToken} from "@/utils/auth";
-import {RequestDefault} from "@/types/request";
+import { GlobalState } from '@/types/states'
+import { getToken } from '@/utils/auth'
+import { RequestDefault } from '@/types/request'
 
 const initialState: GlobalState = {
   title: 'Welcome to OxO Notes',
@@ -13,7 +13,7 @@ const initialState: GlobalState = {
   journals: [],
   dbSyncStatus: '',
   browserDBConn: null,
-  remoteDBInfo: null,
+  remoteDBInfo: null
 }
 
 function reducerGlobal(
@@ -36,7 +36,7 @@ function reducerGlobal(
     case ACT.SET_BROWSER_DB_CONN:
       return { ...state, browserDBConn: action.payload }
     case ACT.SET_REMOTE_DB_INFO:
-        return { ...state, remoteDBInfo: action.payload }
+      return { ...state, remoteDBInfo: action.payload }
     default:
       return state
   }

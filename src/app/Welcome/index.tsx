@@ -1,26 +1,28 @@
-import React, {useEffect, useState} from 'react'
-import {useHistory} from 'react-router-dom'
-import {animated, useSpring, useTransition} from 'react-spring'
-import styled from "styled-components";
+import React, { useEffect, useState } from 'react'
+import { useHistory } from 'react-router-dom'
+import { animated, useSpring, useTransition } from 'react-spring'
+import styled from 'styled-components'
 
-
-const WELCOME_TEXT = Array.from("Welcome back").map((value, index) => ({i: index, t: value}))
+const WELCOME_TEXT = Array.from('Welcome back').map((value, index) => ({
+  i: index,
+  t: value
+}))
 
 function Index() {
   const history = useHistory()
   const [out, setOut] = useState(false)
-  const [items, setItems] = useState<Array<{i: number, t: string}>>([])
+  const [items, setItems] = useState<Array<{ i: number; t: string }>>([])
 
   const transitions = useTransition(items, item => item.i, {
     from: { transform: 'translate3d(0,-40px,0)', opacity: 0 },
     enter: { transform: 'translate3d(0,0px,0)', opacity: 1 },
-    leave: { transform: 'translate3d(0,-40px,0)' },
+    leave: { transform: 'translate3d(0,-40px,0)' }
   })
 
   const spring = useSpring({
     transform: out ? `scale(3)` : `scale(1)`,
     opacity: out ? 0 : 1,
-    config: { mass: 10, tension: 2000, friction: 200, duration: 400 },
+    config: { mass: 10, tension: 2000, friction: 200, duration: 400 }
   })
 
   useEffect(() => {
@@ -34,11 +36,13 @@ function Index() {
   return (
     <Wrapper>
       <animated.div style={spring}>
-        {transitions.map(({ item, props, key }) =>
-          <div style={{display: 'inline-block', minWidth: 50}} key={key}>
-            <animated.div className="trails-text" style={props}>{item.t}</animated.div>
+        {transitions.map(({ item, props, key }) => (
+          <div style={{ display: 'inline-block', minWidth: 50 }} key={key}>
+            <animated.div className="trails-text" style={props}>
+              {item.t}
+            </animated.div>
           </div>
-        )}
+        ))}
       </animated.div>
     </Wrapper>
   )
@@ -61,7 +65,7 @@ const Wrapper = styled.div`
     color: palevioletred;
     font-size: 5rem;
     font-weight: 800;
-    font-family: "SwankyandMooMoo", sans-serif;
+    font-family: 'SwankyandMooMoo', sans-serif;
     text-align: center;
     will-change: transform, opacity;
     overflow: hidden;

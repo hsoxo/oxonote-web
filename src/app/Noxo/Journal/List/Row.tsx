@@ -1,10 +1,10 @@
 import React from 'react'
-import {Box} from '@material-ui/core'
-import {NoteAttribute, NoteObject} from '@/types/note'
+import { Box } from '@material-ui/core'
+import { NoteAttribute, NoteObject } from '@/types/note'
 import styled from 'styled-components'
-import {JournalAttribute, JournalView} from '@/types/journal'
+import { JournalAttribute, JournalView } from '@/types/journal'
 import notePropTypes from '@/types/constants/note-attributes'
-import {FlexCenteredBox} from '@/components/OxOUI/OxOBox'
+import { FlexCenteredBox } from '@/components/OxOUI/OxOBox'
 
 type JournalListViewRowProps = {
   note: NoteObject
@@ -19,8 +19,9 @@ const JournalListViewRow: React.FunctionComponent<JournalListViewRowProps> = ({
 }) => {
   if (!curView) return null
 
-  const noteAttr = noteInfo.attributes.find(x => x.attrId === x.attrId) as unknown as NoteAttribute
-
+  const noteAttr = (noteInfo.attributes.find(
+    x => x.attrId === x.attrId
+  ) as unknown) as NoteAttribute
 
   return (
     <JournalListViewRowBox>
@@ -37,7 +38,9 @@ const JournalListViewRow: React.FunctionComponent<JournalListViewRowProps> = ({
               ...x,
               jourAttr: x,
               noteInfo,
-              noteAttr: noteInfo.attributes.find(y => y.attrId === x._id) as unknown as NoteAttribute
+              noteAttr: (noteInfo.attributes.find(
+                y => y.attrId === x._id
+              ) as unknown) as NoteAttribute
             })}
           </FlexCenteredRightMarginBox>
         ))}

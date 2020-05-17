@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components'
 // import Typography from 'typography';
 // // @ts-ignore
 // import Wordpress2016 from 'typography-theme-wordpress-2016';

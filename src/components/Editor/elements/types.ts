@@ -3,7 +3,4 @@ interface EditorElementProps {
   attributes: any
 }
 
-
-export {
-  EditorElementProps
-}
+export { EditorElementProps }

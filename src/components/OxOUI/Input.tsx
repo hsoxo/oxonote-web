@@ -1,10 +1,10 @@
-import React from "react";
-import styled from "styled-components";
-import {InputBase} from "@material-ui/core";
+import React from 'react'
+import styled from 'styled-components'
+import { InputBase } from '@material-ui/core'
 
 export const BootstrapInput = styled(InputBase)`
   width: 100%;
-  padding: 0.5rem;;
+  padding: 0.5rem;
   label + & {
     margin-top: 0.5rem;
   }
@@ -20,7 +20,7 @@ export const BootstrapInput = styled(InputBase)`
     &:focus {
       box-shadow: var(--primary-color-light) 0 0 0 0.2rem;
       border-color: var(--primary-color);
-    };
+    }
   }
 `
 

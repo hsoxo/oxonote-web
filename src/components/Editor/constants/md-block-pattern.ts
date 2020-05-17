@@ -50,7 +50,6 @@ export const BLOCKQUOTE = /^>$/m
 export const BULLET_LIST = /((?:^\s*)(?:[*+-]))$/m
 export const ORDERED_LIST = /((?:^\s*)(?:\d+\.))$/m
 
-
 /**
  * CODE BLOCKS
  * at least 4 spaces or 1 tab
@@ -74,4 +73,3 @@ export const CODE_ALT = /^\s*```(\w+)?$/m
  * ---------------------------------------
  */
 export const HR = /(^\s*)([*-])(?:[\t ]*\2){2,}$/m
-

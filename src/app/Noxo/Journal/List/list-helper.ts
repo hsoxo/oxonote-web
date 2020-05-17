@@ -1,8 +1,20 @@
-import {JournalAttribute, JournalObject, JournalView} from "@/types/journal";
-import {NoteObject} from "@/types/note";
-import notePropTypes from "@/types/constants/note-attributes";
+import { JournalAttribute, JournalObject, JournalView } from '@/types/journal'
+import { NoteObject } from '@/types/note'
+import notePropTypes from '@/types/constants/note-attributes'
 
-type label = '等于' | '不等于' | '是空' | '不是空' | '是' | '不是' | '包含' | '不包含' | '以...开始' | '以...结束' | '在...之前' | '在...之后'
+type label =
+  | '等于'
+  | '不等于'
+  | '是空'
+  | '不是空'
+  | '是'
+  | '不是'
+  | '包含'
+  | '不包含'
+  | '以...开始'
+  | '以...结束'
+  | '在...之前'
+  | '在...之后'
 
 const isEqual = (source: any, target: any) => {
   return source === target
@@ -33,38 +45,36 @@ const isContain = (source: any, target: any) => {
 }
 
 const isStartWith = (source: any, target: any) => {
-  if (typeof source === 'string')
-    return source.startsWith(target || '')
-  else
-    return false
+  if (typeof source === 'string') return source.startsWith(target || '')
+  else return false
 }
 
 const isEndWith = (source: any, target: any) => {
-  if (typeof source === 'string')
-    return source.endsWith(target || '')
-  else
-    return false
+  if (typeof source === 'string') return source.endsWith(target || '')
+  else return false
 }
 
 const isBefore = (source: any, target: any) => {
-  if (typeof source === 'number')
-    return source < target
-  else
-    return false
+  if (typeof source === 'number') return source < target
+  else return false
 }
 
 const isAfter = (source: any, target: any) => {
-  if (typeof source === 'number')
-    return source > target
-  else
-    return false
+  if (typeof source === 'number') return source > target
+  else return false
 }
 
-const listHelper = (journal: JournalObject, notes: Array<NoteObject>, viewSetting: JournalView) => {
+const listHelper = (
+  journal: JournalObject,
+  notes: Array<NoteObject>,
+  viewSetting: JournalView
+) => {
   let newNotes: Array<NoteObject> = JSON.parse(JSON.stringify(notes))
   const { filters, sorts } = viewSetting
   const requiredAttrIds: Array<string> = filters.settings.map(x => x.attrId)
-  const requiredJourAttrs: {[key: string]: JournalAttribute} = requiredAttrIds.reduce((acc, cur) => {
+  const requiredJourAttrs: {
+    [key: string]: JournalAttribute
+  } = requiredAttrIds.reduce((acc, cur) => {
     // @ts-ignore
     acc[cur] = journal.jourAttrs.find(x => x.attrId === cur)
     return acc
@@ -76,15 +86,35 @@ const listHelper = (journal: JournalObject, notes: Array<NoteObject>, viewSettin
       const jAttr = requiredJourAttrs[f.attrId]
       const nAttr = note.attributes.find(x => x.attrId === f.attrId)
       if (!nAttr) {
-        if (f.operator === '等于' || f.operator === '不是空' || f.operator === '是' || f.operator === '包含' || f.operator === '以...开始'
-          || f.operator === '以...结束' || f.operator === '在...之前' || f.operator === '在...之后') {
+        if (
+          f.operator === '等于' ||
+          f.operator === '不是空' ||
+          f.operator === '是' ||
+          f.operator === '包含' ||
+          f.operator === '以...开始' ||
+          f.operator === '以...结束' ||
+          f.operator === '在...之前' ||
+          f.operator === '在...之后'
+        ) {
           pass.push(false)
-        } else if (f.operator === '不等于' || f.operator === '是空' || f.operator === '不是' || f.operator === '不包含') {
+        } else if (
+          f.operator === '不等于' ||
+          f.operator === '是空' ||
+          f.operator === '不是' ||
+          f.operator === '不包含'
+        ) {
           pass.push(true)
         }
       } else {
         const attrProps = notePropTypes[jAttr.type]
-        const attrValue = nAttr.value || attrProps.content({attrId: f.attrId, noteInfo: note, jourAttr: jAttr, noteAttr: nAttr})
+        const attrValue =
+          nAttr.value ||
+          attrProps.content({
+            attrId: f.attrId,
+            noteInfo: note,
+            jourAttr: jAttr,
+            noteAttr: nAttr
+          })
 
         if (f.operator === '等于' || f.operator === '是') {
           pass.push(isEqual(attrValue, f.target))

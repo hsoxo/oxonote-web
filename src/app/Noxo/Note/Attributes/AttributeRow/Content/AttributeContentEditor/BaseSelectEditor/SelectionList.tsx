@@ -1,9 +1,17 @@
-import React, {FunctionComponent} from 'react'
-import {DragDropContext, Draggable, Droppable, DropResult} from 'react-beautiful-dnd'
-import {getItemStyle, getListStyle} from '@/app/Noxo/Note/Attributes/utils/dnd-helper'
-import {AttributeRangeType} from '@/types/journal'
-import {HoverBox} from '../../../../StyledComponents'
-import SelectionRow from "./SelectionRow";
+import React, { FunctionComponent } from 'react'
+import {
+  DragDropContext,
+  Draggable,
+  Droppable,
+  DropResult
+} from 'react-beautiful-dnd'
+import {
+  getItemStyle,
+  getListStyle
+} from '@/app/Noxo/Note/Attributes/utils/dnd-helper'
+import { AttributeRangeType } from '@/types/journal'
+import { HoverBox } from '../../../../StyledComponents'
+import SelectionRow from './SelectionRow'
 
 interface SelectionListProps {
   listedItems: Array<AttributeRangeType>
@@ -47,7 +55,7 @@ const SelectionList: FunctionComponent<SelectionListProps> = ({
                           ...item,
                           handleSelectionClick,
                           handleSelectionColorChange,
-                          handleDelete,
+                          handleDelete
                         }}
                       />
                     </div>

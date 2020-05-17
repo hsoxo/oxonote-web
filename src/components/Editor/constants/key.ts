@@ -9,5 +9,5 @@ export default {
   SPACE,
   SHIFT,
   CTRL,
-  ALT,
+  ALT
 }

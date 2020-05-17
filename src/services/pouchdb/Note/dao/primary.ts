@@ -1,8 +1,8 @@
-import {NoteObject} from "@/types/note";
-import {newNote, newNoteContent} from "@/services/pouchdb/Note/default";
-import {JournalAttribute} from "@/types/journal";
-import notePropTypes from "@/types/constants/note-attributes";
-import getConn from "@/services/pouchdb/config";
+import { NoteObject } from '@/types/note'
+import { newNote, newNoteContent } from '@/services/pouchdb/Note/default'
+import { JournalAttribute } from '@/types/journal'
+import notePropTypes from '@/types/constants/note-attributes'
+import getConn from '@/services/pouchdb/config'
 
 const journalService = require('../../Journal/index')
 
@@ -26,9 +26,11 @@ export const readOne = async (noteId: string) => {
   const journalAttrDocs = await PDB.allDocs({
     include_docs: true,
     startkey: `${journalId}-A-`,
-    endkey: `${journalId}-A-\ufff0`,
+    endkey: `${journalId}-A-\ufff0`
   })
-  const journalAttrs = journalAttrDocs.rows.map(x => x.doc) as unknown as Array<JournalAttribute>
+  const journalAttrs = (journalAttrDocs.rows.map(
+    x => x.doc
+  ) as unknown) as Array<JournalAttribute>
 
   const oriLength = noteDoc.attributes.length
   let attrModified = false
@@ -42,10 +44,12 @@ export const readOne = async (noteId: string) => {
       attrModified = true
     }
   })
-  noteDoc.attributes = noteDoc.attributes
-    .filter(x => journalAttrs.some(y => y._id === x.attrId))
+  noteDoc.attributes = noteDoc.attributes.filter(x =>
+    journalAttrs.some(y => y._id === x.attrId)
+  )
 
-  if (attrModified || noteDoc.attributes.length !== oriLength) await PDB.put(noteDoc)
+  if (attrModified || noteDoc.attributes.length !== oriLength)
+    await PDB.put(noteDoc)
 
   if (noteDoc && noteContent)
     return {

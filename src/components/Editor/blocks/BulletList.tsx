@@ -1,5 +1,5 @@
-import React from "react";
-import {EditorElementProps} from "../types/index";
+import React from 'react'
+import { EditorElementProps } from '../types/index'
 
 class BulletListElement extends React.Component<EditorElementProps> {
   render() {

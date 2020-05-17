@@ -1,18 +1,36 @@
-import React, {Fragment, useContext} from 'react'
-import {bindPopover, bindTrigger, usePopupState} from 'material-ui-popup-state/hooks'
-import {Box, Button, FormControl, IconButton, MenuItem, Popover} from '@material-ui/core'
-import {JournalState} from '@/types/states'
-import {useSelector} from '@/store'
-import {AttributeRangeType, JournalView, JournalViewFiltersSetting} from '@/types/journal'
+import React, { Fragment, useContext } from 'react'
+import {
+  bindPopover,
+  bindTrigger,
+  usePopupState
+} from 'material-ui-popup-state/hooks'
+import {
+  Box,
+  Button,
+  FormControl,
+  IconButton,
+  MenuItem,
+  Popover
+} from '@material-ui/core'
+import { JournalState } from '@/types/states'
+import { useSelector } from '@/store'
+import {
+  AttributeRangeType,
+  JournalView,
+  JournalViewFiltersSetting
+} from '@/types/journal'
 import DeleteIcon from '@material-ui/icons/Delete'
 import notePropTypes from '@/types/constants/note-attributes'
-import {DenseListItem, DenseListItemBoxNoHover, DenseListItemIcon} from '@/components/OxOUI/List'
-import {MarginDivider5} from '@/components/OxOUI/Divider'
+import {
+  DenseListItem,
+  DenseListItemBoxNoHover,
+  DenseListItemIcon
+} from '@/components/OxOUI/List'
+import { MarginDivider5 } from '@/components/OxOUI/Divider'
 import AddIcon from '@material-ui/icons/Add'
-import {DenseSelect, DenseSelectItem} from "@/components/OxOUI/Select";
-import {BootstrapInput} from "@/components/OxOUI/Input";
-import {JournalContext} from "@/app/Noxo/Journal";
-
+import { DenseSelect, DenseSelectItem } from '@/components/OxOUI/Select'
+import { BootstrapInput } from '@/components/OxOUI/Input'
+import { JournalContext } from '@/app/Noxo/Journal'
 
 interface JournalViewFiltersSettingEnhanced extends JournalViewFiltersSetting {
   type: string
@@ -26,9 +44,9 @@ const FilterSetting: React.FunctionComponent = () => {
     variant: 'popover',
     popupId: 'demoPopover'
   })
-  const {
-    views, attrs: jourAttrs
-  }: JournalState = useSelector(state => state.get('journal'))
+  const { views, attrs: jourAttrs }: JournalState = useSelector(state =>
+    state.get('journal')
+  )
   const curViewIndex = views.findIndex(x => x.viewId === viewId)
   const curViewInfo = views[curViewIndex] as JournalView
 
@@ -100,20 +118,20 @@ const FilterSetting: React.FunctionComponent = () => {
           style: {
             minWidth: '200px'
           }
-        }}>
+        }}
+      >
         <Box>
           <div style={{ height: '0.6rem' }} />
           {enhancedSettings.map((setting, index) => (
             <DenseListItemBoxNoHover key={index}>
               {enhancedSettings.length > 1 && index > 0 && (
-                <FormControl
-                  size="small"
-                  disabled={index > 1}>
+                <FormControl size="small" disabled={index > 1}>
                   <DenseSelect
                     variant="outlined"
                     value={relation}
                     onChange={e => handleChangeRelation(e.target.value)}
-                    displayEmpty>
+                    displayEmpty
+                  >
                     <DenseSelectItem value="and">并且</DenseSelectItem>
                     <MenuItem value="or">或者</MenuItem>
                   </DenseSelect>
@@ -123,7 +141,8 @@ const FilterSetting: React.FunctionComponent = () => {
                 variant="outlined"
                 value={setting.attrId}
                 onChange={e => handleChange(index, { attrId: e.target.value })}
-                displayEmpty>
+                displayEmpty
+              >
                 {jourAttrs.map(attr => (
                   <DenseSelectItem value={attr.attrId} key={attr.attrId}>
                     {attr.label}
@@ -137,7 +156,8 @@ const FilterSetting: React.FunctionComponent = () => {
                   onChange={e =>
                     handleChange(index, { operator: e.target.value })
                   }
-                  displayEmpty>
+                  displayEmpty
+                >
                   {notePropTypes[setting.type].operators.map(op => (
                     <DenseSelectItem key={op.label} value={op.label}>
                       {op.label}
@@ -145,47 +165,54 @@ const FilterSetting: React.FunctionComponent = () => {
                   ))}
                 </DenseSelect>
               )}
-              {setting.attrId && setting.operator && notePropTypes[setting.type].operators.map(x => {
-                if (x.label === setting.operator) {
-                  if (x.target === 'input') {
-                    return (
-                      <BootstrapInput
-                        key={x.label}
-                        value={setting.target}
-                        onChange={e =>
-                          handleChange(index, { target: e.target.value })
-                        }
-                      />
-                    )
-                  } else if (x.target === 'selection') {
-                    const range: Array<AttributeRangeType> = jourAttrs[jourAttrs.findIndex(x => x.attrId === setting.attrId)].range || []
-                    return (
-                      <DenseSelect
-                        key={x.label}
-                        variant="outlined"
-                        value={setting.target}
-                        onChange={e =>
-                          handleChange(index, { target: e.target.value })
-                        }
-                        displayEmpty>
-                        {range.map(r => (
-                          <DenseSelectItem key={r.id} value={r.id}>
-                            {r.label}
-                          </DenseSelectItem>
-                        ))}
-                      </DenseSelect>
-                    )
+              {setting.attrId &&
+                setting.operator &&
+                notePropTypes[setting.type].operators.map(x => {
+                  if (x.label === setting.operator) {
+                    if (x.target === 'input') {
+                      return (
+                        <BootstrapInput
+                          key={x.label}
+                          value={setting.target}
+                          onChange={e =>
+                            handleChange(index, { target: e.target.value })
+                          }
+                        />
+                      )
+                    } else if (x.target === 'selection') {
+                      const range: Array<AttributeRangeType> =
+                        jourAttrs[
+                          jourAttrs.findIndex(x => x.attrId === setting.attrId)
+                        ].range || []
+                      return (
+                        <DenseSelect
+                          key={x.label}
+                          variant="outlined"
+                          value={setting.target}
+                          onChange={e =>
+                            handleChange(index, { target: e.target.value })
+                          }
+                          displayEmpty
+                        >
+                          {range.map(r => (
+                            <DenseSelectItem key={r.id} value={r.id}>
+                              {r.label}
+                            </DenseSelectItem>
+                          ))}
+                        </DenseSelect>
+                      )
+                    } else {
+                      return <Fragment key={x.label} />
+                    }
                   } else {
-                    return <Fragment key={x.label}/>
+                    return <Fragment key={x.label} />
                   }
-                } else {
-                  return <Fragment key={x.label}/>
-                }
-              })}
-              <DenseListItemIcon style={{marginLeft: 'auto'}}>
+                })}
+              <DenseListItemIcon style={{ marginLeft: 'auto' }}>
                 <IconButton
                   aria-label="delete"
-                  onClick={() => handleDelete(index)}>
+                  onClick={() => handleDelete(index)}
+                >
                   <DeleteIcon fontSize="small" />
                 </IconButton>
               </DenseListItemIcon>

@@ -1,12 +1,17 @@
-import {customAlphabet} from 'nanoid/async'
-import {JournalAttribute, JournalObject} from "@/types/journal";
-import notePropTypes from "@/types/constants/note-attributes";
-import {NoteObject} from "@/types/note";
+import { customAlphabet } from 'nanoid/async'
+import { JournalAttribute, JournalObject } from '@/types/journal'
+import notePropTypes from '@/types/constants/note-attributes'
+import { NoteObject } from '@/types/note'
 
-const nanoid = customAlphabet('1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', 10)
+const nanoid = customAlphabet(
+  '1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ',
+  10
+)
 
-
-type NewNote = (journal: JournalObject, jAttrs: Array<JournalAttribute>) => Promise<NoteObject>
+type NewNote = (
+  journal: JournalObject,
+  jAttrs: Array<JournalAttribute>
+) => Promise<NoteObject>
 
 export const newNote: NewNote = async (journal, jAttrs) => {
   const newId = await nanoid()
@@ -25,16 +30,16 @@ export const newNote: NewNote = async (journal, jAttrs) => {
     attributes: jAttrs.map(x => ({
       attrId: x._id,
       value: notePropTypes[x.type].defaultValue()
-    })),
+    }))
   }
 }
 
 type NewNoteContent = (noteId: string) => Promise<any>
 
-export const newNoteContent: NewNoteContent = async (noteId) => {
+export const newNoteContent: NewNoteContent = async noteId => {
   return {
     _id: `${noteId}-C`,
     _rev: '',
-    content: [{ type: 'paragraph', children: [{text: ''}], root: true }]
+    content: [{ type: 'paragraph', children: [{ text: '' }], root: true }]
   }
 }

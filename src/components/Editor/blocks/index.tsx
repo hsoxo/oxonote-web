@@ -3,13 +3,12 @@ import * as L from './Lists'
 import CodeElement from './Code'
 import * as H from './Header'
 
-
 import * as NAMES from '../constants/names'
 import ParagraphElement from './Paragraph'
-import React, {useEffect, useRef} from 'react'
-import {EditorElementProps} from '../types'
+import React, { useEffect, useRef } from 'react'
+import { EditorElementProps } from '../types'
 import styled from 'styled-components'
-import {Node, Point} from 'slate'
+import { Node, Point } from 'slate'
 
 export const BlockSetting = {
   [NAMES.PARAGRAPH]: ParagraphElement,
@@ -23,7 +22,7 @@ export const BlockSetting = {
   [NAMES.BULLET_LIST]: L.BulletListElement,
   [NAMES.ORDERED_LIST]: L.OrderedListElement,
   [NAMES.LIST_ITEM]: L.ListItemElement,
-  [NAMES.BLOCKQUOTE]: BlockQuoteElement,
+  [NAMES.BLOCKQUOTE]: BlockQuoteElement
 }
 
 export const ShortNames = {
@@ -38,7 +37,7 @@ export const ShortNames = {
   [NAMES.BULLET_LIST]: 'LB',
   [NAMES.ORDERED_LIST]: 'LO',
   [NAMES.LIST_ITEM]: 'LI',
-  [NAMES.BLOCKQUOTE]: 'BQ',
+  [NAMES.BLOCKQUOTE]: 'BQ'
 }
 
 const isEmpty = (element: Node) => {
@@ -49,13 +48,8 @@ const isEmpty = (element: Node) => {
   }
 }
 
-const Element: React.FunctionComponent<EditorElementProps> = (props) => {
-  const {
-    editor,
-    attributes,
-    children,
-    element,
-  } = props
+const Element: React.FunctionComponent<EditorElementProps> = props => {
+  const { editor, attributes, children, element } = props
   const ref = useRef()
   const elementType = element.type || NAMES.PARAGRAPH
   // @ts-ignore
@@ -63,10 +57,9 @@ const Element: React.FunctionComponent<EditorElementProps> = (props) => {
   // @ts-ignore
   const elementLabel = ShortNames[elementType]
 
-
   const { selection } = editor
   let selected = false
-  const { anchor } = selection || {} as Point
+  const { anchor } = selection || ({} as Point)
   if (selection !== null && anchor) {
     selected = editor.children[anchor.path[0]] === element
   }
@@ -86,14 +79,15 @@ const Element: React.FunctionComponent<EditorElementProps> = (props) => {
           className={isEmpty(element) && 'empty'}
           editor={editor}
           element={element}
-          {...attributes}>
+          {...attributes}
+        >
           {children}
         </ElementRenderer>
       </Wrapper>
     )
   } else if (element.type === NAMES.INLINE_LINK) {
     return (
-      <div {...attributes} style={{display: "inline-block"}}>
+      <div {...attributes} style={{ display: 'inline-block' }}>
         <button onClick={() => window.open(element.href, '_blank')}>
           {children}
         </button>
@@ -104,18 +98,30 @@ const Element: React.FunctionComponent<EditorElementProps> = (props) => {
       <Wrapper active={selected} label="图">
         <div {...attributes}>
           <div contentEditable="false" suppressContentEditableWarning={true}>
-            <img src={element.src} style={{display: "block", maxWidth: "90%", maxHeight: "20em", boxShadow: "0 0 0 3px #B4D5FF"}}/>
+            <img
+              src={element.src}
+              style={{
+                display: 'block',
+                maxWidth: '90%',
+                maxHeight: '20em',
+                boxShadow: '0 0 0 3px #B4D5FF'
+              }}
+            />
           </div>
-          <div style={{display: 'none'}}>
-            {children}
-          </div>
+          <div style={{ display: 'none' }}>{children}</div>
         </div>
       </Wrapper>
     )
   }
   return (
     <Wrapper active={selected} label={'段'}>
-      <ParagraphElement className={isEmpty(element) && 'empty'} element={element} {...attributes}>{children}</ParagraphElement>
+      <ParagraphElement
+        className={isEmpty(element) && 'empty'}
+        element={element}
+        {...attributes}
+      >
+        {children}
+      </ParagraphElement>
     </Wrapper>
   )
 }
@@ -142,10 +148,9 @@ const SideIconBox = styled.div<ActiveDivProps>`
   text-align: center;
   align-items: center;
   margin-right: 0.5rem !important;
-  opacity: ${p => p.active ? '1' : '0'};
+  opacity: ${p => (p.active ? '1' : '0')};
   transition: all ease 200ms;
   transition-timing-function: cubic-bezier(0.17, 0.67, 0.67, 0.51);
-  
 `
 
 interface ActiveDivProps {
@@ -155,16 +160,17 @@ const ElementBox = styled.div<ActiveDivProps>`
   display: flex;
   width: 100%;
   border-radius: 5px;
-  padding: .6rem;
-  p span[data-slate-length="0"] {
+  padding: 0.6rem;
+  p span[data-slate-length='0'] {
     &:before {
       color: #8e8e8e;
-      content:"请点击此处输入";
+      content: '请点击此处输入';
       position: relative;
     }
   }
   ${p =>
-    p.active && `
+    p.active &&
+    `
     box-shadow: 0px 3px 14px 2px rgba(0,0,0,0.12);
     p span[data-slate-length="0"] {
       &:before {
@@ -172,7 +178,6 @@ const ElementBox = styled.div<ActiveDivProps>`
       }
     }
     `};
-  
 `
 
 interface WrapperProps {
@@ -180,15 +185,26 @@ interface WrapperProps {
   label: any
 }
 
-const Wrapper: React.FunctionComponent<WrapperProps> = ({active, label, children}) => {
+const Wrapper: React.FunctionComponent<WrapperProps> = ({
+  active,
+  label,
+  children
+}) => {
   return (
     <WrapperBox>
-      <SideIconBox suppressContentEditableWarning={true} id="left-icon" contentEditable={"false"} active={active}>
-        <div style={{display:"block",width:'100%',textAlign:"center"}}>
+      <SideIconBox
+        suppressContentEditableWarning={true}
+        id="left-icon"
+        contentEditable={'false'}
+        active={active}
+      >
+        <div style={{ display: 'block', width: '100%', textAlign: 'center' }}>
           {label}
         </div>
       </SideIconBox>
-      <ElementBox id="oxo-element" active={active}>{children}</ElementBox>
+      <ElementBox id="oxo-element" active={active}>
+        {children}
+      </ElementBox>
     </WrapperBox>
   )
 }

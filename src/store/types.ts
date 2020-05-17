@@ -1,4 +1,4 @@
 export interface AppStateType {
-    global: any
-    note: any
+  global: any
+  note: any
 }

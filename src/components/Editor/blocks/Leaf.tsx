@@ -1,11 +1,43 @@
-import * as NAMES from "../constants/names";
-import React from "react";
+import * as NAMES from '../constants/names'
+import React from 'react'
 
 const prismToken = [
-  'comment', 'prolog', 'doctype', 'cdata', 'punctuation', 'namespace', 'property', 'tag', 'boolean', 'number',
-  'constant', 'symbol', 'deleted', 'selector', 'attr-name', 'string', 'char', 'builtin', 'inserted', 'operator',
-  'entity', 'url', 'string', 'string', 'atrule', 'attr-value', 'keyword', 'function', 'class-name', 'regex',
-  'important', 'variable', 'important', 'bold', 'italic', 'entity'
+  'comment',
+  'prolog',
+  'doctype',
+  'cdata',
+  'punctuation',
+  'namespace',
+  'property',
+  'tag',
+  'boolean',
+  'number',
+  'constant',
+  'symbol',
+  'deleted',
+  'selector',
+  'attr-name',
+  'string',
+  'char',
+  'builtin',
+  'inserted',
+  'operator',
+  'entity',
+  'url',
+  'string',
+  'string',
+  'atrule',
+  'attr-value',
+  'keyword',
+  'function',
+  'class-name',
+  'regex',
+  'important',
+  'variable',
+  'important',
+  'bold',
+  'italic',
+  'entity'
 ]
 
 const Leaf = ({ attributes, children, leaf }: any) => {
@@ -25,9 +57,13 @@ const Leaf = ({ attributes, children, leaf }: any) => {
   }
 
   if (leaf[NAMES.INLINE_LINK]) {
-    children =  <a href={leaf.href}>{children}</a>
+    children = <a href={leaf.href}>{children}</a>
   }
-  return <span {...attributes} className={className}>{children}</span>
+  return (
+    <span {...attributes} className={className}>
+      {children}
+    </span>
+  )
 }
 
 export default Leaf

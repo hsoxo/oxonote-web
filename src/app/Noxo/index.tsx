@@ -1,24 +1,22 @@
-import React, {Suspense, useEffect, useState} from 'react'
-import {Route, RouteComponentProps} from 'react-router-dom'
-import {animated, useSpring, useTransition} from 'react-spring'
+import React, { Suspense, useEffect, useState } from 'react'
+import { Route, RouteComponentProps } from 'react-router-dom'
+import { animated, useSpring, useTransition } from 'react-spring'
 import styled from 'styled-components'
 import PouchDB from 'pouchdb-browser'
 
+import { FlexBox } from '@/components/OxOUI/OxOBox'
+import ClapSpinner from '@/components/Spiner'
+import { InnerRouteProps } from '@/routes'
+import { GlobalState } from '@/types/states'
+import sagaAction, { action, useSelector } from '@/store'
+import { SAGA_LOAD_USER, setDBSyncStatus } from '@/store/global/actions'
+import { getToken } from '@/utils/auth'
 
-import {FlexBox} from '@/components/OxOUI/OxOBox'
-import ClapSpinner from "@/components/Spiner";
-import {InnerRouteProps} from '@/routes'
-import {GlobalState} from '@/types/states'
-import sagaAction, {action, useSelector} from '@/store'
-import {SAGA_LOAD_USER, setDBSyncStatus} from '@/store/global/actions'
-import {getToken} from "@/utils/auth";
-
-import {navbarHeight, sidebarWidth} from './Layout/config'
+import { navbarHeight, sidebarWidth } from './Layout/config'
 import Sidebar from './Layout/Sidebar'
 import Navbar from './Layout/Navbar'
 
 PouchDB.plugin(require('pouchdb-authentication'))
-
 
 const NoteLayout: React.FunctionComponent<
   InnerRouteProps & RouteComponentProps
@@ -53,19 +51,19 @@ const NoteLayout: React.FunctionComponent<
           skip_setup: true,
           fetch: function (url, opts) {
             // @ts-ignore
-            opts.headers.set('x-noxo-token', getToken());
+            opts.headers.set('x-noxo-token', getToken())
             // @ts-ignore
             opts.headers.set('x-noxo-key', pdbUser)
-            return PouchDB.fetch(url, opts);
-          }}
+            return PouchDB.fetch(url, opts)
+          }
+        }
       )
       const sync = browserDBConn
         .sync(remote, {
           live: true,
           retry: true
         })
-        .on('change', info => {
-        })
+        .on('change', info => {})
         .on('paused', err => {
           action(setDBSyncStatus('idle'))
         })
@@ -91,11 +89,11 @@ const NoteLayout: React.FunctionComponent<
   const leftStyle = useSpring({
     width: state ? `${sidebarWidth}px` : '0',
     minWidth: state ? `${sidebarWidth}px` : '0',
-    maxWidth: state ? `${sidebarWidth}px` : '0',
+    maxWidth: state ? `${sidebarWidth}px` : '0'
   })
 
   const transitions = useTransition(!!browserDBConn, null, {
-    from: { opacity: 0, width: '100%', display: 'flex', position: 'absolute'},
+    from: { opacity: 0, width: '100%', display: 'flex', position: 'absolute' },
     enter: { opacity: 1 },
     leave: { opacity: 0 },
     config: { mass: 1, tension: 280, friction: 30 }
@@ -107,17 +105,19 @@ const NoteLayout: React.FunctionComponent<
     <FlexBox>
       <Suspense fallback="loading...">
         {transitions.map(({ item, key, props }) =>
-          item ?
+          item ? (
             <animated.div key={1} style={props}>
               <animated.div style={leftStyle}>
                 <Sidebar onToggleSidebar={handleToggleState} active={state} />
               </animated.div>
-              <animated.div style={{
-                width: '100%',
-                position: 'absolute',
-                paddingLeft: leftStyle.width.interpolate((x:any) => x),
-                zIndex: -1,
-              }}>
+              <animated.div
+                style={{
+                  width: '100%',
+                  position: 'absolute',
+                  paddingLeft: leftStyle.width.interpolate((x: any) => x),
+                  zIndex: -1
+                }}
+              >
                 <div style={{ display: 'flex', flexDirection: 'column' }}>
                   <Navbar onToggleSidebar={handleToggleState} shift={state} />
                   <MainWrapper>
@@ -135,12 +135,14 @@ const NoteLayout: React.FunctionComponent<
                 </div>
               </animated.div>
             </animated.div>
-            :
+          ) : (
             <animated.div key={2} style={props}>
               <StyledWrapper>
-                <ClapSpinner size={60}/>
+                <ClapSpinner size={60} />
               </StyledWrapper>
-            </animated.div>)}
+            </animated.div>
+          )
+        )}
       </Suspense>
     </FlexBox>
   )

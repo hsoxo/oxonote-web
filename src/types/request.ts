@@ -3,14 +3,19 @@ export const RequestProcessing = 10000
 export const RequestDone = 20000
 export const RequestError = 40000
 
-export const RequestAuthFailed     = 40001
+export const RequestAuthFailed = 40001
 
 export const UsernameTaken = 40011
 export const EmailTaken = 40012
 
-
-export type RequestStatus = typeof RequestDefault | typeof RequestProcessing | typeof RequestDone | typeof RequestError |
-  typeof RequestAuthFailed | typeof UsernameTaken | typeof EmailTaken
+export type RequestStatus =
+  | typeof RequestDefault
+  | typeof RequestProcessing
+  | typeof RequestDone
+  | typeof RequestError
+  | typeof RequestAuthFailed
+  | typeof UsernameTaken
+  | typeof EmailTaken
 
 let _RequestErrorMsg = []
 _RequestErrorMsg[RequestError] = '系统错误'

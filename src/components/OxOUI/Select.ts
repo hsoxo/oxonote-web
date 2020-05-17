@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import {MenuItem, Select} from "@material-ui/core";
+import styled from 'styled-components'
+import { MenuItem, Select } from '@material-ui/core'
 
 export const DenseSelect = styled(Select).attrs({
   classes: { root: 'root' }

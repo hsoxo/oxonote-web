@@ -1,31 +1,37 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import {AttributeRangeType} from "@/types/journal";
-import styled from "styled-components";
-import {NoteObject} from "@/types/note";
-import {Box, Button, Chip} from "@material-ui/core";
-import {Draggable, DraggableProvided, DraggableStateSnapshot} from "react-beautiful-dnd";
-import NoteList from "@/app/Noxo/Journal/Kanban/NoteList";
-import portal from "./Portal";
+import React from 'react'
+import ReactDOM from 'react-dom'
+import { AttributeRangeType } from '@/types/journal'
+import styled from 'styled-components'
+import { NoteObject } from '@/types/note'
+import { Box, Button, Chip } from '@material-ui/core'
+import {
+  Draggable,
+  DraggableProvided,
+  DraggableStateSnapshot
+} from 'react-beautiful-dnd'
+import NoteList from '@/app/Noxo/Journal/Kanban/NoteList'
+import portal from './Portal'
 
-
-const Column: React.FC<AttributeRangeType & { notes: Array<NoteObject>, index: number }> = (x) => {
+const Column: React.FC<
+  AttributeRangeType & { notes: Array<NoteObject>; index: number }
+> = x => {
   return (
-    <Draggable
-      draggableId={x.label}
-      index={x.index}
-    >
+    <Draggable draggableId={x.label} index={x.index}>
       {(provided, snapshot) => (
-        <PortalWrapper
-          provided={provided}
-          snapshot={snapshot}
-          {...x}
-        />)}
+        <PortalWrapper provided={provided} snapshot={snapshot} {...x} />
+      )}
     </Draggable>
-  );
-};
+  )
+}
 
-const PortalWrapper: React.FC<AttributeRangeType & { provided: DraggableProvided, snapshot: DraggableStateSnapshot, notes: Array<NoteObject>, index: number}> = (p) => {
+const PortalWrapper: React.FC<
+  AttributeRangeType & {
+    provided: DraggableProvided
+    snapshot: DraggableStateSnapshot
+    notes: Array<NoteObject>
+    index: number
+  }
+> = p => {
   const child = (
     <ColumnWrapper
       ref={p.provided.innerRef}
@@ -39,24 +45,21 @@ const PortalWrapper: React.FC<AttributeRangeType & { provided: DraggableProvided
           size="small"
           label={p.label}
         />
-        <Box marginLeft={1}>
-          {p.notes.length}
-        </Box>
+        <Box marginLeft={1}>{p.notes.length}</Box>
       </LabelWrapper>
-      <NoteList label={p.label} notes={p.notes}/>
+      <NoteList label={p.label} notes={p.notes} />
       <StyledButton id="create">创建</StyledButton>
     </ColumnWrapper>
-  );
-  const usePortal: boolean = p.snapshot.isDragging;
+  )
+  const usePortal: boolean = p.snapshot.isDragging
 
   if (!usePortal) {
-    return child;
+    return child
   }
 
   // if dragging - put the item in a portal
-  return ReactDOM.createPortal(child, portal);
+  return ReactDOM.createPortal(child, portal)
 }
-
 
 const ColumnWrapper = styled.div<{ isDragging: boolean }>`
   min-width: 270px;
@@ -68,20 +71,18 @@ const ColumnWrapper = styled.div<{ isDragging: boolean }>`
   &:hover > #create {
     opacity: 1;
   }
-  ${p => p.isDragging ? 
-  `background-color: var(--secondary-bg-hover);`
-  : ''}
+  ${p => (p.isDragging ? `background-color: var(--secondary-bg-hover);` : '')}
 `
 const LabelWrapper = styled.div`
-    display: flex;
-    align-items: center;
-    font-size: 0.8rem;
-    max-width: calc(100% - 45px);
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    line-height: 2rem;
-    padding: .5rem;
+  display: flex;
+  align-items: center;
+  font-size: 0.8rem;
+  max-width: calc(100% - 45px);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  line-height: 2rem;
+  padding: 0.5rem;
 `
 const StyledButton = styled(Button)`
   margin: 10px 5px;
@@ -90,4 +91,4 @@ const StyledButton = styled(Button)`
   transition: opacity ease 400ms;
 `
 
-export default Column;
+export default Column

@@ -6,7 +6,7 @@ export function login(username: string, password: string) {
     method: 'POST',
     data: {
       username,
-      password,
+      password
     }
   })
 }
@@ -14,7 +14,7 @@ export function login(username: string, password: string) {
 export function getInfo() {
   return request({
     url: '/backend/api/v1/user/getInfo',
-    method: 'GET',
+    method: 'GET'
   })
 }
 
@@ -25,7 +25,7 @@ export function register(username: string, password: string, email: string) {
     data: {
       username,
       password,
-      email,
+      email
     }
   })
 }

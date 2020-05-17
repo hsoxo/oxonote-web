@@ -1,18 +1,22 @@
-import React, {useState} from 'react'
-import {ContentPopoverProps} from '../Base'
-import {DropResult} from 'react-beautiful-dnd'
-import {reorder} from '../../../../utils/dnd-helper'
-import {AttributeRangeType} from '@/types/journal'
-import {Box} from '@material-ui/core'
-import {NoBorderInput} from '@/components/OxOUI/Input'
-import {FlexCenteredBox} from '@/components/OxOUI/OxOBox'
+import React, { useState } from 'react'
+import { ContentPopoverProps } from '../Base'
+import { DropResult } from 'react-beautiful-dnd'
+import { reorder } from '../../../../utils/dnd-helper'
+import { AttributeRangeType } from '@/types/journal'
+import { Box } from '@material-ui/core'
+import { NoBorderInput } from '@/components/OxOUI/Input'
+import { FlexCenteredBox } from '@/components/OxOUI/OxOBox'
 import styled from 'styled-components'
-import {MarginRightChip} from '@/components/OxOUI/Chip'
-import {ClickableChip, HoverBox, NoHoverButton} from '../../../../StyledComponents'
+import { MarginRightChip } from '@/components/OxOUI/Chip'
+import {
+  ClickableChip,
+  HoverBox,
+  NoHoverButton
+} from '../../../../StyledComponents'
 import SelectionList from './SelectionList'
-import sagaAction, {useSelector} from "@/store";
-import * as NOTE_ACT from "@/store/note/actions";
-import {NoteState} from "@/types/states";
+import sagaAction, { useSelector } from '@/store'
+import * as NOTE_ACT from '@/store/note/actions'
+import { NoteState } from '@/types/states'
 
 interface SelectTypeContentPopoverProps extends ContentPopoverProps {
   isMulti: boolean
@@ -23,12 +27,28 @@ const InfileFlexCenteredBox = styled(FlexCenteredBox)`
   padding: 0 0.3rem;
 `
 
-const handleRangeChange = (attrId: string, newRange: Array<AttributeRangeType>) => {
-  sagaAction({ type: NOTE_ACT.SAGA_UPDATE_ATTRIBUTE_SELECT_RANGE, attrId, newRange })
+const handleRangeChange = (
+  attrId: string,
+  newRange: Array<AttributeRangeType>
+) => {
+  sagaAction({
+    type: NOTE_ACT.SAGA_UPDATE_ATTRIBUTE_SELECT_RANGE,
+    attrId,
+    newRange
+  })
 }
 
-const handleValueChange = (noteId: string, attrId: string, value: string | Array<string>) => {
-  sagaAction({ type: NOTE_ACT.SAGA_UPDATE_ATTRIBUTE_VALUE, noteId, attrId, newValue: value })
+const handleValueChange = (
+  noteId: string,
+  attrId: string,
+  value: string | Array<string>
+) => {
+  sagaAction({
+    type: NOTE_ACT.SAGA_UPDATE_ATTRIBUTE_VALUE,
+    noteId,
+    attrId,
+    newValue: value
+  })
 }
 
 const Index: React.FunctionComponent<SelectTypeContentPopoverProps> = ({
@@ -37,7 +57,9 @@ const Index: React.FunctionComponent<SelectTypeContentPopoverProps> = ({
   jourAttr,
   popupState
 }) => {
-  const { note, journalAttrs }: NoteState = useSelector(state => state.get('note'))
+  const { note, journalAttrs }: NoteState = useSelector(state =>
+    state.get('note')
+  )
   const { attrId } = noteAttr
   const [value, setValue] = useState('')
 
@@ -95,7 +117,10 @@ const Index: React.FunctionComponent<SelectTypeContentPopoverProps> = ({
 
   const handleSelectionDelete = (selectionId: string) => {
     let newRange = range.slice()
-    newRange.splice(range.findIndex(x => x.id === selectionId), 1)
+    newRange.splice(
+      range.findIndex(x => x.id === selectionId),
+      1
+    )
     handleRangeChange(attrId, newRange)
   }
 
@@ -138,7 +163,13 @@ const Index: React.FunctionComponent<SelectTypeContentPopoverProps> = ({
             style={{ backgroundColor: x.color }}
             size="small"
             label={x.label}
-            onDelete={isMulti ? () => {handleRemove(x.label)} : undefined}
+            onDelete={
+              isMulti
+                ? () => {
+                    handleRemove(x.label)
+                  }
+                : undefined
+            }
           />
         ))}
         <NoBorderInput
@@ -153,7 +184,8 @@ const Index: React.FunctionComponent<SelectTypeContentPopoverProps> = ({
           <HoverBox>
             <NoHoverButton
               style={{ width: '100%' }}
-              onClick={() => handleSubmit(value)}>
+              onClick={() => handleSubmit(value)}
+            >
               <ClickableChip size="small" label={`新建选项: ${value}`} />
             </NoHoverButton>
           </HoverBox>

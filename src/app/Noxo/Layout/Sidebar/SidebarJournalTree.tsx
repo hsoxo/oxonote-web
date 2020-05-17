@@ -1,97 +1,93 @@
-import React, {useEffect} from 'react';
-import {useHistory} from 'react-router-dom'
-import {createStyles, makeStyles, Theme} from '@material-ui/core/styles';
-import TreeView from '@material-ui/lab/TreeView';
-import TreeItem, {TreeItemProps} from '@material-ui/lab/TreeItem';
-import Typography from '@material-ui/core/Typography';
-import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
-import ArrowRightIcon from '@material-ui/icons/ArrowRight';
+import React, { useEffect } from 'react'
+import { useHistory } from 'react-router-dom'
+import { createStyles, makeStyles, Theme } from '@material-ui/core/styles'
+import TreeView from '@material-ui/lab/TreeView'
+import TreeItem, { TreeItemProps } from '@material-ui/lab/TreeItem'
+import Typography from '@material-ui/core/Typography'
+import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown'
+import ArrowRightIcon from '@material-ui/icons/ArrowRight'
 
-import sagaAction, {useSelector} from "@/store";
-import {GlobalState} from "@/types/states";
-import * as GLOBAL_ACT from "@/store/global/actions";
+import sagaAction, { useSelector } from '@/store'
+import { GlobalState } from '@/types/states'
+import * as GLOBAL_ACT from '@/store/global/actions'
 
 declare module 'csstype' {
   interface Properties {
-    '--tree-view-color'?: string;
-    '--tree-view-bg-color'?: string;
+    '--tree-view-color'?: string
+    '--tree-view-bg-color'?: string
   }
 }
 
 type StyledTreeItemProps = TreeItemProps & {
-  bgColor?: string;
-  color?: string;
-  labelIcon?: string;
-  labelInfo?: string;
-  labelText: string;
-};
+  bgColor?: string
+  color?: string
+  labelIcon?: string
+  labelInfo?: string
+  labelText: string
+}
 
 const useTreeItemStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       color: theme.palette.text.secondary,
       '&:hover > $content': {
-        backgroundColor: theme.palette.action.hover,
+        backgroundColor: theme.palette.action.hover
       },
       '&:hover > $content $label, &:hover > $content $label, &$selected > $content $label': {
-        backgroundColor: `transparent !important`,
+        backgroundColor: `transparent !important`
       },
       '&:focus > $content, &$selected > $content': {
         backgroundColor: `var(--tree-view-bg-color, ${theme.palette.grey[400]})`,
-        color: 'var(--tree-view-color)',
+        color: 'var(--tree-view-color)'
       },
       '&:focus > $content $label, &:hover > $content $label, &$selected > $content $label': {
-        backgroundColor: 'transparent !important',
-      },
+        backgroundColor: 'transparent !important'
+      }
     },
     content: {
       color: theme.palette.text.secondary,
       paddingRight: theme.spacing(1),
       fontWeight: theme.typography.fontWeightMedium,
       '$expanded > &': {
-        fontWeight: theme.typography.fontWeightRegular,
-      },
+        fontWeight: theme.typography.fontWeightRegular
+      }
     },
     group: {
       marginLeft: 0,
       '& $content': {
-        paddingLeft: theme.spacing(2),
-      },
+        paddingLeft: theme.spacing(2)
+      }
     },
     expanded: {},
     selected: {},
     label: {
       fontWeight: 'inherit',
-      color: 'inherit',
-
+      color: 'inherit'
     },
     labelRoot: {
       display: 'flex',
       alignItems: 'center',
-      padding: theme.spacing(0.5, 0),
+      padding: theme.spacing(0.5, 0)
     },
     labelIcon: {
-      marginRight: theme.spacing(1),
+      marginRight: theme.spacing(1)
     },
     labelText: {
       fontWeight: 'inherit',
-      flexGrow: 1,
-    },
-  }),
-);
+      flexGrow: 1
+    }
+  })
+)
 
 function StyledTreeItem(props: StyledTreeItemProps) {
-  const classes = useTreeItemStyles();
-  const { labelText, labelIcon, labelInfo, color, bgColor, ...other } = props;
+  const classes = useTreeItemStyles()
+  const { labelText, labelIcon, labelInfo, color, bgColor, ...other } = props
 
   return (
     <TreeItem
       label={
         <div className={classes.labelRoot}>
-          {labelIcon &&
-            <Typography variant="body2">
-              {labelIcon}
-            </Typography>}
+          {labelIcon && <Typography variant="body2">{labelIcon}</Typography>}
           <Typography variant="body2" className={classes.labelText}>
             {labelText}
           </Typography>
@@ -102,7 +98,7 @@ function StyledTreeItem(props: StyledTreeItemProps) {
       }
       style={{
         '--tree-view-color': color,
-        '--tree-view-bg-color': bgColor,
+        '--tree-view-bg-color': bgColor
       }}
       classes={{
         root: classes.root,
@@ -110,11 +106,11 @@ function StyledTreeItem(props: StyledTreeItemProps) {
         expanded: classes.expanded,
         selected: classes.selected,
         group: classes.group,
-        label: classes.label,
+        label: classes.label
       }}
       {...other}
     />
-  );
+  )
 }
 
 const useStyles = makeStyles(
@@ -122,15 +118,13 @@ const useStyles = makeStyles(
     root: {
       height: 264,
       flexGrow: 1,
-      maxWidth: 400,
-    },
-  }),
-);
-
-
+      maxWidth: 400
+    }
+  })
+)
 
 export default function JournalTreeView() {
-  const classes = useStyles();
+  const classes = useStyles()
   const history = useHistory()
   const { journals }: GlobalState = useSelector(state => state.get('global'))
 
@@ -152,16 +146,20 @@ export default function JournalTreeView() {
           nodeId={x._id}
           labelIcon={x.titleIcon || '📒'}
           labelText={x.title || '未命名笔记本'}
-          onClick={() => history.push(`/o/journal/${x._id}`)}>
-          {x.views ? x.views.map(y =>
-            <StyledTreeItem
-              key={y.viewId}
-              nodeId={y.viewId}
-              labelText={y.label}
-              onClick={() => history.push(`/o/journal/${x._id}/${y._id}`)}/>)
+          onClick={() => history.push(`/o/journal/${x._id}`)}
+        >
+          {x.views
+            ? x.views.map(y => (
+                <StyledTreeItem
+                  key={y.viewId}
+                  nodeId={y.viewId}
+                  labelText={y.label}
+                  onClick={() => history.push(`/o/journal/${x._id}/${y._id}`)}
+                />
+              ))
             : null}
         </StyledTreeItem>
       ))}
     </TreeView>
-  );
+  )
 }

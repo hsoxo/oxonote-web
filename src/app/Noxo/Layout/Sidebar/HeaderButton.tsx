@@ -1,28 +1,29 @@
-import React from 'react';
-import styled from "styled-components";
-import {bindPopover, bindTrigger, usePopupState} from "material-ui-popup-state/hooks";
-import {Avatar, ListItem, Popover} from "@material-ui/core";
-import sagaAction, {useSelector} from "@/store";
-import {SAGA_LOGOUT} from "@/store/global/actions";
-import {DenseListItem} from "@/components/OxOUI/List";
-import {MarginDivider5} from "@/components/OxOUI/Divider";
-import {GlobalState} from "@/types/states";
+import React from 'react'
+import styled from 'styled-components'
+import {
+  bindPopover,
+  bindTrigger,
+  usePopupState
+} from 'material-ui-popup-state/hooks'
+import { Avatar, ListItem, Popover } from '@material-ui/core'
+import sagaAction, { useSelector } from '@/store'
+import { SAGA_LOGOUT } from '@/store/global/actions'
+import { DenseListItem } from '@/components/OxOUI/List'
+import { MarginDivider5 } from '@/components/OxOUI/Divider'
+import { GlobalState } from '@/types/states'
 
 const HeaderButton = () => {
-  const {
-    userInfo
-  }: GlobalState = useSelector(state => state.get('global'))
+  const { userInfo }: GlobalState = useSelector(state => state.get('global'))
 
-  const popupState = usePopupState({ variant: 'popover', popupId: 'sideHeader' })
+  const popupState = usePopupState({
+    variant: 'popover',
+    popupId: 'sideHeader'
+  })
   return (
     <div>
       <Wrapper {...bindTrigger(popupState)}>
-        <SizedAvatar>
-          {userInfo?.username[0].toUpperCase()}
-        </SizedAvatar>
-        <div>
-          {`${userInfo?.workspaces[0].name}`}
-        </div>
+        <SizedAvatar>{userInfo?.username[0].toUpperCase()}</SizedAvatar>
+        <div>{`${userInfo?.workspaces[0].name}`}</div>
       </Wrapper>
       <Popover
         {...bindPopover(popupState)}
@@ -30,21 +31,19 @@ const HeaderButton = () => {
         anchorPosition={{ top: 45, left: 20 }}
         anchorOrigin={{
           vertical: 'top',
-          horizontal: 'left',
+          horizontal: 'left'
         }}
         transformOrigin={{
           vertical: 'top',
-          horizontal: 'left',
+          horizontal: 'left'
         }}
       >
         <PopoverInnerBox>
-          <ListItem style={{height: 50}}>
-
-          </ListItem>
+          <ListItem style={{ height: 50 }}></ListItem>
           <MarginDivider5 />
           <DenseListItem
             button
-            style={{fontSize: 12}}
+            style={{ fontSize: 12 }}
             onClick={() => sagaAction({ type: SAGA_LOGOUT })}
           >
             {`Log out (${userInfo?.email})`}
@@ -52,9 +51,8 @@ const HeaderButton = () => {
         </PopoverInnerBox>
       </Popover>
     </div>
-  );
-};
-
+  )
+}
 
 const PopoverInnerBox = styled.div`
   padding: 5px 0;
@@ -82,4 +80,4 @@ const Wrapper = styled.div`
   }
 `
 
-export default HeaderButton;
+export default HeaderButton

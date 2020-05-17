@@ -1,11 +1,11 @@
 import React from 'react'
-import {Redirect, Route, Switch} from 'react-router-dom'
+import { Redirect, Route, Switch } from 'react-router-dom'
 
-import {privateRoutes, publicRoutes} from './routes'
-import {getToken} from "@/utils/auth";
-import sagaAction from "@/store";
-import {SAGA_LOAD_USER} from "@/store/global/actions";
-import {LinearProgress} from "@material-ui/core";
+import { privateRoutes, publicRoutes } from './routes'
+import { getToken } from '@/utils/auth'
+import sagaAction from '@/store'
+import { SAGA_LOAD_USER } from '@/store/global/actions'
+import { LinearProgress } from '@material-ui/core'
 import '@/styles/base.css'
 
 export default function App() {
@@ -19,7 +19,7 @@ export default function App() {
       ))}
       <Route
         exact
-        path={["/"]}
+        path={['/']}
         component={() => <Redirect from="/" to="/login" />}
       />
     </Switch>
@@ -34,23 +34,23 @@ function PrivateRouteWithSubRoutes(route: any) {
       render={props =>
         // pass the sub-routes down to keep nesting
         getToken() ? (
-        <route.component
-          {...props}
-          routes={route.routes}
-          exact={route.exact}
-          isSub={route.isSub}
-        />
+          <route.component
+            {...props}
+            routes={route.routes}
+            exact={route.exact}
+            isSub={route.isSub}
+          />
         ) : (
-            <Redirect
-              to={{
-                pathname: "/login",
-                state: { from: props.location }
-              }}
-            />
+          <Redirect
+            to={{
+              pathname: '/login',
+              state: { from: props.location }
+            }}
+          />
         )
       }
     />
-  );
+  )
 }
 
 function PublicRouteWithSubRoutes(route: any) {
@@ -66,5 +66,5 @@ function PublicRouteWithSubRoutes(route: any) {
         <route.component {...props} routes={route.routes} exact={route.exact} />
       )}
     />
-  );
+  )
 }

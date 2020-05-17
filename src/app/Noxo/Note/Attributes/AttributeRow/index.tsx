@@ -1,14 +1,13 @@
 import React from 'react'
 import AttributeContent from './Content'
-import AttributeLabel from "./Label";
+import AttributeLabel from './Label'
 import CreateNew from './Label/CreateNew'
-import {HoverGrid} from "../StyledComponents";
-import styled from "styled-components";
-import {Grid} from "@material-ui/core";
-import {NoteAttribute} from "@/types/note";
+import { HoverGrid } from '../StyledComponents'
+import styled from 'styled-components'
+import { Grid } from '@material-ui/core'
+import { NoteAttribute } from '@/types/note'
 
-
-const AttributeRow: React.FunctionComponent<NoteAttribute>  = (props) => {
+const AttributeRow: React.FunctionComponent<NoteAttribute> = props => {
   return (
     <AttributeRowWrapper container>
       <Grid item xs={12} sm={4} md={3} lg={2} xl={2}>
@@ -21,7 +20,7 @@ const AttributeRow: React.FunctionComponent<NoteAttribute>  = (props) => {
   )
 }
 
-export const AttributeNewRow: React.FunctionComponent  = (props) => {
+export const AttributeNewRow: React.FunctionComponent = props => {
   return (
     <AttributeRowWrapper container>
       <Grid item xs={12} sm={4} md={3} lg={2} xl={2}>

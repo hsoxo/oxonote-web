@@ -1,4 +1,4 @@
-import {Point} from "slate";
+import { Point } from 'slate'
 
 const PathSelect = {
   getLastPath: (path: Array<number>) => {

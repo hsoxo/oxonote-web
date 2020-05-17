@@ -1,11 +1,14 @@
 import React from 'react'
-import {Chip} from '@material-ui/core'
-import {ElementProps} from './types'
-import BaseElement, {ContentPopoverProps, ContentViewProps} from './Base'
-import BaseSelectEditor from "./BaseSelectEditor";
-import {AttributeRangeType} from "@/types/journal";
+import { Chip } from '@material-ui/core'
+import { ElementProps } from './types'
+import BaseElement, { ContentPopoverProps, ContentViewProps } from './Base'
+import BaseSelectEditor from './BaseSelectEditor'
+import { AttributeRangeType } from '@/types/journal'
 
-export const SingleSelectContent = ({ noteAttr, jourAttr }: ContentViewProps) => {
+export const SingleSelectContent = ({
+  noteAttr,
+  jourAttr
+}: ContentViewProps) => {
   const { range } = jourAttr
   let curSelection: Array<AttributeRangeType> = []
   if (range) curSelection = range.filter(x => x.id === noteAttr.value)
@@ -35,8 +38,8 @@ export const SingleSelectContentView: React.FunctionComponent<ContentViewProps> 
   )
 }
 
-const SingleSelectEditor: React.FunctionComponent<ContentPopoverProps> = (props) => {
-  return <BaseSelectEditor isMulti={false} {...props}/>
+const SingleSelectEditor: React.FunctionComponent<ContentPopoverProps> = props => {
+  return <BaseSelectEditor isMulti={false} {...props} />
 }
 
 const SingleSelectAttributeBody = (props: ElementProps) => {

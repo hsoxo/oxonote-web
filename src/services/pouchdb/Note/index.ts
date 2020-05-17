@@ -1,5 +1,5 @@
-import {NoteContent, NoteObject} from "@/types/note";
-import getConn from "@/services/pouchdb/config";
+import { NoteContent, NoteObject } from '@/types/note'
+import getConn from '@/services/pouchdb/config'
 
 const primaryDao = require('./dao/primary')
 export const { create, update, readOne } = primaryDao
@@ -16,7 +16,7 @@ export const content = {
     const noteDoc: NoteObject = await PDB.get(noteId)
     await PDB.put({
       ...noteDoc,
-      modifiedTime: new Date().getTime(),
+      modifiedTime: new Date().getTime()
     })
     return contentDoc
   }

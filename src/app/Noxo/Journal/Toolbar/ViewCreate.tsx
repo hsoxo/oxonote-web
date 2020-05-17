@@ -1,18 +1,22 @@
-import React, {ChangeEvent, ReactNode, useState} from 'react';
-import {MarginDivider5} from "@/components/OxOUI/Divider";
-import {DenseListItem, DenseListItemIcon} from "@/components/OxOUI/List";
-import AddIcon from "@material-ui/icons/Add";
-import {Box, Button, Grid, ListItem, Popover} from "@material-ui/core";
-import {bindPopover, bindTrigger, usePopupState} from "material-ui-popup-state/hooks";
-import sagaAction from "@/store";
-import CheckIcon from '@material-ui/icons/Check';
-import ViewListRoundedIcon from '@material-ui/icons/ViewListRounded';
-import ViewModuleRoundedIcon from '@material-ui/icons/ViewModuleRounded';
-import TableChartRoundedIcon from '@material-ui/icons/TableChartRounded';
-import DashboardRoundedIcon from '@material-ui/icons/DashboardRounded';
-import {BootstrapInput} from "@/components/OxOUI/Input";
-import {JournalViewTypes} from "@/types/journal";
-import {SAGA_CREATE_VIEW} from "@/store/journal/actions";
+import React, { ChangeEvent, ReactNode, useState } from 'react'
+import { MarginDivider5 } from '@/components/OxOUI/Divider'
+import { DenseListItem, DenseListItemIcon } from '@/components/OxOUI/List'
+import AddIcon from '@material-ui/icons/Add'
+import { Box, Button, Grid, ListItem, Popover } from '@material-ui/core'
+import {
+  bindPopover,
+  bindTrigger,
+  usePopupState
+} from 'material-ui-popup-state/hooks'
+import sagaAction from '@/store'
+import CheckIcon from '@material-ui/icons/Check'
+import ViewListRoundedIcon from '@material-ui/icons/ViewListRounded'
+import ViewModuleRoundedIcon from '@material-ui/icons/ViewModuleRounded'
+import TableChartRoundedIcon from '@material-ui/icons/TableChartRounded'
+import DashboardRoundedIcon from '@material-ui/icons/DashboardRounded'
+import { BootstrapInput } from '@/components/OxOUI/Input'
+import { JournalViewTypes } from '@/types/journal'
+import { SAGA_CREATE_VIEW } from '@/store/journal/actions'
 
 interface ViewTypeSetting {
   id: JournalViewTypes
@@ -25,7 +29,7 @@ const ViewTypes: Array<ViewTypeSetting> = [
   {
     id: 'list',
     label: '列表',
-    icon: <ViewListRoundedIcon color="inherit"/>,
+    icon: <ViewListRoundedIcon color="inherit" />,
     desc: '基本的视图，适合笔记'
   },
   {
@@ -45,7 +49,7 @@ const ViewTypes: Array<ViewTypeSetting> = [
     label: '看板',
     icon: <ViewModuleRoundedIcon />,
     desc: '看版型的视图，比较适合项目计划'
-  },
+  }
 ]
 
 const ViewCreate = () => {
@@ -54,12 +58,12 @@ const ViewCreate = () => {
 
   const popupState = usePopupState({
     variant: 'popover',
-    popupId: 'demoPopover',
+    popupId: 'demoPopover'
   })
 
   const handleCreate = () => {
-    if (!name) return;
-    sagaAction({ type: SAGA_CREATE_VIEW, viewType: view, viewLabel: name})
+    if (!name) return
+    sagaAction({ type: SAGA_CREATE_VIEW, viewType: view, viewLabel: name })
   }
 
   return (
@@ -74,22 +78,26 @@ const ViewCreate = () => {
         {...bindPopover(popupState)}
         anchorOrigin={{
           vertical: 'center',
-          horizontal: 'right',
+          horizontal: 'right'
         }}
         transformOrigin={{
           vertical: 'center',
-          horizontal: 'left',
+          horizontal: 'left'
         }}
         PaperProps={{
           style: {
             minWidth: '200px'
-          }}}
+          }
+        }}
       >
         <Box>
           <div style={{ height: '0.6rem' }} />
           <BootstrapInput
             value={name}
-            onChange={(e: ChangeEvent<HTMLInputElement>) => setName(e.target.value)}/>
+            onChange={(e: ChangeEvent<HTMLInputElement>) =>
+              setName(e.target.value)
+            }
+          />
           {ViewTypes.map(x => (
             <ListItem button key={x.id} onClick={() => setView(x.id)}>
               <Grid container justify="center" alignItems="center">
@@ -98,31 +106,30 @@ const ViewCreate = () => {
                 </Grid>
                 <Grid item xs={10}>
                   <Box display="flex" height="1.5rem">
-                    <Box marginRight="auto">
-                      {x.label}
-                    </Box>
-                    {view === x.id && <CheckIcon/>}
+                    <Box marginRight="auto">{x.label}</Box>
+                    {view === x.id && <CheckIcon />}
                   </Box>
-                  <Box color="var(--secondary-text)">
-                    {x.desc}
-                  </Box>
+                  <Box color="var(--secondary-text)">{x.desc}</Box>
                 </Grid>
               </Grid>
             </ListItem>
           ))}
-          <Button variant="contained" color="primary" fullWidth onClick={handleCreate}>
+          <Button
+            variant="contained"
+            color="primary"
+            fullWidth
+            onClick={handleCreate}
+          >
             创建
           </Button>
-          <Box height="0.3rem"/>
+          <Box height="0.3rem" />
           <MarginDivider5 />
-          <DenseListItem button>
-            {"❓️更多帮助"}
-          </DenseListItem>
+          <DenseListItem button>{'❓️更多帮助'}</DenseListItem>
           <div style={{ height: '0.3rem' }} />
         </Box>
       </Popover>
     </div>
-  );
-};
+  )
+}
 
-export default ViewCreate;
+export default ViewCreate

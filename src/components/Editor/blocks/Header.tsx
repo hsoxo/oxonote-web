@@ -1,5 +1,5 @@
-import React from "react";
-import {EditorElementProps} from "../types/index";
+import React from 'react'
+import { EditorElementProps } from '../types/index'
 
 export class HeadOneElement extends React.Component<EditorElementProps> {
   render() {
@@ -35,4 +35,3 @@ export class HeadSixElement extends React.Component<EditorElementProps> {
 interface BlockElementRendererProps {
   matched: Array<string>
 }
-

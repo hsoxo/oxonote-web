@@ -1,10 +1,20 @@
-import {newJournalView} from "@/services/pouchdb/Journal/default";
-import {JOURNAL_KANBAN_VIEW, JournalAttribute, JournalObject, JournalView, JournalViewTypes} from "@/types/journal";
-import getConn from "@/services/pouchdb/config";
-import {MULTI_SELECT, SINGLE_SELECT} from "@/types/constants/note-attributes";
-import {create as createAttr} from './attribute'
+import { newJournalView } from '@/services/pouchdb/Journal/default'
+import {
+  JOURNAL_KANBAN_VIEW,
+  JournalAttribute,
+  JournalObject,
+  JournalView,
+  JournalViewTypes
+} from '@/types/journal'
+import getConn from '@/services/pouchdb/config'
+import { MULTI_SELECT, SINGLE_SELECT } from '@/types/constants/note-attributes'
+import { create as createAttr } from './attribute'
 
-export const create = async (journalId: string, type: JournalViewTypes = 'list', label = '全部文档') => {
+export const create = async (
+  journalId: string,
+  type: JournalViewTypes = 'list',
+  label = '全部文档'
+) => {
   const PDB = getConn()
   const viewDoc = await newJournalView(journalId, type, label)
 
@@ -31,11 +41,15 @@ export const create = async (journalId: string, type: JournalViewTypes = 'list',
   return viewDoc
 }
 
-export const update = async (viewId: string, updateKey: 'attribute', value: any) => {
+export const update = async (
+  viewId: string,
+  updateKey: 'attribute',
+  value: any
+) => {
   const PDB = getConn()
   const viewDoc: JournalView = await PDB.get(viewId)
   switch (updateKey) {
-    case "attribute": {
+    case 'attribute': {
       viewDoc.attribute = value
       // @ts-ignore
       await PDB.put(viewDoc)
@@ -46,5 +60,4 @@ export const update = async (viewId: string, updateKey: 'attribute', value: any)
 
 export const remove = async (viewId: string) => {
   const PDB = getConn()
-
 }

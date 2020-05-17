@@ -1,26 +1,25 @@
-import React, {useEffect} from "react";
+import React, { useEffect } from 'react'
 
-function useInterval(callback: {(): void}, delay: number) {
-  const savedCallback = React.useRef();
+function useInterval(callback: { (): void }, delay: number) {
+  const savedCallback = React.useRef()
 
   // 保存新回调
   useEffect(() => {
     // @ts-ignore
-    savedCallback.current = callback;
-  });
+    savedCallback.current = callback
+  })
 
   // 建立 interval
   useEffect(() => {
     function tick() {
       // @ts-ignore
-      savedCallback.current();
+      savedCallback.current()
     }
     if (delay !== null) {
-      let id = setInterval(tick, delay);
-      return () => clearInterval(id);
+      let id = setInterval(tick, delay)
+      return () => clearInterval(id)
     }
-  }, [delay]);
+  }, [delay])
 }
 
 export default useInterval
-

@@ -1,4 +1,4 @@
-import {Editor} from "slate";
+import { Editor } from 'slate'
 
 const withPlugins = (editor: Editor, plugins: Array<any>) => {
   for (const item of plugins) {

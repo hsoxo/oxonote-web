@@ -1,33 +1,30 @@
-import React, {createContext, Fragment, useEffect, useState} from 'react'
-import {useHistory} from 'react-router-dom'
+import React, { createContext, Fragment, useEffect, useState } from 'react'
+import { useHistory } from 'react-router-dom'
 
-import {Divider} from '@material-ui/core'
-import sagaAction, {useSelector} from '@/store'
+import { Divider } from '@material-ui/core'
+import sagaAction, { useSelector } from '@/store'
 import TitleBlock from '../components/Title'
 import JournalToolbar from './Toolbar'
 import JournalListView from '@/app/Noxo/Journal/List'
-import {JournalState} from '@/types/states'
+import { JournalState } from '@/types/states'
 import JournalGalleryView from '@/app/Noxo/Journal/Gallery'
 import * as JOURNAL_ACT from '@/store/journal/actions'
 import debounce from 'lodash/debounce'
-import {animated, config, useTransition} from "react-spring";
-import {JOURNAL_KANBAN_VIEW} from "@/types/journal";
-import JournalKanbanView from "@/app/Noxo/Journal/Kanban";
+import { animated, config, useTransition } from 'react-spring'
+import { JOURNAL_KANBAN_VIEW } from '@/types/journal'
+import JournalKanbanView from '@/app/Noxo/Journal/Kanban'
 
 export const JournalContext = createContext({
   viewId: '',
   handleChangeView: (viewId: string) => {}
 })
 
-const handleSaveInfo = debounce(
-  (key: string, value: string) => {
-    sagaAction({
-      type: JOURNAL_ACT.SAGA_UPDATE_INFO,
-      payload: { [key]: value }
-    })
-  },
-  1000
-)
+const handleSaveInfo = debounce((key: string, value: string) => {
+  sagaAction({
+    type: JOURNAL_ACT.SAGA_UPDATE_INFO,
+    payload: { [key]: value }
+  })
+}, 1000)
 
 const Journal = (props: React.ComponentProps<any>) => {
   const history = useHistory()
@@ -48,10 +45,14 @@ const Journal = (props: React.ComponentProps<any>) => {
   }, [journalId])
 
   useEffect(() => {
-    if (!viewId && Array.isArray(views) && views.length > 0 && views[0]._id.startsWith(journalId))
+    if (
+      !viewId &&
+      Array.isArray(views) &&
+      views.length > 0 &&
+      views[0]._id.startsWith(journalId)
+    )
       history.push(`/o/journal/${journalId}/${views[0]._id}`)
-    if (viewId !== activeViewId)
-      setActiveViewId(viewId)
+    if (viewId !== activeViewId) setActiveViewId(viewId)
   }, [viewId, activeViewId, views, setActiveViewId])
 
   let viewInfo = views.filter(x => x._id === activeViewId)
@@ -60,9 +61,9 @@ const Journal = (props: React.ComponentProps<any>) => {
     from: { transform: 'translate3d(0,80px,0)', opacity: 0 },
     enter: { transform: 'translate3d(0,0px,0)', opacity: 1 },
     leave: { opacity: 0, height: 0 },
-    config: function(item) {
+    config: function (item) {
       const state = arguments[1]
-      if (state === 'leave') return {duration: 0}
+      if (state === 'leave') return { duration: 0 }
       return config.default
     }
   })
@@ -88,7 +89,9 @@ const Journal = (props: React.ComponentProps<any>) => {
                   <JournalToolbar />
                   <Divider />
                   {viewInfo[0].type === 'list' && <JournalListView />}
-                  {viewInfo[0].type === JOURNAL_KANBAN_VIEW && <JournalKanbanView />}
+                  {viewInfo[0].type === JOURNAL_KANBAN_VIEW && (
+                    <JournalKanbanView />
+                  )}
                   {viewInfo[0].type === 'gallery' && (
                     <JournalGalleryView viewId={activeViewId} />
                   )}
@@ -97,7 +100,8 @@ const Journal = (props: React.ComponentProps<any>) => {
               )}
             </JournalContext.Provider>
           </animated.div>
-      ) : null)}
+        ) : null
+      )}
     </div>
   )
 }

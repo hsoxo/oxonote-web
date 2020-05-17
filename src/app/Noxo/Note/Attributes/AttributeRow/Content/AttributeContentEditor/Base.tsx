@@ -1,11 +1,11 @@
-import React, {useEffect, useRef, useState} from 'react'
-import {Box, Popover} from '@material-ui/core'
-import {bindPopover, bindTrigger} from 'material-ui-popup-state'
-import {usePopupState} from 'material-ui-popup-state/hooks'
-import {JournalAttribute} from '@/types/journal'
-import {NoteAttribute, NoteSummaryObject} from '@/types/note'
-import {NoteState} from '@/types/states'
-import sagaAction, {useSelector} from '@/store'
+import React, { useEffect, useRef, useState } from 'react'
+import { Box, Popover } from '@material-ui/core'
+import { bindPopover, bindTrigger } from 'material-ui-popup-state'
+import { usePopupState } from 'material-ui-popup-state/hooks'
+import { JournalAttribute } from '@/types/journal'
+import { NoteAttribute, NoteSummaryObject } from '@/types/note'
+import { NoteState } from '@/types/states'
+import sagaAction, { useSelector } from '@/store'
 import * as NOTE_ACT from '@/store/note/actions'
 
 export type ContentViewProps = {
@@ -40,7 +40,9 @@ const BaseElement: React.FunctionComponent<BaseElementProps> = ({
   popover: PopoverComponent,
   display: DisplayComponent
 }) => {
-  const { note, journalAttrs }: NoteState = useSelector(state => state.get('note'))
+  const { note, journalAttrs }: NoteState = useSelector(state =>
+    state.get('note')
+  )
 
   const { attributes } = note
   const curAttr = attributes[attributes.findIndex(x => x.attrId === attrId)]
@@ -59,11 +61,16 @@ const BaseElement: React.FunctionComponent<BaseElementProps> = ({
   }, [ref, setPopWidth])
 
   const handleAttrValueChange = (newValue: any) => {
-    sagaAction({ type: NOTE_ACT.SAGA_UPDATE_ATTRIBUTE_VALUE, noteId: note._id, attrId, newValue })
+    sagaAction({
+      type: NOTE_ACT.SAGA_UPDATE_ATTRIBUTE_VALUE,
+      noteId: note._id,
+      attrId,
+      newValue
+    })
   }
 
   const handleClick = () => {
-    if (isToggle && (typeof curAttr.value === "boolean")) {
+    if (isToggle && typeof curAttr.value === 'boolean') {
       handleAttrValueChange(!curAttr.value)
     }
   }
@@ -95,9 +102,11 @@ const BaseElement: React.FunctionComponent<BaseElementProps> = ({
                 width: popWidth,
                 marginTop: '-0.5rem',
                 marginLeft: '-0.5rem',
-                boxShadow: 'rgba(15, 15, 15, 0.05) 0px 0px 0px 1px, rgba(15, 15, 15, 0.1) 0px 3px 6px, rgba(15, 15, 15, 0.2) 0px 9px 24px',
+                boxShadow:
+                  'rgba(15, 15, 15, 0.05) 0px 0px 0px 1px, rgba(15, 15, 15, 0.1) 0px 3px 6px, rgba(15, 15, 15, 0.2) 0px 9px 24px'
               }
-            }}>
+            }}
+          >
             <PopoverComponent
               {...{
                 attrId: attrId,
@@ -106,7 +115,7 @@ const BaseElement: React.FunctionComponent<BaseElementProps> = ({
                 onNoteAttrChange: handleAttrValueChange,
                 onJourAttrChange: () => {},
                 onBothAttrChange: () => {},
-                popupState,
+                popupState
               }}
             />
           </Popover>

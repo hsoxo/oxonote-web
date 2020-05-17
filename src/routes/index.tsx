@@ -17,12 +17,11 @@ interface RouteObject {
   routes?: Array<RouteObject>
 }
 
-
 export const publicRoutes: Array<RouteObject> = [
   {
     path: '/login',
     component: loadable(() => import('@/app/Login'))
-  },
+  }
 ]
 
 export const privateRoutes: Array<RouteObject> = [
@@ -49,4 +48,3 @@ export const privateRoutes: Array<RouteObject> = [
     ]
   }
 ]
-

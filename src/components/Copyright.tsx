@@ -1,7 +1,7 @@
-import Typography from "@material-ui/core/Typography";
-import Link from "@material-ui/core/Link";
-import React from "react";
-import styled from "styled-components";
+import Typography from '@material-ui/core/Typography'
+import Link from '@material-ui/core/Link'
+import React from 'react'
+import styled from 'styled-components'
 
 function Copyright() {
   return (
@@ -15,7 +15,7 @@ function Copyright() {
         {'.'}
       </Typography>
     </BottomBox>
-  );
+  )
 }
 
 const BottomBox = styled.footer`

@@ -1,11 +1,11 @@
 // @ts-nocheck
 import React from 'react'
 
-import elementsTypes from "./HtmlElementWrapper";
+import elementsTypes from './HtmlElementWrapper'
 
-import Leaf from "./Leaf";
-import ToolWrapper from "../toolbar/Wrapper";
-import styled from "styled-components";
+import Leaf from './Leaf'
+import ToolWrapper from '../toolbar/Wrapper'
+import styled from 'styled-components'
 
 interface EditorElementProps {
   children: any
@@ -16,13 +16,9 @@ interface EditorElementProps {
   editor: any
 }
 
-export const ElementRoot: React.FunctionComponent<EditorElementProps> = (props) => {
+export const ElementRoot: React.FunctionComponent<EditorElementProps> = props => {
   const { attributes, children } = props
-  return (
-    <ElementWrapper {...props}>
-      {children}
-    </ElementWrapper>
-  )
+  return <ElementWrapper {...props}>{children}</ElementWrapper>
 }
 
 export { Leaf }
@@ -54,31 +50,26 @@ const ElmtWrapper = styled.div`
     margin-block-end: 0;
   }
   &:hover {
-    box-shadow: 0px 2px 10px -1px rgba(0,0,0,0.05);
+    box-shadow: 0px 2px 10px -1px rgba(0, 0, 0, 0.05);
   }
 `
 
-export const ElementWrapper: React.FunctionComponent<EditorElementProps> = (props) => {
-  const handleDeselect = () => {
-  };
+export const ElementWrapper: React.FunctionComponent<EditorElementProps> = props => {
+  const handleDeselect = () => {}
 
-  const { element, editor, children, Tool, isSelected } = props;
+  const { element, editor, children, Tool, isSelected } = props
 
   const Elmt = (elementsMap[element.type] || {}).elem || element['default'].elem
   return (
     <ElementBox>
       <StyledToolWrapper id="element-toolbar">
-        <ToolWrapper onClick={handleDeselect}/>
+        <ToolWrapper onClick={handleDeselect} />
       </StyledToolWrapper>
       <ElmtWrapper>
-        <Elmt {...props}>
-          {children}
-        </Elmt>
+        <Elmt {...props}>{children}</Elmt>
       </ElmtWrapper>
     </ElementBox>
-  );
+  )
 }
 
-
 export default ElementWrapper
-

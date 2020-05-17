@@ -1,5 +1,5 @@
 import * as ACT from './actions'
-import {JournalState} from '@/types/states'
+import { JournalState } from '@/types/states'
 
 const initJournalState: JournalState = {
   journalChanged: false,
@@ -13,7 +13,7 @@ const initJournalState: JournalState = {
     createdUser: '',
     description: '',
     attrIds: [],
-    viewIds: [],
+    viewIds: []
   },
   attrs: [],
   views: [],
@@ -33,7 +33,7 @@ function journalReducer(
         journalChanged: true,
         journal: {
           ...state.journal,
-          ...action.payload,
+          ...action.payload
         }
       }
     case ACT.SET_JOURNAL_ATTRS:

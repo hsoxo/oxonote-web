@@ -1,10 +1,10 @@
 import axios from 'axios'
-import {getToken} from '@/utils/auth'
+import { getToken } from '@/utils/auth'
 
 // create an axios instance
 const service = axios.create({
   baseURL: process.env.BACKEND_URL,
-  timeout: 120000,
+  timeout: 120000
 })
 
 // request interceptor
@@ -14,7 +14,7 @@ service.interceptors.request.use(
     config.headers.Authorization = `Bearer ${getToken()}`
     return config
   },
-  error => Promise.reject(error),
+  error => Promise.reject(error)
 )
 
 // response interceptor
@@ -37,7 +37,7 @@ service.interceptors.response.use(
       return Promise.reject(new Error(response.data.code || 'Error'))
     }
   },
-  error => Promise.reject(error),
+  error => Promise.reject(error)
 )
 
 export default service

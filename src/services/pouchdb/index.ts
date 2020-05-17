@@ -3,8 +3,7 @@ const note = require('./Note/index')
 
 const PouchConn = {
   note,
-  journal,
+  journal
 }
-
 
 export default PouchConn
