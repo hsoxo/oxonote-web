@@ -57,6 +57,9 @@ export const updateValue = async (noteId: string, attrId: string, value: string 
     } else {
       curAttr.value = value
     }
-    await PDB.put(doc)
+    await PDB.put({
+      ...doc,
+      modifiedTime: new Date().getTime(),
+    })
   }
 }

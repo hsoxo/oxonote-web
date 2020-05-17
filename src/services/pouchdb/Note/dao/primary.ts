@@ -62,6 +62,7 @@ export const update = async (noteId: string, data: object) => {
   await PDB.put({
     ...doc,
     ...data,
+    modifiedTime: new Date().getTime(),
     _rev: doc._rev
   })
 }
