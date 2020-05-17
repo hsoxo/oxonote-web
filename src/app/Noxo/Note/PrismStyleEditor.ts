@@ -294,6 +294,17 @@ h6 {
 	font-style: italic;
 }
 
+button {
+  border: none;
+  border-radius: .3em;
+  padding: 0;
+  color: var(--primary-color);
+  text-decoration: underline;
+}
+button:hover {
+  cursor: pointer;
+}
+
 hgroup {
 	margin: 1.75rem 0 .75rem 0;
 	padding: 0;
