@@ -53,7 +53,7 @@ const Leaf = ({ attributes, children, leaf }: any) => {
   }
 
   if (leaf[NAMES.INLINE_CODE]) {
-    children = <code className="language-text">{children}</code>
+    children = <code className="language-text inline-code">{children}</code>
   }
 
   if (leaf[NAMES.INLINE_LINK]) {

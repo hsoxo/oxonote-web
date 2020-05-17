@@ -14,6 +14,9 @@ body {
   --secondary-text: rgba(66, 82, 110, 1);
   --mu-bg: #fafafa;
   --inline-bg: rgb(248, 248, 248);
+  --inlineCode-bg: rgba(222, 222, 222, 0.4);
+  --inlineCode-text: #ed2553;
+
   line-height: unset;
   background-color: var(--primary-bg);
   margin: 0;

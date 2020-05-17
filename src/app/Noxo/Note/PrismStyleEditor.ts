@@ -1,64 +1,4 @@
 import styled from 'styled-components'
-// import Typography from 'typography';
-// // @ts-ignore
-// import Wordpress2016 from 'typography-theme-wordpress-2016';
-//
-// Wordpress2016.overrideThemeStyles = () => ({
-//   a: {
-//     color: 'var(--textLink)',
-//   },
-//   hr: {
-//     background: 'var(--hr)',
-//   },
-//   'a.gatsby-resp-image-link': {
-//     boxShadow: 'none',
-//   },
-//   'a.anchor': {
-//     boxShadow: 'none',
-//   },
-//   'a.anchor svg[aria-hidden="true"]': {
-//     stroke: 'var(--textLink)',
-//   },
-//   p: {
-//     marginBottom: 0, // for editor only
-//     marginBlockStart: 0, // for editor only
-//     marginBlockEnd: 0, // for editor only
-//   },
-//   'p code': {
-//     fontSize: '1rem',
-//   },
-//   // TODO: why tho
-//   'h1 code, h2 code, h3 code, h4 code, h5 code, h6 code': {
-//     fontSize: 'inherit',
-//   },
-//   'li code': {
-//     fontSize: '1rem',
-//   },
-//   blockquote: {
-//     marginLeft: '-1rem',
-//     paddingLeft: '0.66rem',
-//     marginBottom: 0, // for editor only
-//     color: 'inherit',
-//     borderLeftColor: 'inherit',
-//     opacity: '0.8',
-//   },
-//   'blockquote.translation': {
-//     fontSize: '1em',
-//   },
-//   'span.il-mark': {
-//     display: 'none',
-//   },
-//   'code[class*=language-]': {
-//     borderRadius: '.3em',
-//     background: 'var(--inlineCode-bg)',
-//     color: 'var(--inlineCode-text)',
-//     padding: '.15em .2em .05em',
-//     whiteSpace: 'normal',
-//   }
-// });
-//
-// delete Wordpress2016.googleFonts;
-// console.log(new Typography(Wordpress2016).toString())
 export const PrismStyled = styled.div`
 html {
 	font-family: sans-serif;
@@ -67,7 +7,7 @@ html {
 }
 
 body {
-	margin: 0
+	margin: 0;
 }
 
 article,
@@ -119,22 +59,15 @@ a:hover {
 abbr[title] {
 	border-bottom: none;
 	text-decoration: underline;
-	text-decoration: underline dotted
 }
 
 b,
 strong {
-	font-weight: inherit;
-	font-weight: bolder
+	font-weight: bolder;
 }
 
 dfn {
 	font-style: italic
-}
-
-h1 {
-	font-size: 2em;
-	margin: .67em 0
 }
 
 mark {
@@ -293,7 +226,7 @@ html {
 
 * {
 	box-sizing: inherit;
-	line-height: 18px;
+	line-height: 28px;
 	transition: all ease 100ms;
 }
 
@@ -307,13 +240,9 @@ html {
 
 body {
 	color: hsla(0, 0%, 0%, 0.9);
-	font-family: 'Merriweather', 'Georgia', serif;
-	font-weight: 400;
+	font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
 	word-wrap: break-word;
 	font-kerning: normal;
-	-moz-font-feature-settings: "kern", "liga", "clig", "calt";
-	-ms-font-feature-settings: "kern", "liga", "clig", "calt";
-	-webkit-font-feature-settings: "kern", "liga", "clig", "calt";
 	font-feature-settings: "kern", "liga", "clig", "calt";
 }
 
@@ -323,72 +252,45 @@ img {
 	padding: 0;
 }
 
-h1 {
+h1,
+h2, 
+h3, 
+h4, 
+h5, 
+h6 {
 	margin: 1.75rem 0 .75rem 0;
 	padding: 0;
 	color: inherit;
 	font-family: Montserrat, sans-serif;
 	font-weight: 900;
 	text-rendering: optimizeLegibility;
+  line-height: 1.1;
+}
+
+h1 {
 	font-size: 2.5rem;
-	line-height: 1.1;
 }
 
 h2 {
-	margin: 1.75rem 0 .75rem 0;
-	padding: 0;
-	color: inherit;
-	font-family: 'Merriweather', 'Georgia', serif;
-	font-weight: 900;
-	text-rendering: optimizeLegibility;
-	font-size: 1.73286rem;
-	line-height: 1.1;
+	font-size: 1.75rem;
 }
 
 h3 {
-	margin: 1.75rem 0 .75rem 0;
-	padding: 0;
-	color: inherit;
-	font-family: 'Merriweather', 'Georgia', serif;
-	font-weight: 900;
-	text-rendering: optimizeLegibility;
-	font-size: 1.4427rem;
-	line-height: 1.1;
+	font-size: 1.4rem;
 }
 
 h4 {
-	margin: 1.75rem 0 .75rem 0;
-	padding: 0;
-	color: inherit;
-	font-family: 'Merriweather', 'Georgia', serif;
-	font-weight: 900;
-	text-rendering: optimizeLegibility;
-	font-size: 1rem;
-	line-height: 1.1;
+	font-size: 1.1rem;
 	letter-spacing: 0.140625em;
 	text-transform: uppercase;
 }
 
 h5 {
-	margin: 1.75rem 0 .75rem 0;
-	padding: 0;
-	color: inherit;
-	font-family: 'Merriweather', 'Georgia', serif;
-	font-weight: 900;
-	text-rendering: optimizeLegibility;
-	font-size: 0.83255rem;
-	line-height: 1.1;
+	font-size: 0.8rem;
 }
 
 h6 {
-	margin: 1.75rem 0 .75rem 0;
-	padding: 0;
-	color: inherit;
-	font-family: 'Merriweather', 'Georgia', serif;
-	font-weight: 900;
-	text-rendering: optimizeLegibility;
-	font-size: 0.75966rem;
-	line-height: 1.1;
+	font-size: 0.7rem;
 	font-style: italic;
 }
 
@@ -403,10 +305,26 @@ ul {
 	list-style-type: circle;
 }
 
+ul > div {
+	margin: 0;
+}
+
+ul > div > #oxo-element {
+	padding: 0;
+}
+
 ol {
 	margin: 0 0 0 1.75rem;
 	padding: 0;
 	list-style-type: decimal;
+}
+
+ol > div {
+	margin: 0;
+}
+
+ol > div > #oxo-element {
+	padding: 0;
 }
 
 dl {
@@ -525,13 +443,13 @@ ul li {
 	padding-left: 0;
 }
 
-li>ol {
+li > ol {
 	margin-left: .75rem;
 	margin-bottom: calc(1.75rem / 2);
 	margin-top: calc(1.75rem / 2);
 }
 
-li>ul {
+li > ul {
 	margin-left: .75rem;
 	margin-bottom: calc(1.75rem / 2);
 	margin-top: calc(1.75rem / 2);
@@ -555,7 +473,6 @@ li>p {
 
 code {
 	font-size: 0.85rem;
-	line-height: 1.75rem;
 }
 
 kbd {
@@ -627,10 +544,6 @@ blockquote cite:before {
 	content: "— ";
 }
 
-ul,
-ol {
-	margin-left: 0.5rem;
-}
 
 @media only screen and (max-width:480px) {
 	ul,
@@ -642,15 +555,6 @@ ol {
 		margin-right: 0;
 		padding-left: 0.98438rem;
 	}
-}
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-	margin-top: 3.5rem;
 }
 
 a {
@@ -717,14 +621,10 @@ code[class*=language-] {
 	white-space: normal;
 }
 
-
 code[class*="language-"],
 pre[class*="language-"] {
-  color: black;
-  background: none;
-  text-shadow: 0 1px white;
   font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
-  font-size: 1em;
+  font-size: 0.8rem;
   text-align: left;
   white-space: pre;
   word-spacing: normal;
