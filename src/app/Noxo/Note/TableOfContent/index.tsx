@@ -10,7 +10,6 @@ const TableOfContent: React.FC<{ noteContent: any }> = ({noteContent}) => {
 };
 
 const StyledToC = styled.div`
-  font-weight: 600;
   padding-left: 0;
   position: relative;
   font-size: 15px;
