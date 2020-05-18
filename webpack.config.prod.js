@@ -59,12 +59,16 @@ module.exports = {
   optimization: {
     usedExports: true,
     minimize: true,
-    minimizer: [new TerserPlugin({
-      sourceMap: true,
-      compress:{
-        drop_console: true,
-      }
-    })],
+    minimizer: [
+      new TerserPlugin({
+        sourceMap: true,
+        terserOptions: {
+          compress:{
+            drop_console: true,
+          }
+        }
+      })
+    ],
     splitChunks: {
       chunks: 'async',
       minSize: 30000,
