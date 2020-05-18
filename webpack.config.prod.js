@@ -62,7 +62,7 @@ module.exports = {
     minimizer: [new TerserPlugin({
       sourceMap: true,
       compress:{
-        pure_funcs: ['console.info', 'console.debug', 'console.warn']
+        drop_console: true,
       }
     })],
     splitChunks: {
