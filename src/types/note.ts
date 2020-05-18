@@ -9,14 +9,14 @@ export interface NoteObject {
   createdUser: string
   modifiedTime: number
   modifiedUser: string
-  content: Array<_NoteContent>
+  content: Array<EditorContent>
   attributes: Array<NoteAttribute>
 }
 
 export type NoteContent = {
   _id: string
   _rev: string
-  content: Array<_NoteContent>
+  content: Array<EditorContent>
 }
 
 export interface NoteSummaryObject {
@@ -30,7 +30,7 @@ export interface NoteSummaryObject {
   attributes: Array<NoteAttribute>
 }
 
-interface _NoteContent {
+export interface EditorContent {
   type: string
   children: Array<any>
   root: boolean

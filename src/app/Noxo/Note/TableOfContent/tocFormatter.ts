@@ -1,8 +1,8 @@
-import { NoteContent } from '@/types/note'
+import { EditorContent } from '@/types/note'
 
 const HEADER_LIST = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6']
-const toc = (content: NoteContent) => {
-  const headerContents = content.content.filter(x => HEADER_LIST.includes(x.type))
+const toc = (content: EditorContent[]) => {
+  const headerContents = content.filter(x => HEADER_LIST.includes(x.type))
   let result = ''
   if (headerContents.length === 0) return result
   const ulStart = () => { result += '<ul>' }

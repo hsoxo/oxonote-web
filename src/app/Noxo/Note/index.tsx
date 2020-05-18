@@ -40,10 +40,9 @@ const NoteEditor = (props: React.ComponentProps<any>) => {
   const noteId: string = props.match.params.id
   const {
     note,
-    content: noteContent
+    content: { content }
   }: NoteState = useSelector(state => state.get('note'))
 
-  const { content } = noteContent
   const [value, setValue] = useState(content)
 
   const handleContentChange = (value: any) => {
@@ -78,7 +77,7 @@ const NoteEditor = (props: React.ComponentProps<any>) => {
         <Box>
           <ToCWrapper id="toc">
             {"Table of Content"}
-            <TableOfContent noteContent={noteContent} />
+            <TableOfContent noteContent={value} />
           </ToCWrapper>
           <TitleBlock
             title={note.title}
