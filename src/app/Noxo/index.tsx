@@ -8,7 +8,7 @@ import { FlexBox } from '@/components/OxOUI/OxOBox'
 import ClapSpinner from '@/components/Spiner'
 import { InnerRouteProps } from '@/routes'
 import { GlobalState } from '@/types/states'
-import sagaAction, { action, useSelector } from '@/store'
+import sagaAction, {action, history, useSelector} from '@/store'
 import { SAGA_LOAD_USER, setDBSyncStatus } from '@/store/global/actions'
 import { getToken } from '@/utils/auth'
 
@@ -84,6 +84,10 @@ const NoteLayout: React.FunctionComponent<
           if (err.status === 409) {
             // conflict, no need to restart
             return;
+          }
+          // @ts-ignore
+          if (err.status === 401) {
+            history.push('/login')
           }
           setTimeout(function () {
             const h = sync();
