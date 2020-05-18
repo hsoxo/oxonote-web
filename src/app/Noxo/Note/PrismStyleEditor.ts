@@ -248,7 +248,7 @@ body {
 
 img {
 	max-width: 100%;
-	margin: 1.75rem 0 .75rem 0;
+	margin: 1rem 0;
 	padding: 0;
 }
 
@@ -258,7 +258,6 @@ h3,
 h4, 
 h5, 
 h6 {
-	margin: 1.75rem 0 .75rem 0;
 	padding: 0;
 	color: inherit;
 	font-family: Montserrat, sans-serif;
@@ -268,28 +267,33 @@ h6 {
 }
 
 h1 {
-	font-size: 2.5rem;
+	font-size: 3rem;
+  margin: 1rem 0;
 }
 
 h2 {
-	font-size: 1.75rem;
+	font-size: 2.5rem;
+  margin: 1rem 0;
 }
 
 h3 {
-	font-size: 1.4rem;
+	font-size: 2.1rem;
+  margin: .6rem 0;
 }
 
 h4 {
-	font-size: 1.1rem;
+	font-size: 1.8rem;
+  margin: .6rem 0;
 }
 
 h5 {
-	font-size: 0.8rem;
+	font-size: 1.5rem;
+  margin: .3rem 0;
 }
 
 h6 {
-	font-size: 0.7rem;
-	font-style: italic;
+	font-size: 1.2rem;
+  margin: .3rem 0;
 }
 
 button.inline-link {
@@ -304,7 +308,7 @@ button:hover {
 }
 
 hgroup {
-	margin: 1.75rem 0 .75rem 0;
+	margin: 1rem 0;
 	padding: 0;
 }
 
@@ -337,12 +341,12 @@ ol > div > #oxo-element {
 }
 
 dl {
-	margin: 1.75rem 0 .75rem 0;
+	margin: 1rem 0;
 	padding: 0;
 }
 
 dd {
-	margin: 1.75rem 0 .75rem 0;
+	margin: 1rem 0;
 	padding: 0;
 }
 
@@ -371,7 +375,7 @@ pre {
 }
 
 table {
-	margin: 1.75rem 0 .75rem 0;
+	margin: 1rem 0;
 	padding: 0;
 	font-size: 1rem;
 	line-height: 1.75rem;
@@ -380,7 +384,7 @@ table {
 }
 
 fieldset {
-	margin: 1.75rem 0 .75rem 0;
+	margin: 1rem 0;
 	padding: 0;
 }
 
@@ -397,17 +401,17 @@ blockquote {
 }
 
 form {
-	margin: 1.75rem 0 .75rem 0;
+	margin: 1rem 0;
 	padding: 0;
 }
 
 noscript {
-	margin: 1.75rem 0 .75rem 0;
+	margin: 1rem 0;
 	padding: 0;
 }
 
 iframe {
-	margin: 1.75rem 0 .75rem 0;
+	margin: 1rem 0;
 	padding: 0;
 }
 
@@ -420,7 +424,7 @@ hr {
 }
 
 address {
-	margin: 1.75rem 0 .75rem 0;
+	margin: 1rem 0;
 	padding: 0;
 }
 
@@ -633,7 +637,7 @@ code[class*=language-] {
 code[class*="language-"],
 pre[class*="language-"] {
   font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
-  font-size: 0.8rem;
+  font-size: 0.8em;
   text-align: left;
   white-space: pre;
   word-spacing: normal;
