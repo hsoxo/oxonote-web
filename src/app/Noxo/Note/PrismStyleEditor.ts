@@ -281,8 +281,6 @@ h3 {
 
 h4 {
 	font-size: 1.1rem;
-	letter-spacing: 0.140625em;
-	text-transform: uppercase;
 }
 
 h5 {
