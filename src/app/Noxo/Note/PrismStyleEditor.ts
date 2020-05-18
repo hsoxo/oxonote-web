@@ -294,7 +294,7 @@ h6 {
 	font-style: italic;
 }
 
-button {
+button.inline-link {
   border: none;
   border-radius: .3em;
   padding: 0;

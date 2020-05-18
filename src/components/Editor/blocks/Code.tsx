@@ -40,6 +40,7 @@ class CodeElement extends React.Component<EditorElementProps> {
                   <Button
                     variant="contained"
                     size={'small'}
+                    style={{padding: '0 10px'}}
                     {...bindTrigger(popupState)}
                     onMouseDown={() => {
                       let range = document.createRange()

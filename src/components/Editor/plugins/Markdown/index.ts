@@ -62,6 +62,11 @@ const MarkdownPlugin = (editor: Editor) => {
       const curBlock = Editor.above(editor, {
         match: n => Editor.isBlock(editor, n)
       })
+      if (curBlock && curBlock[0] && curBlock[0].type === NAMES.CODE) {
+        // no action in code block
+        insertText(text)
+        return;
+      }
       const curBlockPath = curBlock ? curBlock[1] : []
       const curBlockStart = Editor.start(editor, curBlockPath)
       const rangeStartFromBlock = { anchor, focus: curBlockStart }

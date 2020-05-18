@@ -88,7 +88,7 @@ const Element: React.FunctionComponent<EditorElementProps> = props => {
   } else if (element.type === NAMES.INLINE_LINK) {
     return (
       <div {...attributes} style={{ display: 'inline-block' }}>
-        <button onClick={() => window.open(element.href, '_blank')}>
+        <button className="inline-link" onClick={() => window.open(element.href, '_blank')}>
           {children}
         </button>
       </div>
